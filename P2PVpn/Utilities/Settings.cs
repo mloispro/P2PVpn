@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using Newtonsoft.Json;
 
 namespace P2PVpn.Utilities
@@ -32,6 +33,7 @@ namespace P2PVpn.Utilities
 
         public Dictionary<string, string> OpenVPNConfigs { get; set; }
         private static Settings _settings;
+        public static string AppDir = Application.StartupPath;
 
         public static Settings Get()
         {
@@ -78,7 +80,7 @@ namespace P2PVpn.Utilities
         public static void SaveJson<T>(List<T> list, string filename)
         {
             //var binDir = System.Reflection.Assembly.GetExecutingAssembly().Location;
-            var binDir = Directory.GetCurrentDirectory();
+            var binDir = AppDir;
             var file = binDir + @"\" + filename;
 
             if (!File.Exists(file))
@@ -94,7 +96,7 @@ namespace P2PVpn.Utilities
         }
         public static List<T> GetJson<T>(string filename)
         {
-            var binDir = Directory.GetCurrentDirectory();
+            var binDir = AppDir;
             var file = binDir + @"\" + filename;
 
             List<T> list = new List<T>();
@@ -116,7 +118,7 @@ namespace P2PVpn.Utilities
         }
         public static T GetJsonObject<T>(string filename) where T : new()
         {
-            var binDir = Directory.GetCurrentDirectory();
+            var binDir = AppDir;
             var file = binDir + @"\" + filename;
 
             T obj = new T();
@@ -139,7 +141,7 @@ namespace P2PVpn.Utilities
         public static void SaveJsonObject<T>(T obj, string filename)
         {
             //var binDir = System.Reflection.Assembly.GetExecutingAssembly().Location;
-            var binDir = Directory.GetCurrentDirectory();
+            var binDir = AppDir;
             var file = binDir + @"\" + filename;
 
             if (!File.Exists(file))
