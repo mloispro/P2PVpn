@@ -46,13 +46,13 @@ namespace P2PVpn.Utilities
             {
                 DisableDisconnect = true;
                 //NetworkListManager.NetworkConnectivityChanged -= NetworkListManager_NetworkConnectivityChanged;
+                var adapters = GetActiveNetworkInterfaces();
                 EnableAllNeworkInterfaces(false);
                 _log.Log("**Disconnect Triggered**");
                 await ClosePrograms();
                 EnableAllNeworkInterfaces();
                 if (Settings.Get().ResetDNS)
                 {
-                    var adapters = GetActiveNetworkInterfaces();
                     foreach (var adapter in adapters)
                     {
                         string primaryDns = string.Format("interface IPv4 set dnsserver \"{0}\" dhcp", adapter.Name);
@@ -228,7 +228,7 @@ namespace P2PVpn.Utilities
         public bool IsOpenVPNConnected() 
         {
             bool isConnected = false;
-            var vpnAdapter = ActiveNetworkAdapters.FirstOrDefault(x => x.Description.ToLower().StartsWith("tap"));
+            var vpnAdapter = ActiveNetworkAdapters.FirstOrDefault(x => Networking.IsVPNAdapter(x));
             isConnected = (vpnAdapter != null);
             return isConnected;
         }
@@ -274,7 +274,11 @@ namespace P2PVpn.Utilities
             }
             _log.Log(verb + " All Network Interfaces");
         }
-
+        public static bool IsVPNAdapter(NetworkAdapter adapter)
+        {
+            bool isVpnAdapter = adapter.Description.ToLower().StartsWith("tap");
+            return isVpnAdapter;
+        }
         public void ShowNetworkTraffic()
         {
             //PerformanceCounterCategory performanceCounterCategory = new PerformanceCounterCategory("Network Interface");

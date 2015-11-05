@@ -57,7 +57,7 @@ namespace P2PVpn
             }
             foreach (var adapter in _network.ActiveNetworkAdapters)
             {
-                if (adapter.Description.ToLower().StartsWith("tap"))
+                if (Networking.IsVPNAdapter(adapter))
                 {
                     vpnFound = true;
                     lblVPNConnectionStatus.SetLabelText(string.Format("{0} {1} {2}bytes sent: {3}k  bytes received: {4}k  speed: {5}k{2}", 
@@ -100,8 +100,9 @@ namespace P2PVpn
             if (string.IsNullOrEmpty(runningApps))
             {
                 runningApps = "None.";
-            }
-            lblRunningApps.Text = runningApps;
+            } 
+            ControlHelpers.SetLabelText(lblRunningApps, runningApps);
+            
         }
         private async void btnConnect_Click(object sender, EventArgs e)
         {
@@ -138,23 +139,36 @@ namespace P2PVpn
                 _network.ScanNetworkInterfaces();
                 if (_network.IsOpenVPNConnected())
                 {
-                    
+                    string primaryDnsIp = settings.PrimaryDNS;
+                    string secondaryDnsIp = settings.SecondaryDNS;
+                    bool setDns = false;
                     foreach (var adapter in _network.ActiveNetworkAdapters)
                     {
+                        //if (Networking.IsVPNAdapter(adapter)) continue;
+
                         //change Dns for added security
                         string name = adapter.Name;
-                        string primaryDnsIp = settings.PrimaryDNS;
-                        string secondaryDnsIp = settings.SecondaryDNS;
-                        string primaryDns = string.Format("interface IPv4 set dnsserver \"{0}\" static {1} both", name, primaryDnsIp);
-                        string secondaryDns = string.Format("interface ipv4 add dnsserver \"{0}\" address={1} index=2", name, secondaryDnsIp);
                         
-                        ControlHelpers.StartProcess(@"netsh", primaryDns);
-                        ControlHelpers.StartProcess(@"netsh", secondaryDns);
-                        lbLog.Log("Set DNS on {0} to {1}, {2}", name, primaryDnsIp, secondaryDnsIp);
+                        if (!string.IsNullOrWhiteSpace(primaryDnsIp) && primaryDnsIp != "0.0.0.0")
+                        {
+                            string primaryDns = string.Format("interface IPv4 set dnsserver \"{0}\" static {1} both", name, primaryDnsIp);
+                            ControlHelpers.StartProcess(@"netsh", primaryDns);
+                            setDns = true;
+                        }
+                        if (!string.IsNullOrWhiteSpace(secondaryDnsIp) && secondaryDnsIp != "0.0.0.0")
+                        {
+                            string secondaryDns = string.Format("interface ipv4 add dnsserver \"{0}\" address={1} index=2", name, secondaryDnsIp);
+                            ControlHelpers.StartProcess(@"netsh", secondaryDns);
+                            setDns = true;
+                        }
+                        if (setDns) lbLog.Log("Set DNS on {0} to {1}, {2}", name, primaryDnsIp, secondaryDnsIp);
                         Logging.SetStatus("OpenVPN Connected", Logging.Colors.Green);
                     }
-                    ControlHelpers.StartProcess(@"ipconfig.exe", @"/flushdns");
-                    ControlHelpers.StartProcess(@"ipconfig.exe", @"/registerdns");
+                    if (setDns)
+                    {
+                        ControlHelpers.StartProcess(@"ipconfig.exe", @"/flushdns");
+                        ControlHelpers.StartProcess(@"ipconfig.exe", @"/registerdns");
+                    }
                     
                     //Process.Start(@"ipconfig.exe", @"/flushdns").WaitForExit();
                     _network.OpenPrograms();

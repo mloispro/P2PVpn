@@ -22,6 +22,7 @@ namespace P2PVpn.Models
             apps.RemoveAll(x => string.IsNullOrWhiteSpace(x.Program));
             Settings.SaveJson(apps, "apps.json");
 
+            Logging.Log("Saved Apps To: " + Settings.AppDir);
             _apps = apps;
         }
         public static List<Apps> Get()

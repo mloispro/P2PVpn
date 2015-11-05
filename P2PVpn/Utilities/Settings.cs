@@ -33,11 +33,11 @@ namespace P2PVpn.Utilities
 
         public Dictionary<string, string> OpenVPNConfigs { get; set; }
         private static Settings _settings;
-        public static string AppDir = Application.StartupPath;
+        public static string AppDir = Application.UserAppDataPath;
 
         public static Settings Get()
         {
-        
+            // Create a file that the application will store user specific data in.
             if (_settings != null)
             {
                 FillOPNVPNConfigs();
@@ -73,7 +73,7 @@ namespace P2PVpn.Utilities
                 settings.OpenVPNDirectory = DefaultOpenVPNDirectory;
             }
             Settings.SaveJsonObject(settings, "settings.json");
-
+            Logging.Log("Saved Settings To: " + AppDir);
             _settings = settings;
         }
 
