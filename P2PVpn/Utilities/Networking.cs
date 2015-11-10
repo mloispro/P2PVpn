@@ -5,12 +5,15 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Management;
+using System.Net;
 using System.Net.NetworkInformation;
 using System.Runtime.InteropServices.ComTypes;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using com.LandonKey.SocksWebProxy;
+using com.LandonKey.SocksWebProxy.Proxy;
 using NETWORKLIST;
 using P2PVpn.Models;
 
@@ -31,11 +34,13 @@ namespace P2PVpn.Utilities
             //EnableAllNeworkInterfaces();
             NetworkListManager = new NetworkListManager();
             ScanNetworkInterfaces();
+            SaveOriginalDnsSettings();
+            SetBrowserTorProxies();
             LogNetworkInfo();
             NetworkListManager.NetworkConnectivityChanged += NetworkListManager_NetworkConnectivityChanged;
 
         }
-        
+
         private async void NetworkListManager_NetworkConnectivityChanged(Guid networkId, NLM_CONNECTIVITY newConnectivity)
         {
 
@@ -51,17 +56,6 @@ namespace P2PVpn.Utilities
                 _log.Log("**Disconnect Triggered**");
                 await ClosePrograms();
                 EnableAllNeworkInterfaces();
-                if (Settings.Get().ResetDNS)
-                {
-                    foreach (var adapter in adapters)
-                    {
-                        string primaryDns = string.Format("interface IPv4 set dnsserver \"{0}\" dhcp", adapter.Name);
-                        string secondaryDns = string.Format("interface ip set dns \"{0}\" dhcp", adapter.Name);
-                        ControlHelpers.StartProcess(@"netsh", primaryDns);
-                        ControlHelpers.StartProcess(@"netsh", secondaryDns);
-                    }
-                    ControlHelpers.StartProcess(@"ipconfig.exe", @"/flushdns");
-                }
                 if (this.IsOpenVPNConnected())
                 {
                     DisableDisconnect = true;
@@ -75,9 +69,116 @@ namespace P2PVpn.Utilities
             //        OpenPrograms();
             //    }
             //}
+            if (newConnectivity == NLM_CONNECTIVITY.NLM_CONNECTIVITY_DISCONNECTED)
+            {
+                ResetNetworkInterfaces();
+            }
             ScanNetworkInterfaces();
             LogNetworkInfo();
 
+        }
+
+        public void ResetNetworkInterfaces()
+        {
+            if (!Settings.Get().DontResetDNS)
+            {
+                var adapters = GetActiveNetworkInterfaces();
+                Settings settings = Settings.Get();
+                string primaryDns = "";
+                string secondaryDns = "";
+                bool setDns = false;
+                foreach (var adapter in adapters)
+                {
+                    if (Networking.IsVPNAdapter(adapter)) continue;
+
+                    var settingsAdapter = settings.StartupNetworkAdapterDns.FirstOrDefault(x => adapter.Id == x.Id);
+                    if (settingsAdapter != null)
+                    {
+                        if (!string.IsNullOrWhiteSpace(settingsAdapter.PrimaryDNS) &&
+                            NetworkAdapter.OpenVpnAdapter != null && NetworkAdapter.OpenVpnAdapter.PrimaryDns != adapter.PrimaryDns)
+                        {
+                            primaryDns = string.Format("interface IPv4 set dnsserver \"{0}\" static {1} both", settingsAdapter.Name, settingsAdapter.PrimaryDNS);
+                            ControlHelpers.StartProcess(@"netsh", primaryDns);
+                            setDns = true;
+                        }
+                        if (!string.IsNullOrWhiteSpace(settingsAdapter.SecondaryDNS) &&
+                            NetworkAdapter.OpenVpnAdapter != null && NetworkAdapter.OpenVpnAdapter.SecondaryDns != adapter.SecondaryDns)
+                        {
+                            secondaryDns = string.Format("interface ipv4 add dnsserver \"{0}\" address={1} index=2", settingsAdapter.Name, settingsAdapter.SecondaryDNS);
+                            ControlHelpers.StartProcess(@"netsh", secondaryDns);
+                            setDns = true;
+                        }
+                    }
+                    else
+                    {
+                        primaryDns = string.Format("interface IPv4 set dnsserver \"{0}\" dhcp", adapter.Name);
+                        secondaryDns = string.Format("interface ip set dns \"{0}\" dhcp", adapter.Name);
+                        ControlHelpers.StartProcess(@"netsh", primaryDns);
+                        ControlHelpers.StartProcess(@"netsh", secondaryDns);
+                    }
+                    if (setDns) _log.Log("Set DNS on {0} to {1}, {2}", adapter.Name, primaryDns, secondaryDns);
+                }
+                ControlHelpers.StartProcess(@"ipconfig.exe", @"/flushdns");
+
+            }
+        }
+        private void SetBrowserTorProxies()
+        {
+            SetTorProxyForChrome();
+        }
+        public static void SetTorProxyForChrome()
+        {
+            Settings settings = Settings.Get();
+            if (settings.EnableTorProxyForChrome)
+            {
+                //chrome.exe --proxy-server="socks5://localhost:9050" --host-resolver-rules="MAP * 0.0.0.0 , EXCLUDE localhost"
+                ControlHelpers.StartProcess(Settings.ChromeExe, "--proxy-server=\"socks5://localhost:9150\" --host-resolver-rules=\"MAP * 0.0.0.0 , EXCLUDE localhost\"");
+                _log.Log("Set Chrome Tor Proxy");
+            }
+        }
+        private void SaveOriginalDnsSettings()
+        {
+            Settings settings = Settings.Get();
+            settings.StartupNetworkAdapterDns = new List<NetworkAdapterDns>();
+            foreach (var adapter in this.ActiveNetworkAdapters)
+            {
+                if (Networking.IsVPNAdapter(adapter)) continue;
+
+                adapter.StartupPrimaryDNS = adapter.PrimaryDns;
+                adapter.StartupSecondaryDNS = adapter.SecondaryDns;
+
+                settings.StartupNetworkAdapterDns.Add(new NetworkAdapterDns
+                {
+                    Name = adapter.Name,
+                    Id = adapter.Id,
+                    PrimaryDNS = adapter.PrimaryDns,
+                    SecondaryDNS = adapter.SecondaryDns
+                });
+
+            }
+            Settings.Save(settings);
+
+        }
+        public static WebClient GetTorWebClient()
+        {
+            WebClient wc = new WebClient();
+
+            var proxy = new SocksWebProxy(new ProxyConfig(
+                //This is an internal http->socks proxy that runs in process
+            IPAddress.Parse(Settings.BrowserProxy),
+                //This is the port your in process http->socks proxy will run on
+            12345,
+                //This could be an address to a local socks proxy (ex: Tor / Tor Browser, If Tor is running it will be on 127.0.0.1)
+            IPAddress.Parse(Settings.BrowserProxy),
+                //This is the port that the socks proxy lives on (ex: Tor / Tor Browser, Tor is 9150)
+            9150,
+                //This Can be Socks4 or Socks5
+            ProxyConfig.SocksVersion.Five
+            ));
+
+            wc.Proxy = proxy;// new WebProxy(Settings.BrowserProxy, true);
+
+            return wc;
         }
         public async Task ClosePrograms()
         {
@@ -277,6 +378,7 @@ namespace P2PVpn.Utilities
         public static bool IsVPNAdapter(NetworkAdapter adapter)
         {
             bool isVpnAdapter = adapter.Description.ToLower().StartsWith("tap");
+            if (isVpnAdapter) NetworkAdapter.OpenVpnAdapter = adapter;
             return isVpnAdapter;
         }
         public void ShowNetworkTraffic()

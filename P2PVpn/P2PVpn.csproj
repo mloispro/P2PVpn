@@ -58,6 +58,14 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="Org.Mentalis, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Assets\Org.Mentalis.dll</HintPath>
+    </Reference>
+    <Reference Include="SocksWebProxy, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Assets\SocksWebProxy.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.IO.Log" />
@@ -85,6 +93,7 @@
   <ItemGroup>
     <Compile Include="Models\Apps.cs" />
     <Compile Include="Models\NetworkAdapter.cs" />
+    <Compile Include="Models\NetworkAdapterDns.cs" />
     <Compile Include="P2PVPNForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -130,9 +139,15 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\fix-dns-leak-32.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\fix-dns-leak-64.dll" />
     <Content Include="Assets\icon.ico" />
     <Content Include="Assets\icon.png" />
     <Content Include="Assets\IPAddressControlLib.dll" />
+    <Content Include="Assets\Org.Mentalis.dll" />
+    <Content Include="Assets\SocksWebProxy.dll" />
     <Content Include="icon.ico" />
   </ItemGroup>
   <ItemGroup>

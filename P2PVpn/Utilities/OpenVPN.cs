@@ -9,10 +9,15 @@ namespace P2PVpn.Utilities
 {
     public static class OpenVPN
     {
+        private static string _p2pVpnSettings = string.Format("#P2PVpn Settings#{0}" + 
+                                                                "auth-user-pass \"C:\\Program Files (x86)\\OpenVPN\\config\\vpnbook-creds.txt\"{0}" +
+                                                                "plugin \"C:\\Program Files (x86)\\OpenVPN\\config\\fix-dns-leak-32.dll\"{0}", 
+                                                                Environment.NewLine);
+
         public static void SavePassword(string password)
         {
             Settings settings = Settings.Get();
-            var binDir = Settings.AppDir;
+            var binDir = Settings.UserSettingsDir;
             var localCredsFile = binDir + @"\vpnbook-creds.txt";
             var openVpnCredsFile = settings.OpenVPNDirectory + @"\config\vpnbook-creds.txt";
 
@@ -51,7 +56,7 @@ namespace P2PVpn.Utilities
         public static void SaveUsername(string username)
         {
             Settings settings = Settings.Get();
-            var binDir = Settings.AppDir;
+            var binDir = Settings.UserSettingsDir;
             var localCredsFile = binDir + @"\vpnbook-creds.txt";
             var openVpnCredsFile = settings.OpenVPNDirectory + @"\config\vpnbook-creds.txt";
 
