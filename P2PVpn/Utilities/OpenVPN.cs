@@ -9,6 +9,11 @@ namespace P2PVpn.Utilities
 {
     public static class OpenVPN
     {
+        private static string _p2pVpnSettings = string.Format("#P2PVpn Settings#{0}" + 
+                                                                "auth-user-pass \"C:\\Program Files (x86)\\OpenVPN\\config\\vpnbook-creds.txt\"{0}" +
+                                                                "plugin \"C:\\Program Files (x86)\\OpenVPN\\config\\fix-dns-leak-32.dll\"{0}", 
+                                                                Environment.NewLine);
+
         public static void SavePassword(string password)
         {
             Settings settings = Settings.Get();

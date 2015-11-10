@@ -175,5 +175,42 @@ namespace P2PVpn.Utilities
             int ctrX = leftCtr.Bounds.Right + ctr.Margin.Left;
             ctr.SetBounds(ctrX, ctr.Bounds.Y, ctr.Bounds.Width, ctr.Bounds.Height);
         }
+
+        public enum MessageBoxType
+        {
+            Error,
+            Info,
+            Warning
+        }
+        public static void ShowMessageBox(string message, MessageBoxType type = MessageBoxType.Info, bool log = true)
+        {
+            string caption = "";
+            if (type != MessageBoxType.Info)
+            {
+                caption = type.ToString();
+            }
+            MessageBox.Show(message, caption, MessageBoxButtons.OK);
+            if (log)
+            {
+                Logging.Log(message);
+            }
+        }
+        public static void ShowMessageBoxYesNo(string message, string yesProcess, MessageBoxType type = MessageBoxType.Info)
+        {
+            string caption = "";
+            if (type != MessageBoxType.Info)
+            {
+                caption = type.ToString();
+            }
+            DialogResult result = MessageBox.Show(message, caption, MessageBoxButtons.YesNo);
+            if (result == DialogResult.Yes)
+            {
+                ControlHelpers.StartProcess(yesProcess,"");
+            }
+            //if (log)
+            //{
+            //    Logging.Log(message);
+            //}
+        }
     }
 }

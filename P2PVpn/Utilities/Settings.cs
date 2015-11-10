@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Newtonsoft.Json;
+using P2PVpn.Models;
 
 namespace P2PVpn.Utilities
 {
@@ -21,6 +22,10 @@ namespace P2PVpn.Utilities
         public const string DefaultOpenDNSSecondary = @"208.67.220.220";
         public const string DefaultComodoDNSPrimary = @"8.26.56.26";
         public const string DefaultComodoDNSSecondary = @"8.20.247.20";
+        public const string BlockedVpnBookProxyText = @"block.opendns";
+        public const string BrowserProxy = "127.0.0.1";
+        public const string ChromeExe = @"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe";
+        public const string ChromeWebRTCExtensionUrl = @"https://chrome.google.com/webstore/detail/webrtc-leak-prevent/eiadekoaikejlgdbkbdfeijglgfdalml?hl=en";
 
         //[DisplayName("OpenVPN Directory")]
         public string OpenVPNDirectory { get; set; }
@@ -29,9 +34,12 @@ namespace P2PVpn.Utilities
         public string VPNBookPassword { get; set; }
         public string PrimaryDNS { get; set; }
         public string SecondaryDNS { get; set; }
-        public bool ResetDNS { get; set; }
-
+        public bool DontResetDNS { get; set; }
+        public List<NetworkAdapterDns> StartupNetworkAdapterDns { get; set; }
         public Dictionary<string, string> OpenVPNConfigs { get; set; }
+        public bool EnableTorProxyForChrome { get; set; }
+
+
         private static Settings _settings;
         public static string AppDir = Application.UserAppDataPath;
 

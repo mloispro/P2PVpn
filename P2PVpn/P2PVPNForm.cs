@@ -15,6 +15,8 @@ using HtmlAgilityPack;
 using Fizzler.Systems.HtmlAgilityPack;
 using P2PVpn.Models;
 using P2PVpn.Utilities;
+//using com.LandonKey.SocksWebProxy;
+//using com.LandonKey.SocksWebProxy.Proxy;
 
 namespace P2PVpn
 {
@@ -144,18 +146,21 @@ namespace P2PVpn
                     bool setDns = false;
                     foreach (var adapter in _network.ActiveNetworkAdapters)
                     {
-                        //if (Networking.IsVPNAdapter(adapter)) continue;
+                        setDns = false;
+                        if (Networking.IsVPNAdapter(adapter)) continue;
 
                         //change Dns for added security
                         string name = adapter.Name;
-                        
-                        if (!string.IsNullOrWhiteSpace(primaryDnsIp) && primaryDnsIp != "0.0.0.0")
+
+                        if (!string.IsNullOrWhiteSpace(primaryDnsIp) && primaryDnsIp != "0.0.0.0" &&
+                            NetworkAdapter.OpenVpnAdapter != null && NetworkAdapter.OpenVpnAdapter.PrimaryDns != adapter.PrimaryDns)
                         {
                             string primaryDns = string.Format("interface IPv4 set dnsserver \"{0}\" static {1} both", name, primaryDnsIp);
                             ControlHelpers.StartProcess(@"netsh", primaryDns);
                             setDns = true;
                         }
-                        if (!string.IsNullOrWhiteSpace(secondaryDnsIp) && secondaryDnsIp != "0.0.0.0")
+                        if (!string.IsNullOrWhiteSpace(secondaryDnsIp) && secondaryDnsIp != "0.0.0.0" &&
+                            NetworkAdapter.OpenVpnAdapter != null && NetworkAdapter.OpenVpnAdapter.SecondaryDns != adapter.SecondaryDns)
                         {
                             string secondaryDns = string.Format("interface ipv4 add dnsserver \"{0}\" address={1} index=2", name, secondaryDnsIp);
                             ControlHelpers.StartProcess(@"netsh", secondaryDns);
@@ -190,19 +195,21 @@ namespace P2PVpn
             lbLog.Log("Closing OpenVpn...");
             ControlHelpers.StartProcess("taskkill", "/F /IM openvpn-gui.exe");
             ControlHelpers.StartProcess("taskkill", "/F /IM openvpn.exe");
+            _network.ResetNetworkInterfaces();
             lbLog.Log("Flushing DNS...");
             ControlHelpers.StartProcess(@"ipconfig.exe", @"/flushdns");
             ControlHelpers.StartProcess(@"ipconfig.exe", @"/registerdns");
             btnSaveApps_Click(null, null);
 
             //wait for dns flush
-            await ControlHelpers.Sleep(10000);
+            //await ControlHelpers.Sleep(10000);
             //_network.ClosePrograms();
             Networking.DisableDisconnect = true;
             _network.EnableAllNeworkInterfaces();
+            //
 
             //wait for network interfaces to reset
-            await ControlHelpers.Sleep(10000);
+            
             Logging.SetStatus("OpenVPN Disconnected", Logging.Colors.Red);
         }
 
@@ -215,9 +222,9 @@ namespace P2PVpn
             PopulateControls();
         }
 
-        private async void P2PVPNForm_FormClosing(object sender, FormClosingEventArgs e)
+        private void P2PVPNForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            await Disconnect();
+            Disconnect().Wait();
         }
 
         private void statusStrip_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
@@ -278,6 +285,12 @@ namespace P2PVpn
         {
             Settings settings = Settings.Get();
 
+            if (settings.OpenVPNConfigs == null || settings.OpenVPNConfigs.Count == 0)
+            {
+                ControlHelpers.ShowMessageBox("No OpenVpn Configs found.", ControlHelpers.MessageBoxType.Error);
+                return;
+            }
+
             cbOpenVPNConfig.Text = settings.OpenVPNConfig;
             cbOpenVPNConfig.SelectedText = settings.OpenVPNConfig;
             cbOpenVPNConfig.DataSource = new BindingSource(settings.OpenVPNConfigs, null);
@@ -334,10 +347,25 @@ namespace P2PVpn
         {
             try
             {
-                var web = new HtmlWeb();
-                var document = web.Load(Settings.DefaultVPNBookCredsPage);
+
+                WebClient wc = Networking.GetTorWebClient();
+
+                var doc = wc.DownloadString(Settings.DefaultVPNBookCredsPage);
+
+                HtmlAgilityPack.HtmlDocument document = new HtmlAgilityPack.HtmlDocument();
+                document.LoadHtml(doc);
+
+                //var web = new HtmlWeb();
+                
+                //var document = web.Load(Settings.DefaultVPNBookCredsPage);
                 var page = document.DocumentNode;
                
+                //check if blocked
+                if (page.InnerHtml.ToLower().Contains(Settings.BlockedVpnBookProxyText))
+                {
+                    ControlHelpers.ShowMessageBox("vpnbook.com blocked by your proxy settings", ControlHelpers.MessageBoxType.Error);
+                }
+
                 var ul = page.QuerySelector("ul.disc");
                 var liUsername = ul.ChildNodes.First(li => li.InnerText.ToLower().Contains("username"));
                 var username = liUsername.InnerText.TrimStart("Username:".ToCharArray()).Trim();
@@ -347,6 +375,11 @@ namespace P2PVpn
                 tbVPNPassword.Text = password;
                 tbVPNUsername_Leave(sender, e);
                 tbVPNPassword_Leave(sender, e);
+            }
+            catch (WebException ex)
+            {
+                string message = string.Format(@"{0}. proxy={1}{2}{2} Would you like to install Tor Browser? ", ex.Message, Settings.BrowserProxy, Environment.NewLine);
+                ControlHelpers.ShowMessageBoxYesNo(message,@"https://www.torproject.org/download/download-easy.html.en", ControlHelpers.MessageBoxType.Error);
             }
             catch (Exception ex)
             {
@@ -370,7 +403,7 @@ namespace P2PVpn
         private void cbResetOnDisconn_CheckedChanged(object sender, EventArgs e)
         {
             Settings settings = Settings.Get();
-            settings.ResetDNS = cbResetOnDisconn.Checked;
+            settings.DontResetDNS = cbDontResetOnDisconn.Checked;
             Settings.Save(settings);
         }
         private void rbGoogleDNS_CheckedChanged(object sender, EventArgs e)
@@ -420,7 +453,7 @@ namespace P2PVpn
             rbComodoDNS.CheckedChanged-=rbComodoDNS_CheckedChanged;
 
             Settings settings = Settings.Get();
-            cbResetOnDisconn.Checked = settings.ResetDNS;
+            cbDontResetOnDisconn.Checked = settings.DontResetDNS;
 
             rbGoogleDNS.Checked = false;
             rbComodoDNS.Checked = false;
@@ -445,6 +478,23 @@ namespace P2PVpn
             rbComodoDNS.CheckedChanged += rbComodoDNS_CheckedChanged;
         }
         #endregion Settings
+
+        private void cdTorProxyChrome_CheckedChanged(object sender, EventArgs e)
+        {
+            cdTorProxyChrome.CheckedChanged -= cdTorProxyChrome_CheckedChanged;
+
+            Settings settings = Settings.Get();
+            settings.EnableTorProxyForChrome = cdTorProxyChrome.Checked;
+            Settings.Save(settings);
+            Networking.SetTorProxyForChrome();
+
+            cdTorProxyChrome.CheckedChanged += cdTorProxyChrome_CheckedChanged;
+        }
+
+        private void lnkChromeIpLeak_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            ControlHelpers.StartProcess(Settings.ChromeWebRTCExtensionUrl,"");
+        }
 
     }
 }
