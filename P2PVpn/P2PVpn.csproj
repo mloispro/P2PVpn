@@ -123,6 +123,9 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="app.manifest" />
+    <None Include="Assets\Configuring qBittorrent_firewall_routes.docx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
     <None Include="Properties\DataSources\P2PVpn.Models.Apps.datasource" />
     <None Include="Properties\Settings.settings">
