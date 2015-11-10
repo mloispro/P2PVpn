@@ -36,7 +36,7 @@ namespace P2PVpn
             PopulateSettings();
             PopulateLaunchAppsGrid();
             PopulateControls();
-            
+            CopyAssets();
         }
 
         private async void NetworkListManager_NetworkConnectivityChanged(Guid networkId, NETWORKLIST.NLM_CONNECTIVITY newConnectivity)
@@ -226,7 +226,18 @@ namespace P2PVpn
         {
             Disconnect().Wait();
         }
+        private void CopyAssets()
+        {
+            Settings settings = Settings.Get();
+            var sourceDir = Directory.GetFiles(Settings.AppDir + @"\Assets");
+            var targetDir = Path.GetFullPath(settings.OpenVPNDirectory + @"\bin");
+            foreach (var file in sourceDir)
+            {
+                var filename = Path.GetFileName(file);
+                File.Copy(file, targetDir + @"\" + filename);
+            }
 
+        }
         private void statusStrip_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
             

@@ -17,7 +17,7 @@ namespace P2PVpn.Utilities
         public static void SavePassword(string password)
         {
             Settings settings = Settings.Get();
-            var binDir = Settings.AppDir;
+            var binDir = Settings.UserSettingsDir;
             var localCredsFile = binDir + @"\vpnbook-creds.txt";
             var openVpnCredsFile = settings.OpenVPNDirectory + @"\config\vpnbook-creds.txt";
 
@@ -56,7 +56,7 @@ namespace P2PVpn.Utilities
         public static void SaveUsername(string username)
         {
             Settings settings = Settings.Get();
-            var binDir = Settings.AppDir;
+            var binDir = Settings.UserSettingsDir;
             var localCredsFile = binDir + @"\vpnbook-creds.txt";
             var openVpnCredsFile = settings.OpenVPNDirectory + @"\config\vpnbook-creds.txt";
 
