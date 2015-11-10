@@ -36,7 +36,7 @@ namespace P2PVpn
             PopulateSettings();
             PopulateLaunchAppsGrid();
             PopulateControls();
-            CopyAssets();
+            
         }
 
         private async void NetworkListManager_NetworkConnectivityChanged(Guid networkId, NETWORKLIST.NLM_CONNECTIVITY newConnectivity)
@@ -127,6 +127,9 @@ namespace P2PVpn
                 ControlHelpers.StartProcess("taskkill", "/F /IM openvpn.exe");
                 
                 Thread.Sleep(5000);
+                CopyAssets();
+                OpenVPN.SecureConfigs();
+
                 _network.EnableAllNeworkInterfaces();
                 Networking.DisableDisconnect = true;
 
@@ -203,7 +206,7 @@ namespace P2PVpn
 
             //wait for dns flush
             //await ControlHelpers.Sleep(10000);
-            //_network.ClosePrograms();
+            _network.ClosePrograms();
             Networking.DisableDisconnect = true;
             _network.EnableAllNeworkInterfaces();
             //
@@ -234,7 +237,7 @@ namespace P2PVpn
             foreach (var file in sourceDir)
             {
                 var filename = Path.GetFileName(file);
-                File.Copy(file, targetDir + @"\" + filename);
+                File.Copy(file, targetDir + @"\" + filename, true);
             }
 
         }

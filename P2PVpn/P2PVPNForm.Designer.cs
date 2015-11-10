@@ -112,6 +112,12 @@
             // 
             // lblStatusColor
             // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(249, 127);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(291, 13);
+            this.label4.TabIndex = 7;
+            this.label4.Text = "TODO: secure ovpn, openvpn wait time, vpn ip on statusbar";
             this.lblStatusColor.BackColor = System.Drawing.Color.Yellow;
             this.lblStatusColor.Name = "lblStatusColor";
             this.lblStatusColor.Size = new System.Drawing.Size(16, 17);

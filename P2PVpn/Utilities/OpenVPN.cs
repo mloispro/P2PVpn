@@ -9,11 +9,23 @@ namespace P2PVpn.Utilities
 {
     public static class OpenVPN
     {
-        private static string _p2pVpnSettings = string.Format("#P2PVpn Settings#{0}" + 
-                                                                "auth-user-pass \"C:\\Program Files (x86)\\OpenVPN\\config\\vpnbook-creds.txt\"{0}" +
-                                                                "plugin \"C:\\Program Files (x86)\\OpenVPN\\config\\fix-dns-leak-32.dll\"{0}", 
-                                                                Environment.NewLine);
+        private static string _p2pVpnSettings = 
+            string.Format("{0}{0}#P2PVpn Settings#{0}" +
+                          "script-security 2{0}" +
+                          "auth-user-pass \"{1}\\\\config\\\\vpnbook-creds.txt\"{0}" +
+                          "plugin \"{1}\\\\bin\\\\fix-dns-leak-32.dll\"{0}",
+                            Environment.NewLine, GetOpenVpnDirectory());
 
+        private static string _openVPNDirectory;
+
+        public static string GetOpenVpnDirectory()
+        {
+            if (string.IsNullOrEmpty(_openVPNDirectory))
+            {
+                _openVPNDirectory = Settings.Get().OpenVPNDirectory.Replace(@"\", @"\\");
+            }
+            return _openVPNDirectory;
+        }
         public static void SavePassword(string password)
         {
             Settings settings = Settings.Get();
@@ -88,6 +100,31 @@ namespace P2PVpn.Utilities
                 File.Copy(localCredsFile, openVpnCredsFile, true);
             }
           
+        }
+        public static void SecureConfigs()
+        {
+            Settings settings = Settings.Get();
+
+            foreach (var file in settings.OpenVPNConfigs)
+            {
+                var configFile = Path.GetFullPath(file.Value);
+                var configFileText="";
+                using (var sw = new StreamReader(configFile))
+                {
+                    configFileText = sw.ReadToEnd();
+                }
+
+                var endToken = "</key>";
+                var endIndex = configFileText.LastIndexOf(endToken) + endToken.Length;
+                var cleanedConfigFileText = configFileText.Substring(0, endIndex);
+                var p2pVPNConfigFileText = cleanedConfigFileText + _p2pVpnSettings;
+
+                using (var sr = new StreamWriter(configFile))
+                {
+                    sr.Write(p2pVPNConfigFileText);
+                }
+                
+            }
         }
         
     }
