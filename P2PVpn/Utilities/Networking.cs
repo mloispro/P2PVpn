@@ -118,6 +118,7 @@ namespace P2PVpn.Utilities
                     }
                     if (setDns) _log.Log("Set DNS on {0} to {1}, {2}", adapter.Name, primaryDns, secondaryDns);
                 }
+                ControlHelpers.StartProcess(@"ipconfig.exe", @"/registerdns");
                 ControlHelpers.StartProcess(@"ipconfig.exe", @"/flushdns");
 
             }
@@ -139,6 +140,10 @@ namespace P2PVpn.Utilities
         private void SaveOriginalDnsSettings()
         {
             Settings settings = Settings.Get();
+            if (settings.StartupNetworkAdapterDns != null && settings.StartupNetworkAdapterDns.Count > 0)
+            {
+                return;
+            }
             settings.StartupNetworkAdapterDns = new List<NetworkAdapterDns>();
             foreach (var adapter in this.ActiveNetworkAdapters)
             {

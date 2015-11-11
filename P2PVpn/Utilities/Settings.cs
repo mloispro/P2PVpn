@@ -25,9 +25,12 @@ namespace P2PVpn.Utilities
         public const string BlockedVpnBookProxyText = @"block.opendns";
         public const string BrowserProxy = "127.0.0.1";
         public const string ChromeExe = @"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe";
+        public const string FirefoxExe = @"C:\Program Files (x86)\Mozilla Firefox\firefox.exe";
         public const string ChromeWebRTCExtensionUrl = @"https://chrome.google.com/webstore/detail/webrtc-leak-prevent/eiadekoaikejlgdbkbdfeijglgfdalml?hl=en";
         public static string UserSettingsDir = Application.UserAppDataPath;
         public static string AppDir = Application.StartupPath;
+        public const string ChromeKProxyExtensionUrl = @"https://chrome.google.com/webstore/detail/kproxy-extension/gdocgbfmddcfnlnpmnghmjicjognhonm";
+        public const string FirefoxKProxyExtensionUrl = @"https://addons.mozilla.org/es/firefox/addon/kproxy-extension/";
 
         //[DisplayName("OpenVPN Directory")]
         public string OpenVPNDirectory { get; set; }

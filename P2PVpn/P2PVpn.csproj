@@ -123,6 +123,10 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="app.manifest" />
+    <None Include="AppInstallers\cports\cports.chm" />
+    <None Include="AppInstallers\KProxy-Background-App_v1.8.crx" />
+    <None Include="AppInstallers\KProxy-Extension_v1.7.4.crx" />
+    <None Include="AppInstallers\kproxy_extension_for_firefox-1.2-fx-windows.xpi" />
     <None Include="Assets\Configuring qBittorrent_firewall_routes.docx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -142,6 +146,13 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="AppInstallers\ccsetup511.exe" />
+    <Content Include="AppInstallers\cports\cports.exe" />
+    <Content Include="AppInstallers\cports\readme.txt" />
+    <Content Include="AppInstallers\openvpn-install-2.3.8-I001-i686.exe" />
+    <Content Include="AppInstallers\PeerBlock-Setup_v1.2_r693.exe" />
+    <Content Include="AppInstallers\qbittorrent_3.2.5_setup.exe" />
+    <Content Include="AppInstallers\torbrowser-install-5.0.4_en-US.exe" />
     <Content Include="Assets\fix-dns-leak-32.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

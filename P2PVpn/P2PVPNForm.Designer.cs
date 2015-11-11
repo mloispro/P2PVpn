@@ -44,6 +44,8 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.tabSettings = new System.Windows.Forms.TabPage();
+            this.lnkChromeIpLeak = new System.Windows.Forms.LinkLabel();
+            this.cdTorProxyChrome = new System.Windows.Forms.CheckBox();
             this.tbSecondaryDNS = new IPAddressControlLib.IPAddressControl();
             this.tbPrimaryDNS = new IPAddressControlLib.IPAddressControl();
             this.panel1 = new System.Windows.Forms.Panel();
@@ -74,12 +76,15 @@
             this.lblVPNConnectionStatusLabel = new System.Windows.Forms.Label();
             this.btnConnect = new System.Windows.Forms.Button();
             this.tabs = new System.Windows.Forms.TabControl();
-            this.cdTorProxyChrome = new System.Windows.Forms.CheckBox();
-            this.lnkChromeIpLeak = new System.Windows.Forms.LinkLabel();
+            this.tabSecurity = new System.Windows.Forms.TabPage();
+            this.linkDownloadChromeKProxy = new System.Windows.Forms.LinkLabel();
+            this.linkDownloadKProxyforFirefox = new System.Windows.Forms.LinkLabel();
             this.launchDataGridViewCheckBoxColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.closeDataGridViewCheckBoxColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.programDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.appsBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.pnlRoutes = new System.Windows.Forms.Panel();
+            this.cbRouteSplit = new System.Windows.Forms.CheckBox();
             this.statusStrip.SuspendLayout();
             this.tabVPNTraffic.SuspendLayout();
             this.tabVPNBook.SuspendLayout();
@@ -89,7 +94,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgOpenApps)).BeginInit();
             this.tabConnection.SuspendLayout();
             this.tabs.SuspendLayout();
+            this.tabSecurity.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.appsBindingSource)).BeginInit();
+            this.pnlRoutes.SuspendLayout();
             this.SuspendLayout();
             // 
             // timerSpeed
@@ -112,12 +119,6 @@
             // 
             // lblStatusColor
             // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(249, 127);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(291, 13);
-            this.label4.TabIndex = 7;
-            this.label4.Text = "TODO: secure ovpn, openvpn wait time, vpn ip on statusbar";
             this.lblStatusColor.BackColor = System.Drawing.Color.Yellow;
             this.lblStatusColor.Name = "lblStatusColor";
             this.lblStatusColor.Size = new System.Drawing.Size(16, 17);
@@ -143,7 +144,7 @@
             this.tabVPNTraffic.Location = new System.Drawing.Point(4, 22);
             this.tabVPNTraffic.Name = "tabVPNTraffic";
             this.tabVPNTraffic.Padding = new System.Windows.Forms.Padding(3);
-            this.tabVPNTraffic.Size = new System.Drawing.Size(543, 239);
+            this.tabVPNTraffic.Size = new System.Drawing.Size(572, 273);
             this.tabVPNTraffic.TabIndex = 4;
             this.tabVPNTraffic.Text = "Log";
             this.tabVPNTraffic.UseVisualStyleBackColor = true;
@@ -174,7 +175,7 @@
             this.tabVPNBook.Location = new System.Drawing.Point(4, 22);
             this.tabVPNBook.Name = "tabVPNBook";
             this.tabVPNBook.Padding = new System.Windows.Forms.Padding(3);
-            this.tabVPNBook.Size = new System.Drawing.Size(543, 239);
+            this.tabVPNBook.Size = new System.Drawing.Size(572, 273);
             this.tabVPNBook.TabIndex = 5;
             this.tabVPNBook.Text = "VPN Book";
             this.tabVPNBook.UseVisualStyleBackColor = true;
@@ -242,10 +243,33 @@
             this.tabSettings.Location = new System.Drawing.Point(4, 22);
             this.tabSettings.Name = "tabSettings";
             this.tabSettings.Padding = new System.Windows.Forms.Padding(3);
-            this.tabSettings.Size = new System.Drawing.Size(543, 239);
+            this.tabSettings.Size = new System.Drawing.Size(572, 273);
             this.tabSettings.TabIndex = 3;
             this.tabSettings.Text = "Settings";
             this.tabSettings.UseVisualStyleBackColor = true;
+            // 
+            // lnkChromeIpLeak
+            // 
+            this.lnkChromeIpLeak.AutoSize = true;
+            this.lnkChromeIpLeak.Location = new System.Drawing.Point(115, 110);
+            this.lnkChromeIpLeak.Name = "lnkChromeIpLeak";
+            this.lnkChromeIpLeak.Size = new System.Drawing.Size(154, 13);
+            this.lnkChromeIpLeak.TabIndex = 23;
+            this.lnkChromeIpLeak.TabStop = true;
+            this.lnkChromeIpLeak.Text = "Get Chrome IP Leak Protection";
+            this.lnkChromeIpLeak.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lnkChromeIpLeak_LinkClicked);
+            // 
+            // cdTorProxyChrome
+            // 
+            this.cdTorProxyChrome.AutoSize = true;
+            this.cdTorProxyChrome.Enabled = false;
+            this.cdTorProxyChrome.Location = new System.Drawing.Point(115, 86);
+            this.cdTorProxyChrome.Name = "cdTorProxyChrome";
+            this.cdTorProxyChrome.Size = new System.Drawing.Size(161, 17);
+            this.cdTorProxyChrome.TabIndex = 22;
+            this.cdTorProxyChrome.Text = "EnableTor Proxy For Chrome";
+            this.cdTorProxyChrome.UseVisualStyleBackColor = true;
+            this.cdTorProxyChrome.CheckedChanged += new System.EventHandler(this.cdTorProxyChrome_CheckedChanged);
             // 
             // tbSecondaryDNS
             // 
@@ -423,7 +447,7 @@
             this.tabOpenApps.Location = new System.Drawing.Point(4, 22);
             this.tabOpenApps.Name = "tabOpenApps";
             this.tabOpenApps.Padding = new System.Windows.Forms.Padding(3, 3, 3, 40);
-            this.tabOpenApps.Size = new System.Drawing.Size(543, 239);
+            this.tabOpenApps.Size = new System.Drawing.Size(572, 273);
             this.tabOpenApps.TabIndex = 1;
             this.tabOpenApps.Text = "Open Apps";
             this.tabOpenApps.UseVisualStyleBackColor = true;
@@ -580,34 +604,47 @@
             this.tabs.Controls.Add(this.tabSettings);
             this.tabs.Controls.Add(this.tabVPNBook);
             this.tabs.Controls.Add(this.tabVPNTraffic);
+            this.tabs.Controls.Add(this.tabSecurity);
             this.tabs.Location = new System.Drawing.Point(12, 12);
             this.tabs.Name = "tabs";
             this.tabs.SelectedIndex = 0;
             this.tabs.Size = new System.Drawing.Size(580, 299);
             this.tabs.TabIndex = 0;
             // 
-            // cdTorProxyChrome
+            // tabSecurity
             // 
-            this.cdTorProxyChrome.AutoSize = true;
-            this.cdTorProxyChrome.Enabled = false;
-            this.cdTorProxyChrome.Location = new System.Drawing.Point(115, 86);
-            this.cdTorProxyChrome.Name = "cdTorProxyChrome";
-            this.cdTorProxyChrome.Size = new System.Drawing.Size(161, 17);
-            this.cdTorProxyChrome.TabIndex = 22;
-            this.cdTorProxyChrome.Text = "EnableTor Proxy For Chrome";
-            this.cdTorProxyChrome.UseVisualStyleBackColor = true;
-            this.cdTorProxyChrome.CheckedChanged += new System.EventHandler(this.cdTorProxyChrome_CheckedChanged);
+            this.tabSecurity.Controls.Add(this.pnlRoutes);
+            this.tabSecurity.Controls.Add(this.linkDownloadKProxyforFirefox);
+            this.tabSecurity.Controls.Add(this.linkDownloadChromeKProxy);
+            this.tabSecurity.Location = new System.Drawing.Point(4, 22);
+            this.tabSecurity.Name = "tabSecurity";
+            this.tabSecurity.Padding = new System.Windows.Forms.Padding(3);
+            this.tabSecurity.Size = new System.Drawing.Size(572, 273);
+            this.tabSecurity.TabIndex = 6;
+            this.tabSecurity.Text = "Security";
+            this.tabSecurity.UseVisualStyleBackColor = true;
             // 
-            // lnkChromeIpLeak
+            // linkDownloadChromeKProxy
             // 
-            this.lnkChromeIpLeak.AutoSize = true;
-            this.lnkChromeIpLeak.Location = new System.Drawing.Point(115, 110);
-            this.lnkChromeIpLeak.Name = "lnkChromeIpLeak";
-            this.lnkChromeIpLeak.Size = new System.Drawing.Size(154, 13);
-            this.lnkChromeIpLeak.TabIndex = 23;
-            this.lnkChromeIpLeak.TabStop = true;
-            this.lnkChromeIpLeak.Text = "Get Chrome IP Leak Protection";
-            this.lnkChromeIpLeak.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lnkChromeIpLeak_LinkClicked);
+            this.linkDownloadChromeKProxy.AutoSize = true;
+            this.linkDownloadChromeKProxy.Location = new System.Drawing.Point(7, 7);
+            this.linkDownloadChromeKProxy.Name = "linkDownloadChromeKProxy";
+            this.linkDownloadChromeKProxy.Size = new System.Drawing.Size(114, 13);
+            this.linkDownloadChromeKProxy.TabIndex = 0;
+            this.linkDownloadChromeKProxy.TabStop = true;
+            this.linkDownloadChromeKProxy.Text = "Get KProxy for Chrome";
+            this.linkDownloadChromeKProxy.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkDownloadChromeKProxy_LinkClicked);
+            // 
+            // linkDownloadKProxyforFirefox
+            // 
+            this.linkDownloadKProxyforFirefox.AutoSize = true;
+            this.linkDownloadKProxyforFirefox.Location = new System.Drawing.Point(7, 33);
+            this.linkDownloadKProxyforFirefox.Name = "linkDownloadKProxyforFirefox";
+            this.linkDownloadKProxyforFirefox.Size = new System.Drawing.Size(109, 13);
+            this.linkDownloadKProxyforFirefox.TabIndex = 1;
+            this.linkDownloadKProxyforFirefox.TabStop = true;
+            this.linkDownloadKProxyforFirefox.Text = "Get KProxy for Firefox";
+            this.linkDownloadKProxyforFirefox.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkDownloadKProxyforFirefox_LinkClicked);
             // 
             // launchDataGridViewCheckBoxColumn
             // 
@@ -636,6 +673,24 @@
             // 
             this.appsBindingSource.DataSource = typeof(P2PVpn.Models.Apps);
             // 
+            // pnlRoutes
+            // 
+            this.pnlRoutes.Controls.Add(this.cbRouteSplit);
+            this.pnlRoutes.Location = new System.Drawing.Point(70, 136);
+            this.pnlRoutes.Name = "pnlRoutes";
+            this.pnlRoutes.Size = new System.Drawing.Size(442, 100);
+            this.pnlRoutes.TabIndex = 2;
+            // 
+            // cbRouteSplit
+            // 
+            this.cbRouteSplit.AutoSize = true;
+            this.cbRouteSplit.Location = new System.Drawing.Point(4, 4);
+            this.cbRouteSplit.Name = "cbRouteSplit";
+            this.cbRouteSplit.Size = new System.Drawing.Size(316, 17);
+            this.cbRouteSplit.TabIndex = 0;
+            this.cbRouteSplit.Text = "Don\'t Route Internet Traffic Through VPN (Not Recomended)";
+            this.cbRouteSplit.UseVisualStyleBackColor = true;
+            // 
             // P2PVPNForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -661,7 +716,11 @@
             this.tabConnection.ResumeLayout(false);
             this.tabConnection.PerformLayout();
             this.tabs.ResumeLayout(false);
+            this.tabSecurity.ResumeLayout(false);
+            this.tabSecurity.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.appsBindingSource)).EndInit();
+            this.pnlRoutes.ResumeLayout(false);
+            this.pnlRoutes.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -719,6 +778,11 @@
         private System.Windows.Forms.TabControl tabs;
         private System.Windows.Forms.CheckBox cdTorProxyChrome;
         private System.Windows.Forms.LinkLabel lnkChromeIpLeak;
+        private System.Windows.Forms.TabPage tabSecurity;
+        private System.Windows.Forms.LinkLabel linkDownloadKProxyforFirefox;
+        private System.Windows.Forms.LinkLabel linkDownloadChromeKProxy;
+        private System.Windows.Forms.Panel pnlRoutes;
+        private System.Windows.Forms.CheckBox cbRouteSplit;
     }
 }
 

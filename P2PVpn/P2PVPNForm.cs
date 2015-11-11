@@ -128,7 +128,7 @@ namespace P2PVpn
                 
                 Thread.Sleep(5000);
                 CopyAssets();
-                OpenVPN.SecureConfigs();
+                OpenVPN.SecureConfigs(false);
 
                 _network.EnableAllNeworkInterfaces();
                 Networking.DisableDisconnect = true;
@@ -172,11 +172,15 @@ namespace P2PVpn
                         if (setDns) lbLog.Log("Set DNS on {0} to {1}, {2}", name, primaryDnsIp, secondaryDnsIp);
                         Logging.SetStatus("OpenVPN Connected", Logging.Colors.Green);
                     }
-                    if (setDns)
-                    {
+                    //if (setDns)
+                    //{
+                    //    ControlHelpers.StartProcess(@"ipconfig.exe", @"/flushdns");
+                    //    ControlHelpers.StartProcess(@"ipconfig.exe", @"/registerdns");
+                    //}
+                    
                         ControlHelpers.StartProcess(@"ipconfig.exe", @"/flushdns");
                         ControlHelpers.StartProcess(@"ipconfig.exe", @"/registerdns");
-                    }
+                    
                     
                     //Process.Start(@"ipconfig.exe", @"/flushdns").WaitForExit();
                     _network.OpenPrograms();
@@ -508,6 +512,22 @@ namespace P2PVpn
         private void lnkChromeIpLeak_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             ControlHelpers.StartProcess(Settings.ChromeWebRTCExtensionUrl,"");
+        }
+
+        private void linkDownloadChromeKProxy_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            //chrome.exe C:\extensions\example.crx –enable-easy-off-store-extension-install
+            //or -–enable-easy-off-store-extension-install
+            //chrome.exe google.com -incognito
+            string args = Settings.ChromeKProxyExtensionUrl; //+ " -incognito";
+            ControlHelpers.StartProcess(Settings.ChromeExe, args, false);
+        }
+
+        private void linkDownloadKProxyforFirefox_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            //firefox.exe -private-window URL
+            string args = "-private-window " + Settings.FirefoxKProxyExtensionUrl;
+            ControlHelpers.StartProcess(Settings.FirefoxExe, args, false);
         }
 
     }
