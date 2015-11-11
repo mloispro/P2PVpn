@@ -11,9 +11,13 @@ namespace P2PVpn.Utilities
     {
         private static string _p2pVpnSettings = 
             string.Format("{0}{0}#P2PVpn Settings#{0}" +
-                          "script-security 2{0}" +
-                          "auth-user-pass \"{1}\\\\config\\\\vpnbook-creds.txt\"{0}" +
-                          "plugin \"{1}\\\\bin\\\\fix-dns-leak-32.dll\"{0}",
+                            "script-security 2{0}" +
+                            "auth-user-pass \"{1}\\\\config\\\\vpnbook-creds.txt\"{0}" +
+                            "plugin \"{1}\\\\bin\\\\fix-dns-leak-32.dll\"{0}" +
+                            "route 0.0.0.0 192.0.0.0 net_gateway{0}" +
+                            "route 64.0.0.0 192.0.0.0 net_gateway{0}" +
+                            "route 128.0.0.0 192.0.0.0 net_gateway{0}" +
+                            "route 192.0.0.0 192.0.0.0 net_gateway",
                             Environment.NewLine, GetOpenVpnDirectory());
 
         private static string _openVPNDirectory;
