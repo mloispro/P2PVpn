@@ -124,9 +124,6 @@
     </EmbeddedResource>
     <None Include="app.manifest" />
     <None Include="AppInstallers\cports\cports.chm" />
-    <None Include="AppInstallers\KProxy-Background-App_v1.8.crx" />
-    <None Include="AppInstallers\KProxy-Extension_v1.7.4.crx" />
-    <None Include="AppInstallers\kproxy_extension_for_firefox-1.2-fx-windows.xpi" />
     <None Include="Assets\Configuring qBittorrent_firewall_routes.docx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
