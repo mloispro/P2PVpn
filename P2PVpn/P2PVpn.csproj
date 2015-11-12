@@ -93,6 +93,7 @@
   <ItemGroup>
     <Compile Include="Models\Apps.cs" />
     <Compile Include="Models\NetworkAdapter.cs" />
+    <Compile Include="Models\VPNServer.cs" />
     <Compile Include="Models\NetworkAdapterDns.cs" />
     <Compile Include="P2PVPNForm.cs">
       <SubType>Form</SubType>
@@ -154,10 +155,10 @@
     <Content Include="Assets\CurrPorts\readme.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\fix-dns-leak-32.dll">
+    <Content Include="Assets\OpenVPN\fix-dns-leak-32.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\fix-dns-leak-64.dll" />
+    <Content Include="Assets\OpenVPN\fix-dns-leak-64.dll" />
     <Content Include="Assets\icon.ico" />
     <Content Include="Assets\icon.png" />
     <Content Include="Assets\IPAddressControlLib.dll" />

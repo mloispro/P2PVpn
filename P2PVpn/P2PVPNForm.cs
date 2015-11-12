@@ -127,7 +127,7 @@ namespace P2PVpn
                 ControlHelpers.StartProcess("taskkill", "/F /IM openvpn.exe");
 
                 Thread.Sleep(5000);
-                CopyAssets();
+                CopyOpenVPNAssets();
                 OpenVPN.SecureConfigs(false);
 
                 _network.EnableAllNeworkInterfaces();
@@ -173,10 +173,10 @@ namespace P2PVpn
 
                         if (setDns)
                         {
-                            //route add 0.0.0.0 mask 192.0.0.0 %GATEWAY%
-                            //route add 64.0.0.0 mask 192.0.0.0 %GATEWAY%
-                            //route add 128.0.0.0 mask 192.0.0.0 %GATEWAY%
-                            //route add 192.0.0.0 mask 192.0.0.0 %GATEWAY%
+                            ControlHelpers.StartProcess("route", "add 0.0.0.0 mask 192.0.0.0 " + adapter.GatewayIP);
+                            ControlHelpers.StartProcess("route", "add 64.0.0.0 mask 192.0.0.0 " + adapter.GatewayIP);
+                            ControlHelpers.StartProcess("route", "add 128.0.0.0 mask 192.0.0.0 " + adapter.GatewayIP);
+                            ControlHelpers.StartProcess("route", "add 192.0.0.0 mask 192.0.0.0 " + adapter.GatewayIP);
                             lbLog.Log("Set DNS on {0} to {1}, {2}", name, primaryDnsIp, secondaryDnsIp);
                         }
 
@@ -221,7 +221,7 @@ namespace P2PVpn
 
             //wait for dns flush
             //await ControlHelpers.Sleep(10000);
-            await _network.ClosePrograms();
+            _network.ClosePrograms(); //**dont add await here it causes hang
             Networking.DisableDisconnect = true;
             _network.EnableAllNeworkInterfaces();
             //
@@ -244,10 +244,10 @@ namespace P2PVpn
         {
             Disconnect().Wait();
         }
-        private void CopyAssets()
+        private void CopyOpenVPNAssets()
         {
             Settings settings = Settings.Get();
-            var sourceDir = Directory.GetFiles(Settings.AppDir + @"\Assets");
+            var sourceDir = Directory.GetFiles(Settings.AppDir + @"\Assets\OpenVPN");
             var targetDir = Path.GetFullPath(settings.OpenVPNDirectory + @"\bin");
             foreach (var file in sourceDir)
             {
@@ -256,17 +256,17 @@ namespace P2PVpn
             }
 
         }
-        private void cdTorProxyChrome_CheckedChanged(object sender, EventArgs e)
-        {
-            cdTorProxyChrome.CheckedChanged -= cdTorProxyChrome_CheckedChanged;
+        //private void cdTorProxyChrome_CheckedChanged(object sender, EventArgs e)
+        //{
+        //    cdTorProxyChrome.CheckedChanged -= cdTorProxyChrome_CheckedChanged;
 
-            Settings settings = Settings.Get();
-            settings.EnableTorProxyForChrome = cdTorProxyChrome.Checked;
-            Settings.Save(settings);
-            Networking.SetTorProxyForChrome();
+        //    Settings settings = Settings.Get();
+        //    settings.EnableTorProxyForChrome = cdTorProxyChrome.Checked;
+        //    Settings.Save(settings);
+        //    Networking.SetTorProxyForChrome();
 
-            cdTorProxyChrome.CheckedChanged += cdTorProxyChrome_CheckedChanged;
-        }
+        //    cdTorProxyChrome.CheckedChanged += cdTorProxyChrome_CheckedChanged;
+        //}
         private void statusStrip_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
 
@@ -319,7 +319,7 @@ namespace P2PVpn
             btnOpenVpnDirDefault.MoveRightOf(btnBrowseForOpenVpn);
             PopulateVPNConfigs();
             PopulateTextBoxes();
-            SetRadioButton();
+            SetRadioButtons();
         }
         private void PopulateVPNConfigs()
         {
@@ -331,12 +331,12 @@ namespace P2PVpn
                 return;
             }
 
-            cbOpenVPNConfig.Text = settings.OpenVPNConfig;
-            cbOpenVPNConfig.SelectedText = settings.OpenVPNConfig;
-            cbOpenVPNConfig.DataSource = new BindingSource(settings.OpenVPNConfigs, null);
-            cbOpenVPNConfig.DisplayMember = "Key";
-            cbOpenVPNConfig.ValueMember = "Value";
-            cbOpenVPNConfig.Text = settings.OpenVPNConfig;
+            cbVPNBookOpenVPNConfig.Text = settings.OpenVPNConfig;
+            cbVPNBookOpenVPNConfig.SelectedText = settings.OpenVPNConfig;
+            cbVPNBookOpenVPNConfig.DataSource = new BindingSource(settings.OpenVPNConfigs, null);
+            cbVPNBookOpenVPNConfig.DisplayMember = "Key";
+            cbVPNBookOpenVPNConfig.ValueMember = "Value";
+            cbVPNBookOpenVPNConfig.Text = settings.OpenVPNConfig;
 
 
         }
@@ -350,6 +350,55 @@ namespace P2PVpn
             tbVPNUsername.Text = settings.VPNBookUsername;
 
 
+        }
+        private void SetRadioButtons()
+        {
+            rbGoogleDNS.CheckedChanged -= rbGoogleDNS_CheckedChanged;
+            rbOpenDNS.CheckedChanged -= rbOpenDNS_CheckedChanged;
+            rbComodoDNS.CheckedChanged -= rbComodoDNS_CheckedChanged;
+            //cbRouteSplit.CheckedChanged -= cbRouteSplit_CheckedChanged;
+            cbRetrieveVPNBookCredsOnLoad.CheckedChanged -= cbRetrieveVPNBookCredsOnLoad_CheckedChanged;
+
+            Settings settings = Settings.Get();
+            cbDontResetOnDisconn.Checked = settings.DontResetDNS;
+
+            rbGoogleDNS.Checked = false;
+            rbComodoDNS.Checked = false;
+            rbOpenDNS.Checked = false;
+            if (settings.PrimaryDNS == Settings.DefaultGoogleDNSPrimary &&
+                settings.SecondaryDNS == Settings.DefaultGoogleDNSSecondary)
+            {
+                rbGoogleDNS.Checked = true;
+            }
+            else if (settings.PrimaryDNS == Settings.DefaultComodoDNSPrimary &&
+               settings.SecondaryDNS == Settings.DefaultComodoDNSSecondary)
+            {
+                rbComodoDNS.Checked = true;
+            }
+            else if (settings.PrimaryDNS == Settings.DefaultOpenDNSPrimary &&
+               settings.SecondaryDNS == Settings.DefaultOpenDNSSecondary)
+            {
+                rbOpenDNS.Checked = true;
+            }
+            cbRouteSplit.Checked = settings.SplitRoute;
+
+            rbVPNBook.Checked = settings.VPNServer.VPNBook;
+            cbRetrieveVPNBookCredsOnLoad.Checked = settings.RetrieveVPNBookCredsOnLoad;
+            cbRetrieveVPNBookCredsOnLoad.Enabled = settings.VPNServer.VPNBook;
+            if (settings.VPNServer.VPNBook)
+            {
+                lblVPNConnectionStatusLabel.Text = "VPN Book Connection:";
+                if (settings.RetrieveVPNBookCredsOnLoad)
+                {
+                    btnVPNBookUser_Click(null, null);
+                }
+            }
+
+            rbGoogleDNS.CheckedChanged += rbGoogleDNS_CheckedChanged;
+            rbOpenDNS.CheckedChanged += rbOpenDNS_CheckedChanged;
+            rbComodoDNS.CheckedChanged += rbComodoDNS_CheckedChanged;
+            cbRetrieveVPNBookCredsOnLoad.CheckedChanged += cbRetrieveVPNBookCredsOnLoad_CheckedChanged;
+            //cbRouteSplit.CheckedChanged += cbRouteSplit_CheckedChanged;
         }
         private void btnBrowseForOpenVpn_Click(object sender, EventArgs e)
         {
@@ -379,7 +428,7 @@ namespace P2PVpn
         private void cbOpenVPNConfig_SelectionChangeCommitted(object sender, EventArgs e)
         {
             Settings settings = Settings.Get();
-            var selected = ((KeyValuePair<string, string>)cbOpenVPNConfig.SelectedItem).Key;
+            var selected = ((KeyValuePair<string, string>)cbVPNBookOpenVPNConfig.SelectedItem).Key;
             settings.OpenVPNConfig = selected;
             Settings.Save(settings);
         }
@@ -440,6 +489,31 @@ namespace P2PVpn
             Settings.Save(settings);
             OpenVPN.SavePassword(settings.VPNBookPassword);
         }
+        private void cbRouteSplit_CheckedChanged(object sender, EventArgs e)
+        {
+            Settings settings = Settings.Get();
+            settings.SplitRoute = cbRouteSplit.Checked;
+            pnlDns.Enabled = settings.SplitRoute;
+            Settings.Save(settings);
+        }
+        private void rbVPNBook_CheckedChanged(object sender, EventArgs e)
+        {
+            Settings settings = Settings.Get();
+
+            settings.VPNServer.VPNBook = rbVPNBook.Checked;
+
+            Settings.Save(settings);
+
+            SetRadioButtons();
+            //cbRetrieveVPNBookCredsOnLoad_CheckedChanged(sender, e);
+        }
+        private void cbRetrieveVPNBookCredsOnLoad_CheckedChanged(object sender, EventArgs e)
+        {
+            Settings settings = Settings.Get();
+            settings.RetrieveVPNBookCredsOnLoad = cbRetrieveVPNBookCredsOnLoad.Checked;
+            Settings.Save(settings);
+        }
+        #region DNS Settings
         private void cbResetOnDisconn_CheckedChanged(object sender, EventArgs e)
         {
             Settings settings = Settings.Get();
@@ -475,7 +549,7 @@ namespace P2PVpn
             IPAddress ipAddress = new IPAddress(tbPrimaryDNS.GetAddressBytes());
             settings.PrimaryDNS = ipAddress.ToString();
             Settings.Save(settings);
-            SetRadioButton();
+            SetRadioButtons();
         }
 
         private void tbSecondaryDNS_Leave(object sender, EventArgs e)
@@ -484,39 +558,11 @@ namespace P2PVpn
             IPAddress ipAddress = new IPAddress(tbSecondaryDNS.GetAddressBytes());
             settings.SecondaryDNS = ipAddress.ToString();
             Settings.Save(settings);
-            SetRadioButton();
+            SetRadioButtons();
         }
-        private void SetRadioButton()
-        {
-            rbGoogleDNS.CheckedChanged -= rbGoogleDNS_CheckedChanged;
-            rbOpenDNS.CheckedChanged -= rbOpenDNS_CheckedChanged;
-            rbComodoDNS.CheckedChanged -= rbComodoDNS_CheckedChanged;
+        #endregion DNS Settings
 
-            Settings settings = Settings.Get();
-            cbDontResetOnDisconn.Checked = settings.DontResetDNS;
-
-            rbGoogleDNS.Checked = false;
-            rbComodoDNS.Checked = false;
-            rbOpenDNS.Checked = false;
-            if (settings.PrimaryDNS == Settings.DefaultGoogleDNSPrimary &&
-                settings.SecondaryDNS == Settings.DefaultGoogleDNSSecondary)
-            {
-                rbGoogleDNS.Checked = true;
-            }
-            else if (settings.PrimaryDNS == Settings.DefaultComodoDNSPrimary &&
-               settings.SecondaryDNS == Settings.DefaultComodoDNSSecondary)
-            {
-                rbComodoDNS.Checked = true;
-            }
-            else if (settings.PrimaryDNS == Settings.DefaultOpenDNSPrimary &&
-               settings.SecondaryDNS == Settings.DefaultOpenDNSSecondary)
-            {
-                rbOpenDNS.Checked = true;
-            }
-            rbGoogleDNS.CheckedChanged += rbGoogleDNS_CheckedChanged;
-            rbOpenDNS.CheckedChanged += rbOpenDNS_CheckedChanged;
-            rbComodoDNS.CheckedChanged += rbComodoDNS_CheckedChanged;
-        }
+      
         #endregion Settings
 
 
@@ -560,6 +606,12 @@ namespace P2PVpn
         {
             ControlHelpers.StartProcess(Settings.IPLeakUrl, "", false);
         }
+
+     
+
+       
+
+        
 
         //private void linkDownloadChromeKProxy_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         //{

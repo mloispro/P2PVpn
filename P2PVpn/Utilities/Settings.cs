@@ -50,13 +50,12 @@ namespace P2PVpn.Utilities
         public List<NetworkAdapterDns> StartupNetworkAdapterDns { get; set; }
         public Dictionary<string, string> OpenVPNConfigs { get; set; }
         public bool EnableTorProxyForChrome { get; set; }
-
+        public VPNServer VPNServer { get; set; }
+        public bool RetrieveVPNBookCredsOnLoad { get; set; }
+        public bool SplitRoute { get; set; }
 
         private static Settings _settings;
         
-        
-        
-
         public static Settings Get()
         {
             // Create a file that the application will store user specific data in.
@@ -71,6 +70,12 @@ namespace P2PVpn.Utilities
             {
                 _settings.OpenVPNDirectory = DefaultOpenVPNDirectory;
             }
+            if (_settings.VPNServer == null)
+            {
+                _settings.VPNServer = new VPNServer() { VPNBook = true };
+                _settings.RetrieveVPNBookCredsOnLoad = true;
+            }
+
             return _settings;
         }
         private static void FillOPNVPNConfigs()

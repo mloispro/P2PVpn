@@ -116,7 +116,15 @@ namespace P2PVpn.Utilities
                         ControlHelpers.StartProcess(@"netsh", primaryDns);
                         ControlHelpers.StartProcess(@"netsh", secondaryDns);
                     }
-                    if (setDns) _log.Log("Set DNS on {0} to {1}, {2}", adapter.Name, primaryDns, secondaryDns);
+                    if (setDns)
+                    {
+                        ControlHelpers.StartProcess("route", "delete 0.0.0.0 mask 192.0.0.0 " + adapter.GatewayIP);
+                        ControlHelpers.StartProcess("route", "delete 64.0.0.0 mask 192.0.0.0 " + adapter.GatewayIP);
+                        ControlHelpers.StartProcess("route", "delete 128.0.0.0 mask 192.0.0.0 " + adapter.GatewayIP);
+                        ControlHelpers.StartProcess("route", "delete 192.0.0.0 mask 192.0.0.0 " + adapter.GatewayIP);
+
+                        _log.Log("Set DNS on {0} to {1}, {2}", adapter.Name, primaryDns, secondaryDns);
+                    }
                 }
                 ControlHelpers.StartProcess(@"ipconfig.exe", @"/registerdns");
                 ControlHelpers.StartProcess(@"ipconfig.exe", @"/flushdns");
