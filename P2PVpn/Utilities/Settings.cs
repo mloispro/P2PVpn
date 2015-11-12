@@ -30,8 +30,15 @@ namespace P2PVpn.Utilities
         public static string UserSettingsDir = Application.UserAppDataPath;
         public static string AppDir = Application.StartupPath;
         public const string ChromeKProxyExtensionUrl = @"https://chrome.google.com/webstore/detail/kproxy-extension/gdocgbfmddcfnlnpmnghmjicjognhonm";
+        public const string IPLeakUrl = @"http://www.ipleak.net";
+        public const string OpenVPNDownloadUrl = @"https://openvpn.net/index.php/open-source/downloads.html";
         public const string FirefoxKProxyExtensionUrl = @"https://addons.mozilla.org/es/firefox/addon/kproxy-extension/";
-
+        public const string TorBrowserDownloadUrl = @"https://www.torproject.org/download/download-easy.html.en";
+        public const string PeerBlockDownloadUrl = @"http://www.peerblock.com/releases";
+        public const string CCCleanerDownloadUrl = @"https://www.piriform.com/ccleaner/download";
+        public const string QBittorrentUrl = @"http://www.qbittorrent.org/download.php";
+        public static string CPortsDownloadUrl = @"http://www.nirsoft.net/utils/cports.html";
+        
         //[DisplayName("OpenVPN Directory")]
         public string OpenVPNDirectory { get; set; }
         public string OpenVPNConfig { get; set; }
@@ -46,6 +53,8 @@ namespace P2PVpn.Utilities
 
 
         private static Settings _settings;
+        
+        
         
 
         public static Settings Get()

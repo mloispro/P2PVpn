@@ -28,7 +28,7 @@ namespace P2PVpn
         public P2PVPNForm()
         {
             InitializeComponent();
-            
+
             Logging.Init(lbLog, statusStrip, lblStatusText, lblStatusColor);
             _network = new Networking(lbLog);
             _network.NetworkListManager.NetworkConnectivityChanged += NetworkListManager_NetworkConnectivityChanged;
@@ -36,7 +36,7 @@ namespace P2PVpn
             PopulateSettings();
             PopulateLaunchAppsGrid();
             PopulateControls();
-            
+
         }
 
         private async void NetworkListManager_NetworkConnectivityChanged(Guid networkId, NETWORKLIST.NLM_CONNECTIVITY newConnectivity)
@@ -62,12 +62,12 @@ namespace P2PVpn
                 if (Networking.IsVPNAdapter(adapter))
                 {
                     vpnFound = true;
-                    lblVPNConnectionStatus.SetLabelText(string.Format("{0} {1} {2}bytes sent: {3}k  bytes received: {4}k  speed: {5}k{2}", 
+                    lblVPNConnectionStatus.SetLabelText(string.Format("{0} {1} {2}bytes sent: {3}k  bytes received: {4}k  speed: {5}k{2}",
                         adapter.Description, adapter.ConnectivityString, Environment.NewLine, adapter.BytesSent, adapter.BytesReceived, adapter.Speed));
                 }
                 else
                 {
-                    connections += string.Format("{0} {1} {2}bytes sent: {3}k  bytes received: {4}k  speed: {5}k{2}", 
+                    connections += string.Format("{0} {1} {2}bytes sent: {3}k  bytes received: {4}k  speed: {5}k{2}",
                         adapter.Description, adapter.ConnectivityString, Environment.NewLine, adapter.BytesSent, adapter.BytesReceived, adapter.Speed);
                     lblConnectionStatus.SetLabelText(connections);
                 }
@@ -76,7 +76,7 @@ namespace P2PVpn
                     lblVPNConnectionStatus.SetLabelText("Disconnected");
                 }
             }
-            
+
 
             if (_network.IsOpenVPNConnected())
             {
@@ -90,7 +90,7 @@ namespace P2PVpn
             }
             var apps = Apps.Get();
             string runningApps = "";
-            foreach(var app in apps)
+            foreach (var app in apps)
             {
                 var name = Path.GetFileNameWithoutExtension(app.Program);
                 var procs = Process.GetProcessesByName(name);
@@ -102,13 +102,13 @@ namespace P2PVpn
             if (string.IsNullOrEmpty(runningApps))
             {
                 runningApps = "None.";
-            } 
+            }
             ControlHelpers.SetLabelText(lblRunningApps, runningApps);
-            
+
         }
         private async void btnConnect_Click(object sender, EventArgs e)
         {
-            
+
             this.EnableForm(false);
 
             if (_network.IsOpenVPNConnected())
@@ -125,7 +125,7 @@ namespace P2PVpn
                 //not connected to vpn, so connect
                 ControlHelpers.StartProcess("taskkill", "/F /IM openvpn-gui.exe");
                 ControlHelpers.StartProcess("taskkill", "/F /IM openvpn.exe");
-                
+
                 Thread.Sleep(5000);
                 CopyAssets();
                 OpenVPN.SecureConfigs(false);
@@ -138,9 +138,9 @@ namespace P2PVpn
                 var openVPN = settings.OpenVPNDirectory + @"\bin\openvpn-gui.exe";
                 var openVPNargs = "--connect " + settings.OpenVPNConfig;
                 ControlHelpers.StartProcess(openVPN, openVPNargs, true, 25);
-                
+
                 //Thread.Sleep(25000);
-                
+
                 _network.ScanNetworkInterfaces();
                 if (_network.IsOpenVPNConnected())
                 {
@@ -177,11 +177,11 @@ namespace P2PVpn
                     //    ControlHelpers.StartProcess(@"ipconfig.exe", @"/flushdns");
                     //    ControlHelpers.StartProcess(@"ipconfig.exe", @"/registerdns");
                     //}
-                    
-                        ControlHelpers.StartProcess(@"ipconfig.exe", @"/flushdns");
-                        ControlHelpers.StartProcess(@"ipconfig.exe", @"/registerdns");
-                    
-                    
+
+                    ControlHelpers.StartProcess(@"ipconfig.exe", @"/flushdns");
+                    ControlHelpers.StartProcess(@"ipconfig.exe", @"/registerdns");
+
+
                     //Process.Start(@"ipconfig.exe", @"/flushdns").WaitForExit();
                     _network.OpenPrograms();
                 }
@@ -189,7 +189,7 @@ namespace P2PVpn
                 //Networking.DisableDisconnect = false;
             }
             this.EnableForm();
-            
+
             PopulateControls();
             await ControlHelpers.Sleep(10000);
             //Thread.Sleep(20000);
@@ -216,7 +216,7 @@ namespace P2PVpn
             //
 
             //wait for network interfaces to reset
-            
+
             Logging.SetStatus("OpenVPN Disconnected", Logging.Colors.Red);
         }
 
@@ -224,7 +224,7 @@ namespace P2PVpn
 
         private void timerSpeed_Tick(object sender, EventArgs e)
         {
-            
+
             _network.ScanNetworkInterfaces();
             PopulateControls();
         }
@@ -245,9 +245,20 @@ namespace P2PVpn
             }
 
         }
+        private void cdTorProxyChrome_CheckedChanged(object sender, EventArgs e)
+        {
+            cdTorProxyChrome.CheckedChanged -= cdTorProxyChrome_CheckedChanged;
+
+            Settings settings = Settings.Get();
+            settings.EnableTorProxyForChrome = cdTorProxyChrome.Checked;
+            Settings.Save(settings);
+            Networking.SetTorProxyForChrome();
+
+            cdTorProxyChrome.CheckedChanged += cdTorProxyChrome_CheckedChanged;
+        }
         private void statusStrip_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
-            
+
         }
 
         #region Apps
@@ -264,7 +275,7 @@ namespace P2PVpn
         }
         private void btnSaveApps_Click(object sender, EventArgs e)
         {
-          
+
             this.appsBindingSource.EndEdit();
             List<Apps> apps = this.appsBindingSource.DataSource as List<Apps>;
             Apps.Save(apps);
@@ -315,8 +326,8 @@ namespace P2PVpn
             cbOpenVPNConfig.DisplayMember = "Key";
             cbOpenVPNConfig.ValueMember = "Value";
             cbOpenVPNConfig.Text = settings.OpenVPNConfig;
-            
-            
+
+
         }
         private void PopulateTextBoxes()
         {
@@ -350,7 +361,7 @@ namespace P2PVpn
         }
         private void hlVPNBookConfigDownload_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            ControlHelpers.StartProcess(Settings.DefaultVPNBookConfigDownload,"");
+            ControlHelpers.StartProcess(Settings.DefaultVPNBookConfigDownload, "");
         }
 
 
@@ -374,10 +385,10 @@ namespace P2PVpn
                 document.LoadHtml(doc);
 
                 //var web = new HtmlWeb();
-                
+
                 //var document = web.Load(Settings.DefaultVPNBookCredsPage);
                 var page = document.DocumentNode;
-               
+
                 //check if blocked
                 if (page.InnerHtml.ToLower().Contains(Settings.BlockedVpnBookProxyText))
                 {
@@ -397,7 +408,7 @@ namespace P2PVpn
             catch (WebException ex)
             {
                 string message = string.Format(@"{0}. proxy={1}{2}{2} Would you like to install Tor Browser? ", ex.Message, Settings.BrowserProxy, Environment.NewLine);
-                ControlHelpers.ShowMessageBoxYesNo(message,@"https://www.torproject.org/download/download-easy.html.en", ControlHelpers.MessageBoxType.Error);
+                ControlHelpers.ShowMessageBoxYesNo(message, @"https://www.torproject.org/download/download-easy.html.en", ControlHelpers.MessageBoxType.Error);
             }
             catch (Exception ex)
             {
@@ -466,9 +477,9 @@ namespace P2PVpn
         }
         private void SetRadioButton()
         {
-            rbGoogleDNS.CheckedChanged-=rbGoogleDNS_CheckedChanged;
-            rbOpenDNS.CheckedChanged-=rbOpenDNS_CheckedChanged;
-            rbComodoDNS.CheckedChanged-=rbComodoDNS_CheckedChanged;
+            rbGoogleDNS.CheckedChanged -= rbGoogleDNS_CheckedChanged;
+            rbOpenDNS.CheckedChanged -= rbOpenDNS_CheckedChanged;
+            rbComodoDNS.CheckedChanged -= rbComodoDNS_CheckedChanged;
 
             Settings settings = Settings.Get();
             cbDontResetOnDisconn.Checked = settings.DontResetDNS;
@@ -497,38 +508,63 @@ namespace P2PVpn
         }
         #endregion Settings
 
-        private void cdTorProxyChrome_CheckedChanged(object sender, EventArgs e)
-        {
-            cdTorProxyChrome.CheckedChanged -= cdTorProxyChrome_CheckedChanged;
 
-            Settings settings = Settings.Get();
-            settings.EnableTorProxyForChrome = cdTorProxyChrome.Checked;
-            Settings.Save(settings);
-            Networking.SetTorProxyForChrome();
-
-            cdTorProxyChrome.CheckedChanged += cdTorProxyChrome_CheckedChanged;
-        }
-
+        #region Links
         private void lnkChromeIpLeak_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            ControlHelpers.StartProcess(Settings.ChromeWebRTCExtensionUrl,"");
+            ControlHelpers.StartProcess(Settings.ChromeWebRTCExtensionUrl, "");
         }
 
-        private void linkDownloadChromeKProxy_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        private void linkGetTorBrowser_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            //chrome.exe C:\extensions\example.crx –enable-easy-off-store-extension-install
-            //or -–enable-easy-off-store-extension-install
-            //chrome.exe google.com -incognito
-            string args = Settings.ChromeKProxyExtensionUrl; //+ " -incognito";
-            ControlHelpers.StartProcess(Settings.ChromeExe, args, false);
+            ControlHelpers.StartProcess(Settings.TorBrowserDownloadUrl, "", false);
         }
 
-        private void linkDownloadKProxyforFirefox_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        private void linkDownloadPeerBlock_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            //firefox.exe -private-window URL
-            string args = "-private-window " + Settings.FirefoxKProxyExtensionUrl;
-            ControlHelpers.StartProcess(Settings.FirefoxExe, args, false);
+            ControlHelpers.StartProcess(Settings.PeerBlockDownloadUrl, "", false);
         }
 
+        private void linkDownloadOpenVPN_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            ControlHelpers.StartProcess(Settings.OpenVPNDownloadUrl, "", false);
+        }
+
+        private void linkDownloadCCCleaner_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            ControlHelpers.StartProcess(Settings.CCCleanerDownloadUrl, "", false);
+        }
+
+        private void linkDownloadCPorts_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            ControlHelpers.StartProcess(Settings.CPortsDownloadUrl, "", false);
+        }
+
+        private void linkDownloadqBittorrent_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            ControlHelpers.StartProcess(Settings.QBittorrentUrl, "", false);
+        }
+
+        private void linkIPLeak_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            ControlHelpers.StartProcess(Settings.IPLeakUrl, "", false);
+        }
+
+        //private void linkDownloadChromeKProxy_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        //{
+        //    //chrome.exe C:\extensions\example.crx –enable-easy-off-store-extension-install
+        //    //or -–enable-easy-off-store-extension-install
+        //    //chrome.exe google.com -incognito
+        //    string args = Settings.ChromeKProxyExtensionUrl; //+ " -incognito";
+        //    ControlHelpers.StartProcess(Settings.ChromeExe, args, false);
+        //}
+
+        //private void linkDownloadKProxyforFirefox_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        //{
+        //    //firefox.exe -private-window URL
+        //    string args = "-private-window " + Settings.FirefoxKProxyExtensionUrl;
+        //    ControlHelpers.StartProcess(Settings.FirefoxExe, args, false);
+        //}
+        #endregion Links
     }
 }
