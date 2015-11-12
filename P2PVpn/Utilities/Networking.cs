@@ -226,7 +226,6 @@ namespace P2PVpn.Utilities
             var adapters = new List<NetworkAdapter>();
             foreach (NetworkInterface nic in activeNics)
             {
-
                 var adapter = new NetworkAdapter
                 {
                     Description = nic.Description,
@@ -238,7 +237,10 @@ namespace P2PVpn.Utilities
                     BytesReceived = nic.GetIPStatistics().BytesReceived / 1024,
                     Id = new Guid(nic.Id)
                 };
-
+                if (nic.GetIPProperties().GatewayAddresses != null && nic.GetIPProperties().GatewayAddresses.Count > 0)
+                {
+                    adapter.GatewayIP = nic.GetIPProperties().GatewayAddresses.First().Address.ToString();
+                }
                 if (nic.GetIPProperties().DnsAddresses.Count > 1)
                 {
                     adapter.SecondaryDns = nic.GetIPProperties().DnsAddresses[1].ToString();

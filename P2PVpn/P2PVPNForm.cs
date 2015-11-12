@@ -169,13 +169,24 @@ namespace P2PVpn
                             ControlHelpers.StartProcess(@"netsh", secondaryDns);
                             setDns = true;
                         }
-                        if (setDns) lbLog.Log("Set DNS on {0} to {1}, {2}", name, primaryDnsIp, secondaryDnsIp);
+
+
+                        if (setDns)
+                        {
+                            //route add 0.0.0.0 mask 192.0.0.0 %GATEWAY%
+                            //route add 64.0.0.0 mask 192.0.0.0 %GATEWAY%
+                            //route add 128.0.0.0 mask 192.0.0.0 %GATEWAY%
+                            //route add 192.0.0.0 mask 192.0.0.0 %GATEWAY%
+                            lbLog.Log("Set DNS on {0} to {1}, {2}", name, primaryDnsIp, secondaryDnsIp);
+                        }
+
                         Logging.SetStatus("OpenVPN Connected", Logging.Colors.Green);
                     }
                     //if (setDns)
                     //{
-                    //    ControlHelpers.StartProcess(@"ipconfig.exe", @"/flushdns");
-                    //    ControlHelpers.StartProcess(@"ipconfig.exe", @"/registerdns");
+
+                    //    //ControlHelpers.StartProcess(@"ipconfig.exe", @"/flushdns");
+                    //    //ControlHelpers.StartProcess(@"ipconfig.exe", @"/registerdns");
                     //}
 
                     ControlHelpers.StartProcess(@"ipconfig.exe", @"/flushdns");
@@ -210,7 +221,7 @@ namespace P2PVpn
 
             //wait for dns flush
             //await ControlHelpers.Sleep(10000);
-            _network.ClosePrograms();
+            await _network.ClosePrograms();
             Networking.DisableDisconnect = true;
             _network.EnableAllNeworkInterfaces();
             //
