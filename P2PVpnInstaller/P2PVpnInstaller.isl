@@ -225,6 +225,7 @@
 	<table name="AppSearch">
 		<col key="yes" def="s72">Property</col>
 		<col key="yes" def="s72">Signature_</col>
+		<row><td>DOTNETVERSION40FULL</td><td>DotNet40Full</td></row>
 		<row><td>DOTNETVERSION45FULL</td><td>DotNet45Full</td></row>
 		<row><td>OPENVPN_GUI</td><td>NewSignature11</td></row>
 		<row><td>OPENVPN_GUIE</td><td>NewSignature1</td></row>
@@ -343,8 +344,14 @@
 		<col def="S0">ISDotNetInstallerArgsUninstall</col>
 		<col def="S0">ISDotNetInstallerArgsRollback</col>
 		<row><td>HtmlAgilityPack.dll</td><td>{B2FADD47-AC06-4852-A4DE-4E4BA880ED13}</td><td>INSTALLDIR</td><td>2</td><td/><td>htmlagilitypack.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT1</td><td>{AD086921-F83F-4F58-B330-A69F7ECDF2BB}</td><td>ASSETS</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT2</td><td>{D4594E9A-4952-43BA-8C3C-B1DEE8388181}</td><td>CURRPORTS1</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT3</td><td>{4557A485-A3BD-4909-AA6B-9DD5C484232B}</td><td>OPENVPN</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>IS_ININSTALL_SHORTCUT</td><td>{6EB2D096-90AB-4277-92F5-E6C4FA2B7ED3}</td><td>INSTALLDIR</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>P2PVpn.Primary_output</td><td>{28324B14-6BFF-4E8D-B971-504909614A0D}</td><td>INSTALLDIR</td><td>2</td><td/><td>p2pvpn.primary_output</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>cports.chm1</td><td>{E1BF708D-E67C-4AAA-9510-1CE046FC5A88}</td><td>CURRPORTS1</td><td>2</td><td/><td>cports.chm1</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>cports.exe1</td><td>{44D15A84-37EB-4A5C-99D7-14C40C8C2606}</td><td>CURRPORTS1</td><td>2</td><td/><td>cports.exe1</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>fix_dns_leak_32.dll</td><td>{16B90E01-9416-4645-9E20-C29AFC83528E}</td><td>OPENVPN</td><td>2</td><td/><td>fix_dns_leak_32.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 	</table>
 
 	<table name="Condition">
@@ -1053,9 +1060,21 @@
 	<table name="CreateFolder">
 		<col key="yes" def="s72">Directory_</col>
 		<col key="yes" def="s72">Component_</col>
+		<row><td>ASSETS</td><td>ISX_DEFAULTCOMPONENT1</td></row>
+		<row><td>CURRPORTS1</td><td>ISX_DEFAULTCOMPONENT2</td></row>
+		<row><td>CURRPORTS1</td><td>cports.chm1</td></row>
+		<row><td>CURRPORTS1</td><td>cports.exe1</td></row>
 		<row><td>INSTALLDIR</td><td>HtmlAgilityPack.dll</td></row>
+		<row><td>INSTALLDIR</td><td>ISX_DEFAULTCOMPONENT1</td></row>
+		<row><td>INSTALLDIR</td><td>ISX_DEFAULTCOMPONENT2</td></row>
+		<row><td>INSTALLDIR</td><td>ISX_DEFAULTCOMPONENT3</td></row>
 		<row><td>INSTALLDIR</td><td>IS_ININSTALL_SHORTCUT</td></row>
 		<row><td>INSTALLDIR</td><td>P2PVpn.Primary_output</td></row>
+		<row><td>INSTALLDIR</td><td>cports.chm1</td></row>
+		<row><td>INSTALLDIR</td><td>cports.exe1</td></row>
+		<row><td>INSTALLDIR</td><td>fix_dns_leak_32.dll</td></row>
+		<row><td>OPENVPN</td><td>ISX_DEFAULTCOMPONENT3</td></row>
+		<row><td>OPENVPN</td><td>fix_dns_leak_32.dll</td></row>
 	</table>
 
 	<table name="CustomAction">
@@ -1136,8 +1155,10 @@
 		<col def="S255">ISFolderName</col>
 		<row><td>ALLUSERSPROFILE</td><td>TARGETDIR</td><td>.:ALLUSE~1|All Users</td><td/><td>0</td><td/></row>
 		<row><td>ANON</td><td>ProgramFilesFolder</td><td>Anon</td><td/><td>0</td><td/></row>
+		<row><td>ASSETS</td><td>INSTALLDIR</td><td>Assets</td><td/><td>0</td><td/></row>
 		<row><td>AdminToolsFolder</td><td>TARGETDIR</td><td>.:Admint~1|AdminTools</td><td/><td>0</td><td/></row>
 		<row><td>AppDataFolder</td><td>TARGETDIR</td><td>.:APPLIC~1|Application Data</td><td/><td>0</td><td/></row>
+		<row><td>CURRPORTS1</td><td>ASSETS</td><td>CURRPO~1|CurrPorts</td><td/><td>0</td><td/></row>
 		<row><td>CommonAppDataFolder</td><td>TARGETDIR</td><td>.:Common~1|CommonAppData</td><td/><td>0</td><td/></row>
 		<row><td>CommonFiles64Folder</td><td>TARGETDIR</td><td>.:Common64</td><td/><td>0</td><td/></row>
 		<row><td>CommonFilesFolder</td><td>TARGETDIR</td><td>.:Common</td><td/><td>0</td><td/></row>
@@ -1155,6 +1176,7 @@
 		<row><td>MY_PRODUCT_NAME</td><td>ANON</td><td>MYPROD~1|My Product Name</td><td/><td>0</td><td/></row>
 		<row><td>MyPicturesFolder</td><td>TARGETDIR</td><td>.:MyPict~1|MyPictures</td><td/><td>0</td><td/></row>
 		<row><td>NetHoodFolder</td><td>TARGETDIR</td><td>.:NetHood</td><td/><td>0</td><td/></row>
+		<row><td>OPENVPN</td><td>ASSETS</td><td>OpenVPN</td><td/><td>0</td><td/></row>
 		<row><td>P2P_VPN_MONITOR</td><td>ProgramFilesFolder</td><td>P2PVPN~1|P2P Vpn Monitor</td><td/><td>0</td><td/></row>
 		<row><td>PersonalFolder</td><td>TARGETDIR</td><td>.:Personal</td><td/><td>0</td><td/></row>
 		<row><td>PrimaryVolumePath</td><td>TARGETDIR</td><td>.:Primar~1|PrimaryVolumePath</td><td/><td>0</td><td/></row>
@@ -1176,6 +1198,8 @@
 		<row><td>WindowsFolder</td><td>TARGETDIR</td><td>.:Windows</td><td/><td>0</td><td/></row>
 		<row><td>WindowsVolume</td><td>TARGETDIR</td><td>.:WinRoot</td><td/><td>0</td><td/></row>
 		<row><td>anon</td><td>ProgramMenuFolder</td><td>anon</td><td/><td>1</td><td/></row>
+		<row><td>p2pvpn_1_p2pvpn_monitor</td><td>p2pvpn_1_p2pvpn_team</td><td>P2PVPN~1|P2PVpn Monitor</td><td/><td>1</td><td/></row>
+		<row><td>p2pvpn_1_p2pvpn_team</td><td>ProgramMenuFolder</td><td>P2PVPN~1|P2PVpn Team</td><td/><td>1</td><td/></row>
 		<row><td>p2pvpn_monitor</td><td>anon</td><td>P2PVPN~1|p2pvpn monitor</td><td/><td>1</td><td/></row>
 	</table>
 
@@ -1872,8 +1896,14 @@
 		<col key="yes" def="s38">Feature_</col>
 		<col key="yes" def="s72">Component_</col>
 		<row><td>AlwaysInstall</td><td>HtmlAgilityPack.dll</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT1</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT2</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT3</td></row>
 		<row><td>AlwaysInstall</td><td>IS_ININSTALL_SHORTCUT</td></row>
 		<row><td>AlwaysInstall</td><td>P2PVpn.Primary_output</td></row>
+		<row><td>AlwaysInstall</td><td>cports.chm1</td></row>
+		<row><td>AlwaysInstall</td><td>cports.exe1</td></row>
+		<row><td>AlwaysInstall</td><td>fix_dns_leak_32.dll</td></row>
 	</table>
 
 	<table name="File">
@@ -1888,8 +1918,15 @@
 		<col def="S255">ISBuildSourcePath</col>
 		<col def="I4">ISAttributes</col>
 		<col def="S72">ISComponentSubFolder_</col>
+		<row><td>configuring_qbittorrent_fire</td><td>ISX_DEFAULTCOMPONENT1</td><td>CONFIG~1.DOC|Configuring qBittorrent_firewall_routes.docx</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Projects\P2PVpn\P2PVpn\bin\Release\Assets\Configuring qBittorrent_firewall_routes.docx</td><td>1</td><td/></row>
+		<row><td>cports.cfg1</td><td>ISX_DEFAULTCOMPONENT2</td><td>cports.cfg</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Projects\P2PVpn\P2PVpn\bin\Release\Assets\CurrPorts\cports.cfg</td><td>1</td><td/></row>
+		<row><td>cports.chm1</td><td>cports.chm1</td><td>cports.chm</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Projects\P2PVpn\P2PVpn\bin\Release\Assets\CurrPorts\cports.chm</td><td>1</td><td/></row>
+		<row><td>cports.exe1</td><td>cports.exe1</td><td>cports.exe</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Projects\P2PVpn\P2PVpn\bin\Release\Assets\CurrPorts\cports.exe</td><td>1</td><td/></row>
+		<row><td>createfirewallrules.ps1</td><td>ISX_DEFAULTCOMPONENT1</td><td>CREATE~1.PS1|CreateFirewallRules.ps1</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Projects\P2PVpn\P2PVpn\bin\Release\Assets\CreateFirewallRules.ps1</td><td>1</td><td/></row>
+		<row><td>fix_dns_leak_32.dll</td><td>fix_dns_leak_32.dll</td><td>FIX-DN~1.DLL|fix-dns-leak-32.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Projects\P2PVpn\P2PVpn\bin\Release\Assets\OpenVPN\fix-dns-leak-32.dll</td><td>1</td><td/></row>
 		<row><td>htmlagilitypack.dll</td><td>HtmlAgilityPack.dll</td><td>HTMLAG~1.DLL|HtmlAgilityPack.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Projects\P2PVpn\packages\HtmlAgilityPack.1.4.9\lib\Net45\HtmlAgilityPack.dll</td><td>1</td><td/></row>
 		<row><td>p2pvpn.primary_output</td><td>P2PVpn.Primary_output</td><td>P2PVpn.Primary output</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;P2PVpn&gt;|Built</td><td>3</td><td/></row>
+		<row><td>readme.txt1</td><td>ISX_DEFAULTCOMPONENT2</td><td>readme.txt</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Projects\P2PVpn\P2PVpn\bin\Release\Assets\CurrPorts\readme.txt</td><td>1</td><td/></row>
 	</table>
 
 	<table name="FileSFPCatalog">
@@ -2033,8 +2070,14 @@
 		<col def="S0">HTTPLocation</col>
 		<col def="S0">Miscellaneous</col>
 		<row><td>HtmlAgilityPack.dll</td><td/><td/><td>_B2A6B645_E2C5_4289_9705_189995B9F4CA_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT1</td><td/><td/><td>_4A0A3176_8F51_479B_976D_37B035C0A8C4_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT2</td><td/><td/><td>_170E7C07_A969_4DB4_A76B_49D8F5885855_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT3</td><td/><td/><td>_F4ACFCE5_FB98_49E1_825F_696A28861DA6_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>IS_ININSTALL_SHORTCUT</td><td/><td/><td>_341F4375_D7EB_486C_A72F_221D06F20DE5_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>P2PVpn.Primary_output</td><td/><td/><td>_8F3FBC42_008B_4DAF_BF56_F7DD67062EE2_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>cports.chm1</td><td/><td/><td>_AA4327D3_AFA7_4723_BA79_8D3F2B7E257B_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>cports.exe1</td><td/><td/><td>_2BA74600_A390_4C47_9EA6_E506DC2A2D5F_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>fix_dns_leak_32.dll</td><td/><td/><td>_43E678AA_D6AB_4EC6_A39D_9A027D8F30DB_FILTER</td><td/><td/><td/><td/></row>
 	</table>
 
 	<table name="ISCustomActionReference">
@@ -2341,6 +2384,7 @@
 		<col key="yes" def="s72">ISProductConfiguration_</col>
 		<col key="yes" def="s72">Property</col>
 		<col def="L255">Value</col>
+		<row><td>Express</td><td>SetupFileName</td><td>P2PVpnMonitorSetup</td></row>
 	</table>
 
 	<table name="ISRelease">
@@ -2590,6 +2634,7 @@
 		<col def="I2">Order</col>
 		<col def="I2">ISSetupLocation</col>
 		<col def="S255">ISReleaseFlags</col>
+		<row><td>_21F85003_4130_4BD1_A09A_7F76CC5DCFE3_</td><td>Microsoft .NET Framework 4.5 Full.prq</td><td/><td/><td/></row>
 	</table>
 
 	<table name="ISSetupType">
@@ -2626,6 +2671,7 @@
 		<row><td>COMPANY_NAME</td><td>1033</td><td>P2PVpn Team</td><td>0</td><td/><td>631440464</td></row>
 		<row><td>DN_AlwaysInstall</td><td>1033</td><td>Always Install</td><td>0</td><td/><td>631491086</td></row>
 		<row><td>IDPROP_EXPRESS_LAUNCH_CONDITION_COLOR</td><td>1033</td><td>The color settings of your system are not adequate for running [ProductName].</td><td>0</td><td/><td>631491086</td></row>
+		<row><td>IDPROP_EXPRESS_LAUNCH_CONDITION_DOTNETVERSION40FULL</td><td>1033</td><td>Microsoft .NET Framework 4.0 Full package or greater needs to be installed for this installation to continue.</td><td>0</td><td/><td>1705211507</td></row>
 		<row><td>IDPROP_EXPRESS_LAUNCH_CONDITION_DOTNETVERSION45FULL</td><td>1033</td><td>Microsoft .NET Framework 4.5 Full package or greater needs to be installed for this installation to continue.</td><td>0</td><td/><td>631483694</td></row>
 		<row><td>IDPROP_EXPRESS_LAUNCH_CONDITION_OPENVPN_GUI</td><td>1033</td><td>OpenVPN not Installed</td><td>0</td><td/><td>631499023</td></row>
 		<row><td>IDPROP_EXPRESS_LAUNCH_CONDITION_OPENVPN_GUIE</td><td>1033</td><td>OpenVPN not installed</td><td>0</td><td/><td>631482543</td></row>
@@ -3439,6 +3485,8 @@
 		<row><td>IDS_SETUPEXE_EXPIRE_MSG</td><td>1033</td><td>This setup works until %s. The setup will now exit.</td><td>0</td><td/><td>631491086</td></row>
 		<row><td>IDS_SETUPEXE_LAUNCH_COND_E</td><td>1033</td><td>This setup was built with an evaluation version of InstallShield and can only be launched from setup.exe.</td><td>0</td><td/><td>631491086</td></row>
 		<row><td>IDS_SHORTCUT_DISPLAY_NAME1</td><td>1033</td><td>Launch |Built</td><td>0</td><td/><td>631482030</td></row>
+		<row><td>IDS_SHORTCUT_DISPLAY_NAME2</td><td>1033</td><td>LAUNCH~1.EXE|Launch cports.exe</td><td>0</td><td/><td>1705190484</td></row>
+		<row><td>IDS_SHORTCUT_DISPLAY_NAME3</td><td>1033</td><td>LAUNCH~1.EXE|Launch cports.exe</td><td>0</td><td/><td>1705235572</td></row>
 		<row><td>IDS_SQLBROWSE_INTRO</td><td>1033</td><td>From the list of servers below, select the database server you would like to target.</td><td>0</td><td/><td>631491086</td></row>
 		<row><td>IDS_SQLBROWSE_INTRO_DB</td><td>1033</td><td>From the list of catalog names below, select the database catalog you would like to target.</td><td>0</td><td/><td>631491086</td></row>
 		<row><td>IDS_SQLBROWSE_INTRO_TEMPLATE</td><td>1033</td><td>[IS_SQLBROWSE_INTRO]</td><td>0</td><td/><td>631491086</td></row>
@@ -3849,6 +3897,8 @@
 		<col def="I2">ISIconIndex</col>
 		<row><td>ARPPRODUCTICON.exe</td><td/><td>&lt;VSSolutionFolder&gt;\P2PVpn\Assets\icon.ico</td><td>0</td></row>
 		<row><td>UNINST_Uninstall_P_05E755EFB2C04AA0BF413731F0DDD6AD.exe</td><td/><td>C:\Program Files (x86)\InstallShield\2015LE\Redist\Language Independent\OS Independent\uninstall.ico</td><td>0</td></row>
+		<row><td>cports.exe1_494D9BF17441490BB991DC702601728A.exe</td><td/><td>C:\Projects\P2PVpn\P2PVpn\bin\Release\Assets\CurrPorts\cports.exe</td><td>0</td></row>
+		<row><td>cports.exe_D2E45E7A3E7F470CB0082C4471A315D5.exe</td><td/><td>C:\Projects\P2PVpn\P2PVpn\Assets\CurrPorts\cports.exe</td><td>0</td></row>
 	</table>
 
 	<table name="IniFile">
@@ -3981,7 +4031,7 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<row><td>ISTheme</td><td>InstallShield Blue.theme</td></row>
 		<row><td>ISUSLock</td><td>{F1262881-3EA8-4AE7-B8C1-A8D07E0AD14B}</td></row>
 		<row><td>ISUSSignature</td><td>{BFF0CB07-7E3B-4417-A545-F8F850B0BE5E}</td></row>
-		<row><td>ISVisitedViews</td><td>viewAssistant,viewShortcuts,viewProject,viewISToday</td></row>
+		<row><td>ISVisitedViews</td><td>viewAssistant,viewShortcuts,viewProject,viewISToday,viewRelease,viewSystemSearch,viewCustomActions,viewObjects,viewAppFiles</td></row>
 		<row><td>Limited</td><td>1</td></row>
 		<row><td>LockPermissionMode</td><td>1</td></row>
 		<row><td>MsiExecCmdLineOptions</td><td/></row>
@@ -4039,6 +4089,7 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 	<table name="LaunchCondition">
 		<col key="yes" def="s255">Condition</col>
 		<col def="l255">Description</col>
+		<row><td>DOTNETVERSION40FULL&gt;="#1"</td><td>##IDPROP_EXPRESS_LAUNCH_CONDITION_DOTNETVERSION40FULL##</td></row>
 		<row><td>DOTNETVERSION45FULL&gt;="#1"</td><td>##IDPROP_EXPRESS_LAUNCH_CONDITION_DOTNETVERSION45FULL##</td></row>
 		<row><td>OPENVPN_GUI</td><td>##IDPROP_EXPRESS_LAUNCH_CONDITION_OPENVPN_GUI##</td></row>
 	</table>
@@ -4370,7 +4421,7 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<row><td>SERIALNUMBER</td><td/><td/></row>
 		<row><td>SERIALNUMVALSUCCESSRETVAL</td><td>1</td><td/></row>
 		<row><td>SHOWLAUNCHPROGRAM</td><td>-1</td><td/></row>
-		<row><td>SecureCustomProperties</td><td>ISFOUNDNEWERPRODUCTVERSION;USERNAME;COMPANYNAME;ISX_SERIALNUM;SUPPORTDIR;DOTNETVERSION45FULL;OPENVPN_GUIE;OPENVPN_GUI</td><td/></row>
+		<row><td>SecureCustomProperties</td><td>ISFOUNDNEWERPRODUCTVERSION;USERNAME;COMPANYNAME;ISX_SERIALNUM;SUPPORTDIR;DOTNETVERSION45FULL;OPENVPN_GUIE;OPENVPN_GUI;DOTNETVERSION40FULL</td><td/></row>
 		<row><td>SelectedSetupType</td><td>##IDS__DisplayName_Typical##</td><td/></row>
 		<row><td>SetupType</td><td>Typical</td><td/></row>
 		<row><td>UpgradeCode</td><td>{0B74B42D-7644-44CB-826B-CAA7F24E1307}</td><td/></row>
@@ -4415,6 +4466,7 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<col def="s255">Key</col>
 		<col def="S255">Name</col>
 		<col def="I2">Type</col>
+		<row><td>DotNet40Full</td><td>2</td><td>SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full</td><td>Install</td><td>2</td></row>
 		<row><td>DotNet45Full</td><td>2</td><td>SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full</td><td>Version</td><td>2</td></row>
 	</table>
 
@@ -4435,6 +4487,7 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<col def="s72">DirProperty</col>
 		<col def="i2">InstallMode</col>
 		<row><td>UNINST_Uninstall_P2PVpn_Monitor</td><td>IS_ININSTALL_SHORTCUT</td><td/><td>p2pvpn_monitor</td><td>2</td></row>
+		<row><td>cports.exe1</td><td>cports.exe1</td><td/><td>p2pvpn_1_p2pvpn_monitor</td><td>2</td></row>
 	</table>
 
 	<table name="RemoveIniFile">
@@ -4524,6 +4577,7 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<row><td>NewShortcut11</td><td>StartupFolder</td><td>##ID_STRING6##</td><td>P2PVpn.Primary_output</td><td>AlwaysInstall</td><td/><td/><td/><td/><td/><td>1</td><td/><td/><td/><td/><td/><td/><td/><td/></row>
 		<row><td>NewShortcut111</td><td>ProgramMenuFolder</td><td>##ID_STRING7##</td><td>P2PVpn.Primary_output</td><td>AlwaysInstall</td><td/><td/><td/><td/><td/><td>1</td><td/><td/><td/><td/><td/><td/><td/><td/></row>
 		<row><td>UNINST_Uninstall_P2PVpn_Monitor</td><td>p2pvpn_monitor</td><td>UNINST|Uninstall P2PVpn Monitor</td><td>IS_ININSTALL_SHORTCUT</td><td>[SystemFolder]msiexec.exe</td><td>/x {CFE20A10-0355-4179-815E-FB23DF1B5797}</td><td/><td/><td>UNINST_Uninstall_P_05E755EFB2C04AA0BF413731F0DDD6AD.exe</td><td>0</td><td>1</td><td/><td/><td/><td/><td/><td/><td/><td/></row>
+		<row><td>cports.exe1</td><td>p2pvpn_1_p2pvpn_monitor</td><td>##IDS_SHORTCUT_DISPLAY_NAME3##</td><td>cports.exe1</td><td>AlwaysInstall</td><td/><td/><td/><td>cports.exe1_494D9BF17441490BB991DC702601728A.exe</td><td>1</td><td>1</td><td>CURRPORTS1</td><td/><td/><td/><td/><td/><td/><td/></row>
 	</table>
 
 	<table name="Signature">

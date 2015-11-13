@@ -56,6 +56,7 @@ namespace P2PVpn.Utilities
                 _log.Log("**Disconnect Triggered**");
                 await ClosePrograms();
                 EnableAllNeworkInterfaces();
+                ResetNetworkInterfaces();
                 if (this.IsOpenVPNConnected())
                 {
                     DisableDisconnect = true;
@@ -71,7 +72,7 @@ namespace P2PVpn.Utilities
             //}
             if (newConnectivity == NLM_CONNECTIVITY.NLM_CONNECTIVITY_DISCONNECTED)
             {
-                ResetNetworkInterfaces();
+                //ResetNetworkInterfaces();
             }
             ScanNetworkInterfaces();
             LogNetworkInfo();
@@ -80,10 +81,10 @@ namespace P2PVpn.Utilities
 
         public void ResetNetworkInterfaces()
         {
-            if (!Settings.Get().DontResetDNS)
+            Settings settings = Settings.Get();
+            if (!settings.DontResetDNS || !settings.SplitRoute)
             {
                 var adapters = GetActiveNetworkInterfaces();
-                Settings settings = Settings.Get();
                 string primaryDns = "";
                 string secondaryDns = "";
                 bool setDns = false;
@@ -118,11 +119,6 @@ namespace P2PVpn.Utilities
                     }
                     if (setDns)
                     {
-                        ControlHelpers.StartProcess("route", "delete 0.0.0.0 mask 192.0.0.0 " + adapter.GatewayIP);
-                        ControlHelpers.StartProcess("route", "delete 64.0.0.0 mask 192.0.0.0 " + adapter.GatewayIP);
-                        ControlHelpers.StartProcess("route", "delete 128.0.0.0 mask 192.0.0.0 " + adapter.GatewayIP);
-                        ControlHelpers.StartProcess("route", "delete 192.0.0.0 mask 192.0.0.0 " + adapter.GatewayIP);
-
                         _log.Log("Set DNS on {0} to {1}, {2}", adapter.Name, primaryDns, secondaryDns);
                     }
                 }
@@ -130,6 +126,74 @@ namespace P2PVpn.Utilities
                 ControlHelpers.StartProcess(@"ipconfig.exe", @"/flushdns");
 
             }
+            RemoveRoutes();
+        }
+        public void RemoveRoutes()
+        {
+            var adapters = GetActiveNetworkInterfaces();
+            //Settings settings = Settings.Get();
+            foreach (var adapter in adapters)
+            {
+                if (Networking.IsVPNAdapter(adapter)) continue;
+
+                ControlHelpers.StartProcess("route", "delete 0.0.0.0 mask 192.0.0.0 " + adapter.GatewayIP);
+                ControlHelpers.StartProcess("route", "delete 64.0.0.0 mask 192.0.0.0 " + adapter.GatewayIP);
+                ControlHelpers.StartProcess("route", "delete 128.0.0.0 mask 192.0.0.0 " + adapter.GatewayIP);
+                ControlHelpers.StartProcess("route", "delete 192.0.0.0 mask 192.0.0.0 " + adapter.GatewayIP);
+            }
+            ControlHelpers.StartProcess(@"ipconfig.exe", @"/registerdns");
+            ControlHelpers.StartProcess(@"ipconfig.exe", @"/flushdns");
+        }
+        public void SetRoutesAndDNS()
+        {
+            Settings settings = Settings.Get();
+            string primaryDnsIp = settings.PrimaryDNS;
+            string secondaryDnsIp = settings.SecondaryDNS;
+            bool setDns = false;
+            foreach (var adapter in ActiveNetworkAdapters)
+            {
+                setDns = false;
+                if (Networking.IsVPNAdapter(adapter)) continue;
+
+                //change Dns for added security
+                string name = adapter.Name;
+
+                if (!string.IsNullOrWhiteSpace(primaryDnsIp) && primaryDnsIp != "0.0.0.0" &&
+                    NetworkAdapter.OpenVpnAdapter != null && NetworkAdapter.OpenVpnAdapter.PrimaryDns != adapter.PrimaryDns)
+                {
+                    string primaryDns = string.Format("interface IPv4 set dnsserver \"{0}\" static {1} both", name, primaryDnsIp);
+                    ControlHelpers.StartProcess(@"netsh", primaryDns);
+                    setDns = true;
+                }
+                if (!string.IsNullOrWhiteSpace(secondaryDnsIp) && secondaryDnsIp != "0.0.0.0" &&
+                    NetworkAdapter.OpenVpnAdapter != null && NetworkAdapter.OpenVpnAdapter.SecondaryDns != adapter.SecondaryDns)
+                {
+                    string secondaryDns = string.Format("interface ipv4 add dnsserver \"{0}\" address={1} index=2", name, secondaryDnsIp);
+                    ControlHelpers.StartProcess(@"netsh", secondaryDns);
+                    setDns = true;
+                }
+
+
+                if (setDns)
+                {
+                    ControlHelpers.StartProcess("route", "add 0.0.0.0 mask 192.0.0.0 " + adapter.GatewayIP);
+                    ControlHelpers.StartProcess("route", "add 64.0.0.0 mask 192.0.0.0 " + adapter.GatewayIP);
+                    ControlHelpers.StartProcess("route", "add 128.0.0.0 mask 192.0.0.0 " + adapter.GatewayIP);
+                    ControlHelpers.StartProcess("route", "add 192.0.0.0 mask 192.0.0.0 " + adapter.GatewayIP);
+                    _log.Log("Set DNS on {0} to {1}, {2}", name, primaryDnsIp, secondaryDnsIp);
+                }
+
+                
+            }
+            //if (setDns)
+            //{
+
+            //    //ControlHelpers.StartProcess(@"ipconfig.exe", @"/flushdns");
+            //    //ControlHelpers.StartProcess(@"ipconfig.exe", @"/registerdns");
+            //}
+
+            ControlHelpers.StartProcess(@"ipconfig.exe", @"/flushdns");
+            ControlHelpers.StartProcess(@"ipconfig.exe", @"/registerdns");
         }
         private void SetBrowserTorProxies()
         {

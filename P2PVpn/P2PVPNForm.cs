@@ -144,56 +144,16 @@ namespace P2PVpn
                 _network.ScanNetworkInterfaces();
                 if (_network.IsOpenVPNConnected())
                 {
-                    string primaryDnsIp = settings.PrimaryDNS;
-                    string secondaryDnsIp = settings.SecondaryDNS;
-                    bool setDns = false;
-                    foreach (var adapter in _network.ActiveNetworkAdapters)
+                    if (settings.SplitRoute)
                     {
-                        setDns = false;
-                        if (Networking.IsVPNAdapter(adapter)) continue;
-
-                        //change Dns for added security
-                        string name = adapter.Name;
-
-                        if (!string.IsNullOrWhiteSpace(primaryDnsIp) && primaryDnsIp != "0.0.0.0" &&
-                            NetworkAdapter.OpenVpnAdapter != null && NetworkAdapter.OpenVpnAdapter.PrimaryDns != adapter.PrimaryDns)
-                        {
-                            string primaryDns = string.Format("interface IPv4 set dnsserver \"{0}\" static {1} both", name, primaryDnsIp);
-                            ControlHelpers.StartProcess(@"netsh", primaryDns);
-                            setDns = true;
-                        }
-                        if (!string.IsNullOrWhiteSpace(secondaryDnsIp) && secondaryDnsIp != "0.0.0.0" &&
-                            NetworkAdapter.OpenVpnAdapter != null && NetworkAdapter.OpenVpnAdapter.SecondaryDns != adapter.SecondaryDns)
-                        {
-                            string secondaryDns = string.Format("interface ipv4 add dnsserver \"{0}\" address={1} index=2", name, secondaryDnsIp);
-                            ControlHelpers.StartProcess(@"netsh", secondaryDns);
-                            setDns = true;
-                        }
-
-
-                        if (setDns)
-                        {
-                            ControlHelpers.StartProcess("route", "add 0.0.0.0 mask 192.0.0.0 " + adapter.GatewayIP);
-                            ControlHelpers.StartProcess("route", "add 64.0.0.0 mask 192.0.0.0 " + adapter.GatewayIP);
-                            ControlHelpers.StartProcess("route", "add 128.0.0.0 mask 192.0.0.0 " + adapter.GatewayIP);
-                            ControlHelpers.StartProcess("route", "add 192.0.0.0 mask 192.0.0.0 " + adapter.GatewayIP);
-                            lbLog.Log("Set DNS on {0} to {1}, {2}", name, primaryDnsIp, secondaryDnsIp);
-                        }
-
-                        Logging.SetStatus("OpenVPN Connected", Logging.Colors.Green);
+                        _network.SetRoutesAndDNS();
                     }
-                    //if (setDns)
-                    //{
 
-                    //    //ControlHelpers.StartProcess(@"ipconfig.exe", @"/flushdns");
-                    //    //ControlHelpers.StartProcess(@"ipconfig.exe", @"/registerdns");
-                    //}
+                    Logging.SetStatus("OpenVPN Connected", Logging.Colors.Green);
 
-                    ControlHelpers.StartProcess(@"ipconfig.exe", @"/flushdns");
+                    //ensure dns is flushed
                     ControlHelpers.StartProcess(@"ipconfig.exe", @"/registerdns");
-
-
-                    //Process.Start(@"ipconfig.exe", @"/flushdns").WaitForExit();
+                    ControlHelpers.StartProcess(@"ipconfig.exe", @"/flushdns");
                     _network.OpenPrograms();
                 }
                 //Thread.Sleep(60000);
@@ -607,11 +567,20 @@ namespace P2PVpn
             ControlHelpers.StartProcess(Settings.IPLeakUrl, "", false);
         }
 
-     
+        private void btnFirewallRules_Click(object sender, EventArgs e)
+        {
+            lblFirewallRules.Text = "Repairing Filewall Rules...";
+            WinFirewall.CreateFirewallRules();
+            lblFirewallRules.Text = "Finished Repairing Filewall Rules";
+            firewallTimer.Enabled = true;
+ 
+        }
 
-       
-
-        
+        private void firewallTimer_Tick(object sender, EventArgs e)
+        {
+            lblFirewallRules.Text = "";
+            firewallTimer.Enabled = false;
+        }
 
         //private void linkDownloadChromeKProxy_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         //{
