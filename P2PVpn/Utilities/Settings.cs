@@ -39,6 +39,7 @@ namespace P2PVpn.Utilities
         public const string QBittorrentUrl = @"http://www.qbittorrent.org/download.php";
         public static string CPortsDownloadUrl = @"http://www.nirsoft.net/utils/cports.html";
         
+        
         //[DisplayName("OpenVPN Directory")]
         public string OpenVPNDirectory { get; set; }
         public string OpenVPNConfig { get; set; }
@@ -50,7 +51,7 @@ namespace P2PVpn.Utilities
         public List<NetworkAdapterDns> StartupNetworkAdapterDns { get; set; }
         public Dictionary<string, string> OpenVPNConfigs { get; set; }
         public bool EnableTorProxyForChrome { get; set; }
-        public VPNServer VPNServer { get; set; }
+        public VPNService VPNServer { get; set; }
         public bool RetrieveVPNBookCredsOnLoad { get; set; }
         public bool SplitRoute { get; set; }
 
@@ -72,7 +73,7 @@ namespace P2PVpn.Utilities
             }
             if (_settings.VPNServer == null)
             {
-                _settings.VPNServer = new VPNServer() { VPNBook = true };
+                _settings.VPNServer = new VPNService() { VPNBook = true };
                 _settings.RetrieveVPNBookCredsOnLoad = true;
             }
 

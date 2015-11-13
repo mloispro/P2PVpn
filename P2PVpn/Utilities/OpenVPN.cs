@@ -4,17 +4,18 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using P2PVpn.Models;
 
 namespace P2PVpn.Utilities
 {
     public static class OpenVPN
     {
-        private static string _p2pVpnSettings = 
-            string.Format("{0}{0}#P2PVpn Settings#{0}" +
+        public static string VPNBookCredsFile = "vpnbook-creds.txt";
+
+        private static string _p2pVpnSettings = "{0}{0}#P2PVpn Settings#{0}" +
                             "script-security 2{0}" +
-                            "auth-user-pass \"{1}\\\\config\\\\vpnbook-creds.txt\"{0}" +
-                            "plugin \"{1}\\\\bin\\\\fix-dns-leak-32.dll\"{0}",
-                            Environment.NewLine, GetOpenVpnDirectory());
+                            "auth-user-pass \"{1}\\\\config\\\\{2}\"{0}" +
+                            "plugin \"{1}\\\\bin\\\\fix-dns-leak-32.dll\"{0}";
 
         private static string _p2pVpnRouteSettings =
            string.Format("route 0.0.0.0 192.0.0.0 net_gateway{0}" +
@@ -37,8 +38,8 @@ namespace P2PVpn.Utilities
         {
             Settings settings = Settings.Get();
             var binDir = Settings.UserSettingsDir;
-            var localCredsFile = binDir + @"\vpnbook-creds.txt";
-            var openVpnCredsFile = settings.OpenVPNDirectory + @"\config\vpnbook-creds.txt";
+            var localCredsFile = binDir + @"\" + VPNBookCredsFile;
+            var openVpnCredsFile = settings.OpenVPNDirectory + @"\config\" + VPNBookCredsFile;
 
             if (!File.Exists(localCredsFile))
             {
@@ -76,8 +77,8 @@ namespace P2PVpn.Utilities
         {
             Settings settings = Settings.Get();
             var binDir = Settings.UserSettingsDir;
-            var localCredsFile = binDir + @"\vpnbook-creds.txt";
-            var openVpnCredsFile = settings.OpenVPNDirectory + @"\config\vpnbook-creds.txt";
+            var localCredsFile = binDir + @"\" + VPNBookCredsFile;
+            var openVpnCredsFile = settings.OpenVPNDirectory + @"\config\" + VPNBookCredsFile;
 
             if (!File.Exists(localCredsFile))
             {
@@ -115,6 +116,7 @@ namespace P2PVpn.Utilities
             foreach (var file in settings.OpenVPNConfigs)
             {
                 var configFile = Path.GetFullPath(file.Value);
+
                 var configFileText="";
                 using (var sw = new StreamReader(configFile))
                 {
@@ -124,7 +126,7 @@ namespace P2PVpn.Utilities
                 var endToken = "</key>";
                 var endIndex = configFileText.LastIndexOf(endToken) + endToken.Length;
                 var cleanedConfigFileText = configFileText.Substring(0, endIndex);
-                var p2pVPNConfigFileText = cleanedConfigFileText + _p2pVpnSettings;
+                var p2pVPNConfigFileText = cleanedConfigFileText + PopulateP2PVpnConfigData(configFile);
 
                 if (addRouts)
                 {
@@ -137,6 +139,38 @@ namespace P2PVpn.Utilities
                 }
                 
             }
+        }
+        private static string PopulateP2PVpnConfigData(string configFile)
+        {
+            string credFile = "";
+
+            if (Path.GetFileName(configFile) == VPNGate.VpnGateConifg)
+            {
+                credFile = VPNGate.VpnGateCredsFile;
+                var configDir = Path.GetDirectoryName(configFile);
+                var openVpnCredsFile = Path.GetFullPath(configDir + @"\" + VPNGate.VpnGateCredsFile);
+                if (!File.Exists(openVpnCredsFile))
+                {
+                    using (var file = File.Create(openVpnCredsFile))
+                    {
+                        using (StreamWriter sw = new StreamWriter(file))
+                        {
+                            var credsString = "vpn" + Environment.NewLine + "vpn";
+                            sw.Write(credsString);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                credFile = VPNBookCredsFile;
+            }
+
+            string p2pVpnSettings =
+            string.Format(_p2pVpnSettings,
+                            Environment.NewLine, GetOpenVpnDirectory(), credFile);
+
+            return p2pVpnSettings;
         }
         
     }

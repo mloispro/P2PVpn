@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace P2PVpn.Models
 {
-    public class VPNServer
+    public class VPNService
     {
         public bool VPNBook { get; set; }
         public bool VPNGate { get; set; }

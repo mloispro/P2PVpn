@@ -97,7 +97,8 @@
   <ItemGroup>
     <Compile Include="Models\Apps.cs" />
     <Compile Include="Models\NetworkAdapter.cs" />
-    <Compile Include="Models\VPNServer.cs" />
+    <Compile Include="Models\VPNGateServer.cs" />
+    <Compile Include="Models\VPNService.cs" />
     <Compile Include="Models\NetworkAdapterDns.cs" />
     <Compile Include="P2PVPNForm.cs">
       <SubType>Form</SubType>
@@ -119,6 +120,7 @@
     <Compile Include="Utilities\Networking.cs" />
     <Compile Include="Utilities\OpenVPN.cs" />
     <Compile Include="Utilities\Settings.cs" />
+    <Compile Include="Utilities\VPNGate.cs" />
     <Compile Include="Utilities\WinFirewall.cs" />
     <EmbeddedResource Include="P2PVPNForm.resx">
       <DependentUpon>P2PVPNForm.cs</DependentUpon>
@@ -140,6 +142,9 @@
     </None>
     <None Include="Assets\CurrPorts\cports.chm">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Assets\VPNGateServers.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />
     <None Include="Properties\DataSources\P2PVpn.Models.Apps.datasource" />
