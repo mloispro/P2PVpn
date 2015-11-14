@@ -12,7 +12,7 @@ namespace P2PVpn.Tests
         public void GetServersTest()
         {
             VPNGate.ServersCSV = Path.GetFullPath(Directory.GetCurrentDirectory() + @"\Assets\VPNGateServers.csv");
-            VPNGate.DownloadServerList();
+
             var fastestServers = VPNGate.GetFastestServers();
 
             Assert.IsTrue(fastestServers.Count > 0);

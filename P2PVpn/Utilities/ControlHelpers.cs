@@ -49,7 +49,7 @@ namespace P2PVpn.Utilities
             }
             catch (ObjectDisposedException ex)
             {
-                
+
             }
         }
         public static async Task Sleep(int milliseconds)
@@ -205,12 +205,41 @@ namespace P2PVpn.Utilities
             DialogResult result = MessageBox.Show(message, caption, MessageBoxButtons.YesNo);
             if (result == DialogResult.Yes)
             {
-                ControlHelpers.StartProcess(yesProcess,"");
+                ControlHelpers.StartProcess(yesProcess, "");
             }
             //if (log)
             //{
             //    Logging.Log(message);
             //}
+        }
+        public static void EnableTab(this TabPage page, bool enable)
+        {
+            foreach (Control ctl in page.Controls) ctl.Enabled = enable;
+        }
+        private static ToolStripStatusLabel _lblStatusColor;
+        private static StatusStrip _statusBar;
+        public static void SetStatusBarLabel(this StatusStrip statusBar, ToolStripStatusLabel label, string text)
+        {
+
+            try
+            {
+
+                if (statusBar.InvokeRequired)
+                {
+                    statusBar.Invoke(new Action(() => label.Text = text));
+                }
+                else
+                {
+                    label.Text = text;
+
+                }
+
+
+            }
+            catch (ObjectDisposedException ex)
+            {
+
+            }
         }
     }
 }

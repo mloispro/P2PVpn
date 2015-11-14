@@ -239,6 +239,10 @@ namespace P2PVpn.Utilities
         public static WebClient GetTorWebClient()
         {
             WebClient wc = new WebClient();
+            if (NetworkAdapter.OpenVpnAdapter!=null && NetworkAdapter.OpenVpnAdapter.IsConnected)
+            {
+                return wc;
+            }
 
             var proxy = new SocksWebProxy(new ProxyConfig(
                 //This is an internal http->socks proxy that runs in process

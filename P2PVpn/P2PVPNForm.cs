@@ -136,7 +136,10 @@ namespace P2PVpn
                 //wait for vpn to connect
                 Settings settings = Settings.Get();
                 var openVPN = settings.OpenVPNDirectory + @"\bin\openvpn-gui.exe";
-                var openVPNargs = "--connect " + settings.OpenVPNConfig;
+                var config = settings.OpenVPNConfig;
+                if (settings.VPNServer.VPNGate) config = VPNGate.VpnGateConifg;
+
+                var openVPNargs = "--connect " + config;
                 ControlHelpers.StartProcess(openVPN, openVPNargs, true, 25);
 
                 //Thread.Sleep(25000);
@@ -318,6 +321,8 @@ namespace P2PVpn
             rbComodoDNS.CheckedChanged -= rbComodoDNS_CheckedChanged;
             //cbRouteSplit.CheckedChanged -= cbRouteSplit_CheckedChanged;
             cbRetrieveVPNBookCredsOnLoad.CheckedChanged -= cbRetrieveVPNBookCredsOnLoad_CheckedChanged;
+            rbVPNGate.CheckedChanged -= rbVPNGate_CheckedChanged;
+            rbVPNBook.CheckedChanged -= rbVPNBook_CheckedChanged;
 
             Settings settings = Settings.Get();
             cbDontResetOnDisconn.Checked = settings.DontResetDNS;
@@ -343,17 +348,27 @@ namespace P2PVpn
             cbRouteSplit.Checked = settings.SplitRoute;
 
             rbVPNBook.Checked = settings.VPNServer.VPNBook;
+            rbVPNGate.Checked = settings.VPNServer.VPNGate;
+            //settings.VPNServer.VPNBook = (!settings.VPNServer.VPNBook && !settings.VPNServer.VPNGate);
             cbRetrieveVPNBookCredsOnLoad.Checked = settings.RetrieveVPNBookCredsOnLoad;
             cbRetrieveVPNBookCredsOnLoad.Enabled = settings.VPNServer.VPNBook;
             if (settings.VPNServer.VPNBook)
             {
                 lblVPNConnectionStatusLabel.Text = "VPN Book Connection:";
+                this.statusStrip.SetStatusBarLabel(lblOpenVPNConifg, "Config: " + settings.OpenVPNConfig);
                 if (settings.RetrieveVPNBookCredsOnLoad)
                 {
                     btnVPNBookUser_Click(null, null);
+                    
                 }
             }
-
+            if (settings.VPNServer.VPNGate)
+            {
+                lblVPNConnectionStatusLabel.Text = "VPN Gate Connection:";
+                this.statusStrip.SetStatusBarLabel(lblOpenVPNConifg, "Config: " + VPNGate.VpnGateConifg);
+            }
+            rbVPNGate.CheckedChanged += rbVPNGate_CheckedChanged;
+            rbVPNBook.CheckedChanged += rbVPNBook_CheckedChanged;
             rbGoogleDNS.CheckedChanged += rbGoogleDNS_CheckedChanged;
             rbOpenDNS.CheckedChanged += rbOpenDNS_CheckedChanged;
             rbComodoDNS.CheckedChanged += rbComodoDNS_CheckedChanged;
@@ -461,11 +476,23 @@ namespace P2PVpn
             Settings settings = Settings.Get();
 
             settings.VPNServer.VPNBook = rbVPNBook.Checked;
+            settings.VPNServer.VPNGate = rbVPNGate.Checked;
 
             Settings.Save(settings);
 
             SetRadioButtons();
             //cbRetrieveVPNBookCredsOnLoad_CheckedChanged(sender, e);
+        }
+        private void rbVPNGate_CheckedChanged(object sender, EventArgs e)
+        {
+            Settings settings = Settings.Get();
+
+            settings.VPNServer.VPNGate = rbVPNGate.Checked;
+            settings.VPNServer.VPNBook = rbVPNBook.Checked;
+
+            Settings.Save(settings);
+
+            SetRadioButtons();
         }
         private void cbRetrieveVPNBookCredsOnLoad_CheckedChanged(object sender, EventArgs e)
         {
@@ -581,6 +608,72 @@ namespace P2PVpn
             lblFirewallRules.Text = "";
             firewallTimer.Enabled = false;
         }
+
+        private void tabs_Selected(object sender, TabControlEventArgs e)
+        {
+            if (e.TabPage == tabVPNGate)
+            {
+                Settings settings = Settings.Get();
+                if (!settings.VPNServer.VPNGate)
+                {
+                    tabVPNGate.EnableTab(false);
+                    return;
+                }
+                else
+                {
+                    tabVPNGate.EnableTab(true);
+                }
+
+                this.EnableForm(false);
+                
+                var servers = VPNGate.GetFastestServers();
+                var selectedServer = servers.FirstOrDefault(x => x.HostName == settings.VPNGateServerHost);
+                if (selectedServer == null)
+                {
+                    selectedServer = servers[0];
+                }
+
+                cbVPNGateServer.SelectedIndexChanged -= cbVPNGateServer_SelectedIndexChanged;
+                cbVPNGateServer.DisplayMember = "CountryAndHost";
+                cbVPNGateServer.DataSource = servers;
+                cbVPNGateServer.SelectedItem = selectedServer;
+                var server = (VPNGateServer)cbVPNGateServer.SelectedItem;
+
+                lblVPNGateServerInfo.Text = server.ToString();
+
+                cbVPNGateServer.SelectedIndexChanged += cbVPNGateServer_SelectedIndexChanged;
+                this.EnableForm();
+            }
+            if (e.TabPage == tabVPNBook)
+            {
+                Settings settings = Settings.Get();
+                if (!settings.VPNServer.VPNBook)
+                {
+                    tabVPNBook.EnableTab(false);
+                    return;
+                }
+                else
+                {
+                    tabVPNBook.EnableTab(true);
+                }
+            }
+        }
+
+        private void cbVPNGateServer_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var server = (VPNGateServer)cbVPNGateServer.SelectedItem;
+            lblVPNGateServerInfo.Text = server.ToString();
+            Settings settings = Settings.Get();
+            settings.VPNGateServerHost = server.HostName;
+            Settings.Save(settings);
+            VPNGate.SelectServer(server);
+            SetRadioButtons();
+        }
+
+       
+
+      
+        
 
         //private void linkDownloadChromeKProxy_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         //{

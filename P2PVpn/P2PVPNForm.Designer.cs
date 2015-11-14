@@ -34,10 +34,12 @@
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.lblStatusColor = new System.Windows.Forms.ToolStripStatusLabel();
             this.lblStatusText = new System.Windows.Forms.ToolStripStatusLabel();
+            this.lblOpenVPNConifg = new System.Windows.Forms.ToolStripStatusLabel();
             this.openVPNFolderBrowser = new System.Windows.Forms.FolderBrowserDialog();
             this.tabVPNTraffic = new System.Windows.Forms.TabPage();
             this.lbLog = new System.Windows.Forms.ListBox();
             this.tabVPNBook = new System.Windows.Forms.TabPage();
+            this.cbRetrieveVPNBookCredsOnLoad = new System.Windows.Forms.CheckBox();
             this.cbVPNBookOpenVPNConfig = new System.Windows.Forms.ComboBox();
             this.hlVPNBookConfigDownload = new System.Windows.Forms.LinkLabel();
             this.lblVPNBookOpenVPNConfigLabel = new System.Windows.Forms.Label();
@@ -47,6 +49,19 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.tabSettings = new System.Windows.Forms.TabPage();
+            this.pnlRoutes = new System.Windows.Forms.Panel();
+            this.pnlDns = new System.Windows.Forms.Panel();
+            this.tbPrimaryDNS = new IPAddressControlLib.IPAddressControl();
+            this.pnlPublicDns = new System.Windows.Forms.Panel();
+            this.rbGoogleDNS = new System.Windows.Forms.RadioButton();
+            this.rbOpenDNS = new System.Windows.Forms.RadioButton();
+            this.rbComodoDNS = new System.Windows.Forms.RadioButton();
+            this.label3 = new System.Windows.Forms.Label();
+            this.tbSecondaryDNS = new IPAddressControlLib.IPAddressControl();
+            this.cbDontResetOnDisconn = new System.Windows.Forms.CheckBox();
+            this.cbRouteSplit = new System.Windows.Forms.CheckBox();
+            this.tbVPNConnWaitTime = new System.Windows.Forms.MaskedTextBox();
+            this.label6 = new System.Windows.Forms.Label();
             this.pnlOpenVPNServer = new System.Windows.Forms.Panel();
             this.rbCustomServer = new System.Windows.Forms.RadioButton();
             this.rbVPNGate = new System.Windows.Forms.RadioButton();
@@ -62,6 +77,10 @@
             this.btnMoveAppUp = new System.Windows.Forms.Button();
             this.btnSaveApps = new System.Windows.Forms.Button();
             this.dgOpenApps = new System.Windows.Forms.DataGridView();
+            this.launchDataGridViewCheckBoxColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.closeDataGridViewCheckBoxColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.programDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.appsBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.tabConnection = new System.Windows.Forms.TabPage();
             this.label4 = new System.Windows.Forms.Label();
             this.lblConnectionStatus = new System.Windows.Forms.Label();
@@ -72,7 +91,13 @@
             this.lblVPNConnectionStatusLabel = new System.Windows.Forms.Label();
             this.btnConnect = new System.Windows.Forms.Button();
             this.tabs = new System.Windows.Forms.TabControl();
+            this.tabVPNGate = new System.Windows.Forms.TabPage();
+            this.lblVPNGateServerInfo = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.cbVPNGateServer = new System.Windows.Forms.ComboBox();
             this.tabSecurity = new System.Windows.Forms.TabPage();
+            this.lblFirewallRules = new System.Windows.Forms.Label();
+            this.btnFirewallRules = new System.Windows.Forms.Button();
             this.linkIPLeak = new System.Windows.Forms.LinkLabel();
             this.linkDownloadqBittorrent = new System.Windows.Forms.LinkLabel();
             this.linkDownloadCPorts = new System.Windows.Forms.LinkLabel();
@@ -80,41 +105,22 @@
             this.linkDownloadOpenVPN = new System.Windows.Forms.LinkLabel();
             this.linkDownloadPeerBlock = new System.Windows.Forms.LinkLabel();
             this.linkGetTorBrowser = new System.Windows.Forms.LinkLabel();
-            this.cbRetrieveVPNBookCredsOnLoad = new System.Windows.Forms.CheckBox();
-            this.label6 = new System.Windows.Forms.Label();
-            this.tbVPNConnWaitTime = new System.Windows.Forms.MaskedTextBox();
-            this.pnlRoutes = new System.Windows.Forms.Panel();
-            this.pnlDns = new System.Windows.Forms.Panel();
-            this.tbPrimaryDNS = new IPAddressControlLib.IPAddressControl();
-            this.pnlPublicDns = new System.Windows.Forms.Panel();
-            this.rbGoogleDNS = new System.Windows.Forms.RadioButton();
-            this.rbOpenDNS = new System.Windows.Forms.RadioButton();
-            this.rbComodoDNS = new System.Windows.Forms.RadioButton();
-            this.label3 = new System.Windows.Forms.Label();
-            this.tbSecondaryDNS = new IPAddressControlLib.IPAddressControl();
-            this.cbDontResetOnDisconn = new System.Windows.Forms.CheckBox();
-            this.cbRouteSplit = new System.Windows.Forms.CheckBox();
-            this.btnFirewallRules = new System.Windows.Forms.Button();
-            this.launchDataGridViewCheckBoxColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.closeDataGridViewCheckBoxColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.programDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.appsBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.lblFirewallRules = new System.Windows.Forms.Label();
             this.firewallTimer = new System.Windows.Forms.Timer(this.components);
             this.statusStrip.SuspendLayout();
             this.tabVPNTraffic.SuspendLayout();
             this.tabVPNBook.SuspendLayout();
             this.tabSettings.SuspendLayout();
-            this.pnlOpenVPNServer.SuspendLayout();
-            this.tabOpenApps.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgOpenApps)).BeginInit();
-            this.tabConnection.SuspendLayout();
-            this.tabs.SuspendLayout();
-            this.tabSecurity.SuspendLayout();
             this.pnlRoutes.SuspendLayout();
             this.pnlDns.SuspendLayout();
             this.pnlPublicDns.SuspendLayout();
+            this.pnlOpenVPNServer.SuspendLayout();
+            this.tabOpenApps.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgOpenApps)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.appsBindingSource)).BeginInit();
+            this.tabConnection.SuspendLayout();
+            this.tabs.SuspendLayout();
+            this.tabVPNGate.SuspendLayout();
+            this.tabSecurity.SuspendLayout();
             this.SuspendLayout();
             // 
             // timerSpeed
@@ -127,10 +133,11 @@
             // 
             this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.lblStatusColor,
-            this.lblStatusText});
-            this.statusStrip.Location = new System.Drawing.Point(0, 301);
+            this.lblStatusText,
+            this.lblOpenVPNConifg});
+            this.statusStrip.Location = new System.Drawing.Point(0, 299);
             this.statusStrip.Name = "statusStrip";
-            this.statusStrip.Size = new System.Drawing.Size(604, 22);
+            this.statusStrip.Size = new System.Drawing.Size(604, 24);
             this.statusStrip.TabIndex = 1;
             this.statusStrip.Text = "statusStrip1";
             this.statusStrip.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.statusStrip_ItemClicked);
@@ -139,15 +146,23 @@
             // 
             this.lblStatusColor.BackColor = System.Drawing.Color.Yellow;
             this.lblStatusColor.Name = "lblStatusColor";
-            this.lblStatusColor.Size = new System.Drawing.Size(16, 17);
+            this.lblStatusColor.Size = new System.Drawing.Size(16, 19);
             this.lblStatusColor.Text = "   ";
             this.lblStatusColor.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // lblStatusText
             // 
             this.lblStatusText.Name = "lblStatusText";
-            this.lblStatusText.Size = new System.Drawing.Size(134, 17);
+            this.lblStatusText.Size = new System.Drawing.Size(134, 19);
             this.lblStatusText.Text = "OpenVPN Disconnected";
+            // 
+            // lblOpenVPNConifg
+            // 
+            this.lblOpenVPNConifg.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Left;
+            this.lblOpenVPNConifg.Margin = new System.Windows.Forms.Padding(8, 3, 0, 2);
+            this.lblOpenVPNConifg.Name = "lblOpenVPNConifg";
+            this.lblOpenVPNConifg.Size = new System.Drawing.Size(53, 19);
+            this.lblOpenVPNConifg.Text = "Conifg: ";
             // 
             // openVPNFolderBrowser
             // 
@@ -201,6 +216,18 @@
             this.tabVPNBook.TabIndex = 5;
             this.tabVPNBook.Text = "VPN Book";
             this.tabVPNBook.UseVisualStyleBackColor = true;
+            // 
+            // cbRetrieveVPNBookCredsOnLoad
+            // 
+            this.cbRetrieveVPNBookCredsOnLoad.AutoSize = true;
+            this.cbRetrieveVPNBookCredsOnLoad.Checked = true;
+            this.cbRetrieveVPNBookCredsOnLoad.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbRetrieveVPNBookCredsOnLoad.Location = new System.Drawing.Point(14, 117);
+            this.cbRetrieveVPNBookCredsOnLoad.Name = "cbRetrieveVPNBookCredsOnLoad";
+            this.cbRetrieveVPNBookCredsOnLoad.Size = new System.Drawing.Size(208, 17);
+            this.cbRetrieveVPNBookCredsOnLoad.TabIndex = 12;
+            this.cbRetrieveVPNBookCredsOnLoad.Text = "Retreive VPN Book Creds On Start Up";
+            this.cbRetrieveVPNBookCredsOnLoad.UseVisualStyleBackColor = true;
             // 
             // cbVPNBookOpenVPNConfig
             // 
@@ -294,6 +321,149 @@
             this.tabSettings.Text = "Settings";
             this.tabSettings.UseVisualStyleBackColor = true;
             // 
+            // pnlRoutes
+            // 
+            this.pnlRoutes.Controls.Add(this.pnlDns);
+            this.pnlRoutes.Controls.Add(this.cbRouteSplit);
+            this.pnlRoutes.Location = new System.Drawing.Point(65, 164);
+            this.pnlRoutes.Name = "pnlRoutes";
+            this.pnlRoutes.Size = new System.Drawing.Size(442, 100);
+            this.pnlRoutes.TabIndex = 8;
+            // 
+            // pnlDns
+            // 
+            this.pnlDns.Controls.Add(this.tbPrimaryDNS);
+            this.pnlDns.Controls.Add(this.pnlPublicDns);
+            this.pnlDns.Controls.Add(this.label3);
+            this.pnlDns.Controls.Add(this.tbSecondaryDNS);
+            this.pnlDns.Controls.Add(this.cbDontResetOnDisconn);
+            this.pnlDns.Enabled = false;
+            this.pnlDns.Location = new System.Drawing.Point(18, 27);
+            this.pnlDns.Name = "pnlDns";
+            this.pnlDns.Size = new System.Drawing.Size(399, 70);
+            this.pnlDns.TabIndex = 24;
+            // 
+            // tbPrimaryDNS
+            // 
+            this.tbPrimaryDNS.AllowInternalTab = false;
+            this.tbPrimaryDNS.AutoHeight = true;
+            this.tbPrimaryDNS.BackColor = System.Drawing.SystemColors.Window;
+            this.tbPrimaryDNS.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.tbPrimaryDNS.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.tbPrimaryDNS.Location = new System.Drawing.Point(49, 3);
+            this.tbPrimaryDNS.MinimumSize = new System.Drawing.Size(87, 20);
+            this.tbPrimaryDNS.Name = "tbPrimaryDNS";
+            this.tbPrimaryDNS.ReadOnly = false;
+            this.tbPrimaryDNS.Size = new System.Drawing.Size(87, 20);
+            this.tbPrimaryDNS.TabIndex = 20;
+            this.tbPrimaryDNS.Text = "...";
+            // 
+            // pnlPublicDns
+            // 
+            this.pnlPublicDns.Controls.Add(this.rbGoogleDNS);
+            this.pnlPublicDns.Controls.Add(this.rbOpenDNS);
+            this.pnlPublicDns.Controls.Add(this.rbComodoDNS);
+            this.pnlPublicDns.Location = new System.Drawing.Point(49, 28);
+            this.pnlPublicDns.Name = "pnlPublicDns";
+            this.pnlPublicDns.Size = new System.Drawing.Size(275, 27);
+            this.pnlPublicDns.TabIndex = 19;
+            // 
+            // rbGoogleDNS
+            // 
+            this.rbGoogleDNS.AutoSize = true;
+            this.rbGoogleDNS.Location = new System.Drawing.Point(11, 3);
+            this.rbGoogleDNS.Name = "rbGoogleDNS";
+            this.rbGoogleDNS.Size = new System.Drawing.Size(85, 17);
+            this.rbGoogleDNS.TabIndex = 15;
+            this.rbGoogleDNS.TabStop = true;
+            this.rbGoogleDNS.Text = "Google DNS";
+            this.rbGoogleDNS.UseVisualStyleBackColor = true;
+            // 
+            // rbOpenDNS
+            // 
+            this.rbOpenDNS.AutoSize = true;
+            this.rbOpenDNS.Location = new System.Drawing.Point(102, 3);
+            this.rbOpenDNS.Name = "rbOpenDNS";
+            this.rbOpenDNS.Size = new System.Drawing.Size(74, 17);
+            this.rbOpenDNS.TabIndex = 16;
+            this.rbOpenDNS.TabStop = true;
+            this.rbOpenDNS.Text = "OpenDNS";
+            this.rbOpenDNS.UseVisualStyleBackColor = true;
+            // 
+            // rbComodoDNS
+            // 
+            this.rbComodoDNS.AutoSize = true;
+            this.rbComodoDNS.Location = new System.Drawing.Point(182, 3);
+            this.rbComodoDNS.Name = "rbComodoDNS";
+            this.rbComodoDNS.Size = new System.Drawing.Size(90, 17);
+            this.rbComodoDNS.TabIndex = 17;
+            this.rbComodoDNS.TabStop = true;
+            this.rbComodoDNS.Text = "Comodo DNS";
+            this.rbComodoDNS.UseVisualStyleBackColor = true;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(10, 6);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(33, 13);
+            this.label3.TabIndex = 12;
+            this.label3.Text = "DNS:";
+            // 
+            // tbSecondaryDNS
+            // 
+            this.tbSecondaryDNS.AllowInternalTab = false;
+            this.tbSecondaryDNS.AutoHeight = true;
+            this.tbSecondaryDNS.BackColor = System.Drawing.SystemColors.Window;
+            this.tbSecondaryDNS.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.tbSecondaryDNS.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.tbSecondaryDNS.Location = new System.Drawing.Point(143, 3);
+            this.tbSecondaryDNS.MinimumSize = new System.Drawing.Size(87, 20);
+            this.tbSecondaryDNS.Name = "tbSecondaryDNS";
+            this.tbSecondaryDNS.ReadOnly = false;
+            this.tbSecondaryDNS.Size = new System.Drawing.Size(87, 20);
+            this.tbSecondaryDNS.TabIndex = 21;
+            this.tbSecondaryDNS.Text = "...";
+            // 
+            // cbDontResetOnDisconn
+            // 
+            this.cbDontResetOnDisconn.AutoSize = true;
+            this.cbDontResetOnDisconn.Location = new System.Drawing.Point(236, 5);
+            this.cbDontResetOnDisconn.Name = "cbDontResetOnDisconn";
+            this.cbDontResetOnDisconn.Size = new System.Drawing.Size(154, 17);
+            this.cbDontResetOnDisconn.TabIndex = 18;
+            this.cbDontResetOnDisconn.Text = "Don\'t Reset on Disconnect";
+            this.cbDontResetOnDisconn.UseVisualStyleBackColor = true;
+            // 
+            // cbRouteSplit
+            // 
+            this.cbRouteSplit.AutoSize = true;
+            this.cbRouteSplit.Location = new System.Drawing.Point(4, 4);
+            this.cbRouteSplit.Name = "cbRouteSplit";
+            this.cbRouteSplit.Size = new System.Drawing.Size(316, 17);
+            this.cbRouteSplit.TabIndex = 0;
+            this.cbRouteSplit.Text = "Don\'t Route Internet Traffic Through VPN (Not Recomended)";
+            this.cbRouteSplit.UseVisualStyleBackColor = true;
+            // 
+            // tbVPNConnWaitTime
+            // 
+            this.tbVPNConnWaitTime.Enabled = false;
+            this.tbVPNConnWaitTime.Location = new System.Drawing.Point(203, 90);
+            this.tbVPNConnWaitTime.Mask = "00";
+            this.tbVPNConnWaitTime.Name = "tbVPNConnWaitTime";
+            this.tbVPNConnWaitTime.Size = new System.Drawing.Size(28, 20);
+            this.tbVPNConnWaitTime.TabIndex = 7;
+            this.tbVPNConnWaitTime.Text = "25";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(9, 93);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(188, 13);
+            this.label6.TabIndex = 6;
+            this.label6.Text = "VPN Connect Wait Time (in Seconds):";
+            // 
             // pnlOpenVPNServer
             // 
             this.pnlOpenVPNServer.Controls.Add(this.rbCustomServer);
@@ -318,13 +488,13 @@
             // rbVPNGate
             // 
             this.rbVPNGate.AutoSize = true;
-            this.rbVPNGate.Enabled = false;
             this.rbVPNGate.Location = new System.Drawing.Point(85, 4);
             this.rbVPNGate.Name = "rbVPNGate";
             this.rbVPNGate.Size = new System.Drawing.Size(73, 17);
             this.rbVPNGate.TabIndex = 1;
             this.rbVPNGate.Text = "VPN Gate";
             this.rbVPNGate.UseVisualStyleBackColor = true;
+            this.rbVPNGate.CheckedChanged += new System.EventHandler(this.rbVPNGate_CheckedChanged);
             // 
             // rbVPNBook
             // 
@@ -463,6 +633,33 @@
             this.dgOpenApps.Size = new System.Drawing.Size(477, 195);
             this.dgOpenApps.TabIndex = 0;
             // 
+            // launchDataGridViewCheckBoxColumn
+            // 
+            this.launchDataGridViewCheckBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
+            this.launchDataGridViewCheckBoxColumn.DataPropertyName = "Launch";
+            this.launchDataGridViewCheckBoxColumn.HeaderText = "Launch";
+            this.launchDataGridViewCheckBoxColumn.Name = "launchDataGridViewCheckBoxColumn";
+            this.launchDataGridViewCheckBoxColumn.Width = 49;
+            // 
+            // closeDataGridViewCheckBoxColumn
+            // 
+            this.closeDataGridViewCheckBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
+            this.closeDataGridViewCheckBoxColumn.DataPropertyName = "Close";
+            this.closeDataGridViewCheckBoxColumn.HeaderText = "Close";
+            this.closeDataGridViewCheckBoxColumn.Name = "closeDataGridViewCheckBoxColumn";
+            this.closeDataGridViewCheckBoxColumn.Width = 39;
+            // 
+            // programDataGridViewTextBoxColumn
+            // 
+            this.programDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.programDataGridViewTextBoxColumn.DataPropertyName = "Program";
+            this.programDataGridViewTextBoxColumn.HeaderText = "Program";
+            this.programDataGridViewTextBoxColumn.Name = "programDataGridViewTextBoxColumn";
+            // 
+            // appsBindingSource
+            // 
+            this.appsBindingSource.DataSource = typeof(P2PVpn.Models.Apps);
+            // 
             // tabConnection
             // 
             this.tabConnection.AutoScroll = true;
@@ -563,6 +760,7 @@
             this.tabs.Controls.Add(this.tabConnection);
             this.tabs.Controls.Add(this.tabOpenApps);
             this.tabs.Controls.Add(this.tabSettings);
+            this.tabs.Controls.Add(this.tabVPNGate);
             this.tabs.Controls.Add(this.tabVPNBook);
             this.tabs.Controls.Add(this.tabSecurity);
             this.tabs.Controls.Add(this.tabVPNTraffic);
@@ -571,6 +769,45 @@
             this.tabs.SelectedIndex = 0;
             this.tabs.Size = new System.Drawing.Size(580, 299);
             this.tabs.TabIndex = 0;
+            this.tabs.Selected += new System.Windows.Forms.TabControlEventHandler(this.tabs_Selected);
+            // 
+            // tabVPNGate
+            // 
+            this.tabVPNGate.Controls.Add(this.lblVPNGateServerInfo);
+            this.tabVPNGate.Controls.Add(this.label7);
+            this.tabVPNGate.Controls.Add(this.cbVPNGateServer);
+            this.tabVPNGate.Location = new System.Drawing.Point(4, 22);
+            this.tabVPNGate.Name = "tabVPNGate";
+            this.tabVPNGate.Size = new System.Drawing.Size(572, 273);
+            this.tabVPNGate.TabIndex = 7;
+            this.tabVPNGate.Text = "VPN Gate";
+            this.tabVPNGate.UseVisualStyleBackColor = true;
+            // 
+            // lblVPNGateServerInfo
+            // 
+            this.lblVPNGateServerInfo.AutoSize = true;
+            this.lblVPNGateServerInfo.Location = new System.Drawing.Point(59, 50);
+            this.lblVPNGateServerInfo.Name = "lblVPNGateServerInfo";
+            this.lblVPNGateServerInfo.Size = new System.Drawing.Size(0, 13);
+            this.lblVPNGateServerInfo.TabIndex = 2;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(15, 17);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(41, 13);
+            this.label7.TabIndex = 1;
+            this.label7.Text = "Server:";
+            // 
+            // cbVPNGateServer
+            // 
+            this.cbVPNGateServer.FormattingEnabled = true;
+            this.cbVPNGateServer.Location = new System.Drawing.Point(62, 14);
+            this.cbVPNGateServer.Name = "cbVPNGateServer";
+            this.cbVPNGateServer.Size = new System.Drawing.Size(323, 21);
+            this.cbVPNGateServer.TabIndex = 0;
+            this.cbVPNGateServer.SelectedIndexChanged += new System.EventHandler(this.cbVPNGateServer_SelectedIndexChanged);
             // 
             // tabSecurity
             // 
@@ -591,6 +828,24 @@
             this.tabSecurity.TabIndex = 6;
             this.tabSecurity.Text = "Privacy";
             this.tabSecurity.UseVisualStyleBackColor = true;
+            // 
+            // lblFirewallRules
+            // 
+            this.lblFirewallRules.AutoSize = true;
+            this.lblFirewallRules.Location = new System.Drawing.Point(164, 146);
+            this.lblFirewallRules.Name = "lblFirewallRules";
+            this.lblFirewallRules.Size = new System.Drawing.Size(0, 13);
+            this.lblFirewallRules.TabIndex = 25;
+            // 
+            // btnFirewallRules
+            // 
+            this.btnFirewallRules.Location = new System.Drawing.Point(10, 141);
+            this.btnFirewallRules.Name = "btnFirewallRules";
+            this.btnFirewallRules.Size = new System.Drawing.Size(148, 23);
+            this.btnFirewallRules.TabIndex = 24;
+            this.btnFirewallRules.Text = "Add/Repair Firewall Rules";
+            this.btnFirewallRules.UseVisualStyleBackColor = true;
+            this.btnFirewallRules.Click += new System.EventHandler(this.btnFirewallRules_Click);
             // 
             // linkIPLeak
             // 
@@ -669,206 +924,6 @@
             this.linkGetTorBrowser.Text = "Download Tor Web Browser";
             this.linkGetTorBrowser.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkGetTorBrowser_LinkClicked);
             // 
-            // cbRetrieveVPNBookCredsOnLoad
-            // 
-            this.cbRetrieveVPNBookCredsOnLoad.AutoSize = true;
-            this.cbRetrieveVPNBookCredsOnLoad.Checked = true;
-            this.cbRetrieveVPNBookCredsOnLoad.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbRetrieveVPNBookCredsOnLoad.Location = new System.Drawing.Point(14, 117);
-            this.cbRetrieveVPNBookCredsOnLoad.Name = "cbRetrieveVPNBookCredsOnLoad";
-            this.cbRetrieveVPNBookCredsOnLoad.Size = new System.Drawing.Size(208, 17);
-            this.cbRetrieveVPNBookCredsOnLoad.TabIndex = 12;
-            this.cbRetrieveVPNBookCredsOnLoad.Text = "Retreive VPN Book Creds On Start Up";
-            this.cbRetrieveVPNBookCredsOnLoad.UseVisualStyleBackColor = true;
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(9, 93);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(188, 13);
-            this.label6.TabIndex = 6;
-            this.label6.Text = "VPN Connect Wait Time (in Seconds):";
-            // 
-            // tbVPNConnWaitTime
-            // 
-            this.tbVPNConnWaitTime.Enabled = false;
-            this.tbVPNConnWaitTime.Location = new System.Drawing.Point(203, 90);
-            this.tbVPNConnWaitTime.Mask = "00";
-            this.tbVPNConnWaitTime.Name = "tbVPNConnWaitTime";
-            this.tbVPNConnWaitTime.Size = new System.Drawing.Size(28, 20);
-            this.tbVPNConnWaitTime.TabIndex = 7;
-            this.tbVPNConnWaitTime.Text = "25";
-            // 
-            // pnlRoutes
-            // 
-            this.pnlRoutes.Controls.Add(this.pnlDns);
-            this.pnlRoutes.Controls.Add(this.cbRouteSplit);
-            this.pnlRoutes.Location = new System.Drawing.Point(65, 164);
-            this.pnlRoutes.Name = "pnlRoutes";
-            this.pnlRoutes.Size = new System.Drawing.Size(442, 100);
-            this.pnlRoutes.TabIndex = 8;
-            // 
-            // pnlDns
-            // 
-            this.pnlDns.Controls.Add(this.tbPrimaryDNS);
-            this.pnlDns.Controls.Add(this.pnlPublicDns);
-            this.pnlDns.Controls.Add(this.label3);
-            this.pnlDns.Controls.Add(this.tbSecondaryDNS);
-            this.pnlDns.Controls.Add(this.cbDontResetOnDisconn);
-            this.pnlDns.Enabled = false;
-            this.pnlDns.Location = new System.Drawing.Point(18, 27);
-            this.pnlDns.Name = "pnlDns";
-            this.pnlDns.Size = new System.Drawing.Size(399, 70);
-            this.pnlDns.TabIndex = 24;
-            // 
-            // tbPrimaryDNS
-            // 
-            this.tbPrimaryDNS.AllowInternalTab = false;
-            this.tbPrimaryDNS.AutoHeight = true;
-            this.tbPrimaryDNS.BackColor = System.Drawing.SystemColors.Window;
-            this.tbPrimaryDNS.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.tbPrimaryDNS.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.tbPrimaryDNS.Location = new System.Drawing.Point(49, 3);
-            this.tbPrimaryDNS.MinimumSize = new System.Drawing.Size(87, 20);
-            this.tbPrimaryDNS.Name = "tbPrimaryDNS";
-            this.tbPrimaryDNS.ReadOnly = false;
-            this.tbPrimaryDNS.Size = new System.Drawing.Size(87, 20);
-            this.tbPrimaryDNS.TabIndex = 20;
-            this.tbPrimaryDNS.Text = "...";
-            // 
-            // pnlPublicDns
-            // 
-            this.pnlPublicDns.Controls.Add(this.rbGoogleDNS);
-            this.pnlPublicDns.Controls.Add(this.rbOpenDNS);
-            this.pnlPublicDns.Controls.Add(this.rbComodoDNS);
-            this.pnlPublicDns.Location = new System.Drawing.Point(49, 28);
-            this.pnlPublicDns.Name = "pnlPublicDns";
-            this.pnlPublicDns.Size = new System.Drawing.Size(275, 27);
-            this.pnlPublicDns.TabIndex = 19;
-            // 
-            // rbGoogleDNS
-            // 
-            this.rbGoogleDNS.AutoSize = true;
-            this.rbGoogleDNS.Location = new System.Drawing.Point(11, 3);
-            this.rbGoogleDNS.Name = "rbGoogleDNS";
-            this.rbGoogleDNS.Size = new System.Drawing.Size(85, 17);
-            this.rbGoogleDNS.TabIndex = 15;
-            this.rbGoogleDNS.TabStop = true;
-            this.rbGoogleDNS.Text = "Google DNS";
-            this.rbGoogleDNS.UseVisualStyleBackColor = true;
-            // 
-            // rbOpenDNS
-            // 
-            this.rbOpenDNS.AutoSize = true;
-            this.rbOpenDNS.Location = new System.Drawing.Point(102, 3);
-            this.rbOpenDNS.Name = "rbOpenDNS";
-            this.rbOpenDNS.Size = new System.Drawing.Size(74, 17);
-            this.rbOpenDNS.TabIndex = 16;
-            this.rbOpenDNS.TabStop = true;
-            this.rbOpenDNS.Text = "OpenDNS";
-            this.rbOpenDNS.UseVisualStyleBackColor = true;
-            // 
-            // rbComodoDNS
-            // 
-            this.rbComodoDNS.AutoSize = true;
-            this.rbComodoDNS.Location = new System.Drawing.Point(182, 3);
-            this.rbComodoDNS.Name = "rbComodoDNS";
-            this.rbComodoDNS.Size = new System.Drawing.Size(90, 17);
-            this.rbComodoDNS.TabIndex = 17;
-            this.rbComodoDNS.TabStop = true;
-            this.rbComodoDNS.Text = "Comodo DNS";
-            this.rbComodoDNS.UseVisualStyleBackColor = true;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(10, 6);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(33, 13);
-            this.label3.TabIndex = 12;
-            this.label3.Text = "DNS:";
-            // 
-            // tbSecondaryDNS
-            // 
-            this.tbSecondaryDNS.AllowInternalTab = false;
-            this.tbSecondaryDNS.AutoHeight = true;
-            this.tbSecondaryDNS.BackColor = System.Drawing.SystemColors.Window;
-            this.tbSecondaryDNS.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.tbSecondaryDNS.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.tbSecondaryDNS.Location = new System.Drawing.Point(143, 3);
-            this.tbSecondaryDNS.MinimumSize = new System.Drawing.Size(87, 20);
-            this.tbSecondaryDNS.Name = "tbSecondaryDNS";
-            this.tbSecondaryDNS.ReadOnly = false;
-            this.tbSecondaryDNS.Size = new System.Drawing.Size(87, 20);
-            this.tbSecondaryDNS.TabIndex = 21;
-            this.tbSecondaryDNS.Text = "...";
-            // 
-            // cbDontResetOnDisconn
-            // 
-            this.cbDontResetOnDisconn.AutoSize = true;
-            this.cbDontResetOnDisconn.Location = new System.Drawing.Point(236, 5);
-            this.cbDontResetOnDisconn.Name = "cbDontResetOnDisconn";
-            this.cbDontResetOnDisconn.Size = new System.Drawing.Size(154, 17);
-            this.cbDontResetOnDisconn.TabIndex = 18;
-            this.cbDontResetOnDisconn.Text = "Don\'t Reset on Disconnect";
-            this.cbDontResetOnDisconn.UseVisualStyleBackColor = true;
-            // 
-            // cbRouteSplit
-            // 
-            this.cbRouteSplit.AutoSize = true;
-            this.cbRouteSplit.Location = new System.Drawing.Point(4, 4);
-            this.cbRouteSplit.Name = "cbRouteSplit";
-            this.cbRouteSplit.Size = new System.Drawing.Size(316, 17);
-            this.cbRouteSplit.TabIndex = 0;
-            this.cbRouteSplit.Text = "Don\'t Route Internet Traffic Through VPN (Not Recomended)";
-            this.cbRouteSplit.UseVisualStyleBackColor = true;
-            // 
-            // btnFirewallRules
-            // 
-            this.btnFirewallRules.Location = new System.Drawing.Point(10, 141);
-            this.btnFirewallRules.Name = "btnFirewallRules";
-            this.btnFirewallRules.Size = new System.Drawing.Size(148, 23);
-            this.btnFirewallRules.TabIndex = 24;
-            this.btnFirewallRules.Text = "Add/Repair Firewall Rules";
-            this.btnFirewallRules.UseVisualStyleBackColor = true;
-            this.btnFirewallRules.Click += new System.EventHandler(this.btnFirewallRules_Click);
-            // 
-            // launchDataGridViewCheckBoxColumn
-            // 
-            this.launchDataGridViewCheckBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
-            this.launchDataGridViewCheckBoxColumn.DataPropertyName = "Launch";
-            this.launchDataGridViewCheckBoxColumn.HeaderText = "Launch";
-            this.launchDataGridViewCheckBoxColumn.Name = "launchDataGridViewCheckBoxColumn";
-            this.launchDataGridViewCheckBoxColumn.Width = 49;
-            // 
-            // closeDataGridViewCheckBoxColumn
-            // 
-            this.closeDataGridViewCheckBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
-            this.closeDataGridViewCheckBoxColumn.DataPropertyName = "Close";
-            this.closeDataGridViewCheckBoxColumn.HeaderText = "Close";
-            this.closeDataGridViewCheckBoxColumn.Name = "closeDataGridViewCheckBoxColumn";
-            this.closeDataGridViewCheckBoxColumn.Width = 39;
-            // 
-            // programDataGridViewTextBoxColumn
-            // 
-            this.programDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.programDataGridViewTextBoxColumn.DataPropertyName = "Program";
-            this.programDataGridViewTextBoxColumn.HeaderText = "Program";
-            this.programDataGridViewTextBoxColumn.Name = "programDataGridViewTextBoxColumn";
-            // 
-            // appsBindingSource
-            // 
-            this.appsBindingSource.DataSource = typeof(P2PVpn.Models.Apps);
-            // 
-            // lblFirewallRules
-            // 
-            this.lblFirewallRules.AutoSize = true;
-            this.lblFirewallRules.Location = new System.Drawing.Point(164, 146);
-            this.lblFirewallRules.Name = "lblFirewallRules";
-            this.lblFirewallRules.Size = new System.Drawing.Size(0, 13);
-            this.lblFirewallRules.TabIndex = 25;
-            // 
             // firewallTimer
             // 
             this.firewallTimer.Enabled = true;
@@ -893,22 +948,24 @@
             this.tabVPNBook.PerformLayout();
             this.tabSettings.ResumeLayout(false);
             this.tabSettings.PerformLayout();
-            this.pnlOpenVPNServer.ResumeLayout(false);
-            this.pnlOpenVPNServer.PerformLayout();
-            this.tabOpenApps.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dgOpenApps)).EndInit();
-            this.tabConnection.ResumeLayout(false);
-            this.tabConnection.PerformLayout();
-            this.tabs.ResumeLayout(false);
-            this.tabSecurity.ResumeLayout(false);
-            this.tabSecurity.PerformLayout();
             this.pnlRoutes.ResumeLayout(false);
             this.pnlRoutes.PerformLayout();
             this.pnlDns.ResumeLayout(false);
             this.pnlDns.PerformLayout();
             this.pnlPublicDns.ResumeLayout(false);
             this.pnlPublicDns.PerformLayout();
+            this.pnlOpenVPNServer.ResumeLayout(false);
+            this.pnlOpenVPNServer.PerformLayout();
+            this.tabOpenApps.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgOpenApps)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.appsBindingSource)).EndInit();
+            this.tabConnection.ResumeLayout(false);
+            this.tabConnection.PerformLayout();
+            this.tabs.ResumeLayout(false);
+            this.tabVPNGate.ResumeLayout(false);
+            this.tabVPNGate.PerformLayout();
+            this.tabSecurity.ResumeLayout(false);
+            this.tabSecurity.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -987,6 +1044,11 @@
         private System.Windows.Forms.Button btnFirewallRules;
         private System.Windows.Forms.Label lblFirewallRules;
         private System.Windows.Forms.Timer firewallTimer;
+        private System.Windows.Forms.ToolStripStatusLabel lblOpenVPNConifg;
+        private System.Windows.Forms.TabPage tabVPNGate;
+        private System.Windows.Forms.Label lblVPNGateServerInfo;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.ComboBox cbVPNGateServer;
     }
 }
 

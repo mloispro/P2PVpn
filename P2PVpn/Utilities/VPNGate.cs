@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using P2PVpn.Models;
 
@@ -17,15 +18,31 @@ namespace P2PVpn.Utilities
         private static List<VPNGateServer> _fastestServers = new List<VPNGateServer>();
         public static string VpnGateConifg = "vpn_gate.ovpn";
         public const string VPNGateServerListUrl = @"http://www.vpngate.net/api/iphone/";
+        private static DateTime _lastDownloadTime;
 
-        public static void DownloadServerList()
+        private static void DownloadServerList()
         {
             WebClient wc = Networking.GetTorWebClient();
-
-            var doc = wc.DownloadString(VPNGateServerListUrl);
-
-            //HtmlAgilityPack.HtmlDocument document = new HtmlAgilityPack.HtmlDocument();
-            //document.LoadHtml(doc);
+            var doc = "";
+            try
+            {
+                doc = wc.DownloadString(VPNGateServerListUrl);
+                
+            }
+            catch (WebException ex)
+            {
+                try
+                {
+                    WebClient wc2 = new WebClient();
+                    doc = wc2.DownloadString(VPNGateServerListUrl);
+                }
+                catch (WebException ex2)
+                {
+                    Logging.Log("Error: Can't Connect to VPNGate, using previous servers file, if it exists");
+                    return;
+                }
+            }
+            
 
             FileStream file = null;
             if (File.Exists(ServersCSV))
@@ -44,6 +61,10 @@ namespace P2PVpn.Utilities
         }
         private static void LoadServers()
         {
+            if (_lastDownloadTime == null || _lastDownloadTime < DateTime.Now.Date.AddDays(-.5))
+            {
+                DownloadServerList();
+            }
             var csvLines = File.ReadAllLines(ServersCSV).Skip(2);
             foreach (string line in csvLines)
             {

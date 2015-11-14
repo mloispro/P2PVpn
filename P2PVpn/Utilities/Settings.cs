@@ -54,6 +54,7 @@ namespace P2PVpn.Utilities
         public VPNService VPNServer { get; set; }
         public bool RetrieveVPNBookCredsOnLoad { get; set; }
         public bool SplitRoute { get; set; }
+        public string VPNGateServerHost { get; set; }
 
         private static Settings _settings;
         

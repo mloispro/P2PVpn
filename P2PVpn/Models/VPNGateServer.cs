@@ -24,5 +24,23 @@ namespace P2PVpn.Models
         public string Operator { get; set; }
         public string Message { get; set; }
         public string OpenVPNConfigData { get; set; }
+
+        public string CountryAndHost
+        {
+            get
+            {
+                return CountryLong + " - " + HostName;
+            }
+        }
+        public override string ToString()
+        {
+            string serverInfo = string.Format("Speed: {1}{0}" +
+                                                "Uptime: {2}{0}" +
+                                                "Total Users: {3}{0}" +
+                                                "Total Traffic: {4}{0}", 
+                                            Environment.NewLine, this.Speed,
+                                            this.Uptime,this.TotalUsers,this.TotalTraffic);
+            return serverInfo;
+        }
     }
 }
