@@ -134,6 +134,7 @@ namespace P2PVpn.Utilities
                 //resolv-retry 10
                 Regex retryRegex = new Regex("resolv-retry.*");
                 p2pVPNConfigFileText = retryRegex.Replace(p2pVPNConfigFileText, "resolv-retry 10");
+                p2pVPNConfigFileText = p2pVPNConfigFileText.Replace("resolv-retry 10\n", "resolv-retry 10\r\n");
                 
 
                 if (addRouts)
