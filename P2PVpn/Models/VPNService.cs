@@ -27,5 +27,7 @@ namespace P2PVpn.Models
             set;
         }
 
+        public DateTime LastVPNGateServerListDownload { get; set; }
+
     }
 }

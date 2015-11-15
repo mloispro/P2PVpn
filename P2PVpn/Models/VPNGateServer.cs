@@ -34,12 +34,12 @@ namespace P2PVpn.Models
         }
         public override string ToString()
         {
-            string serverInfo = string.Format("Speed: {1}{0}" +
+            string serverInfo = string.Format("Speed: {1}k{0}" +
                                                 "Uptime: {2}{0}" +
                                                 "Total Users: {3}{0}" +
                                                 "Total Traffic: {4}{0}", 
-                                            Environment.NewLine, this.Speed,
-                                            this.Uptime,this.TotalUsers,this.TotalTraffic);
+                                            Environment.NewLine, this.Speed/1024,
+                                            this.Uptime, this.TotalUsers, this.TotalTraffic);
             return serverInfo;
         }
     }

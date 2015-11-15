@@ -18,7 +18,7 @@ namespace P2PVpn.Utilities
         private static List<VPNGateServer> _fastestServers = new List<VPNGateServer>();
         public static string VpnGateConifg = "vpn_gate.ovpn";
         public const string VPNGateServerListUrl = @"http://www.vpngate.net/api/iphone/";
-        private static DateTime _lastDownloadTime;
+        //private static DateTime _lastDownloadTime;
 
         private static void DownloadServerList()
         {
@@ -56,15 +56,22 @@ namespace P2PVpn.Utilities
                 using (StreamWriter sw = new StreamWriter(file))
                 {
                     sw.Write(doc);
+                    
                 }
             }
+            Settings settings = Settings.Get();
+            settings.VPNServer.LastVPNGateServerListDownload = DateTime.Now;
+            Settings.Save(settings);
         }
         private static void LoadServers()
         {
-            if (_lastDownloadTime == null || _lastDownloadTime < DateTime.Now.Date.AddDays(-.5))
+            Settings settings = Settings.Get();
+            if (settings.VPNServer.LastVPNGateServerListDownload == null ||
+                settings.VPNServer.LastVPNGateServerListDownload < DateTime.Now.AddMinutes(-30))
             {
                 DownloadServerList();
             }
+            _servers.Clear();
             var csvLines = File.ReadAllLines(ServersCSV).Skip(2);
             foreach (string line in csvLines)
             {
@@ -76,8 +83,11 @@ namespace P2PVpn.Utilities
         }
         public static List<VPNGateServer> GetFastestServers()
         {
-            if (_servers.Count == 0) LoadServers();
-            if (_fastestServers.Count > 0) return _fastestServers;
+
+            LoadServers();
+            
+            //if (_servers.Count == 0) LoadServers();
+            //if (_fastestServers.Count > 0) return _fastestServers;
 
             var fastestServers = _servers.OrderByDescending(x => x.Speed)
                 .Where(x => x.CountryShort != "US" && 
@@ -100,13 +110,16 @@ namespace P2PVpn.Utilities
             }
             else
             {
+                File.WriteAllText(config, "");
                 file = File.OpenWrite(config);
+                
             }
             using (file)
             {
                 using (StreamWriter sw = new StreamWriter(file))
                 {
                     sw.Write(server.OpenVPNConfigData);
+                    
                 }
             }
             OpenVPN.SecureConfigs();

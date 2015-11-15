@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using P2PVpn.Models;
 
@@ -68,6 +69,7 @@ namespace P2PVpn.Utilities
                 using (StreamWriter sw = new StreamWriter(localCredsFile))
                 {
                     sw.Write(contents);
+                    
                 }
                 File.Copy(localCredsFile, openVpnCredsFile, true);
             }
@@ -104,6 +106,7 @@ namespace P2PVpn.Utilities
                 using (StreamWriter sw = new StreamWriter(localCredsFile))
                 {
                     sw.Write(contents);
+                    
                 }
                 File.Copy(localCredsFile, openVpnCredsFile, true);
             }
@@ -128,14 +131,23 @@ namespace P2PVpn.Utilities
                 var cleanedConfigFileText = configFileText.Substring(0, endIndex);
                 var p2pVPNConfigFileText = cleanedConfigFileText + PopulateP2PVpnConfigData(configFile);
 
+                //resolv-retry 10
+                Regex retryRegex = new Regex("resolv-retry.*");
+                p2pVPNConfigFileText = retryRegex.Replace(p2pVPNConfigFileText, "resolv-retry 10");
+                
+
                 if (addRouts)
                 {
                     p2pVPNConfigFileText += _p2pVpnRouteSettings;
                 }
 
-                using (var sr = new StreamWriter(configFile))
+                using (var cfile = File.OpenWrite(configFile))
                 {
-                    sr.Write(p2pVPNConfigFileText);
+                    using (var sr = new StreamWriter(cfile))
+                    {
+                        sr.Write(p2pVPNConfigFileText);
+      
+                    }
                 }
                 
             }
@@ -157,6 +169,7 @@ namespace P2PVpn.Utilities
                         {
                             var credsString = "vpn" + Environment.NewLine + "vpn";
                             sw.Write(credsString);
+                           
                         }
                     }
                 }

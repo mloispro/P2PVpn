@@ -243,21 +243,28 @@ namespace P2PVpn.Utilities
             {
                 return wc;
             }
+            try
+            {
+                var proxyConfig = new ProxyConfig(
+                    //This is an internal http->socks proxy that runs in process
+                 IPAddress.Parse(Settings.BrowserProxy),
+                    //This is the port your in process http->socks proxy will run on
+                 53549,
+                    //This could be an address to a local socks proxy (ex: Tor / Tor Browser, If Tor is running it will be on 127.0.0.1)
+                 IPAddress.Parse(Settings.BrowserProxy),
+                    //This is the port that the socks proxy lives on (ex: Tor / Tor Browser, Tor is 9150)
+                 9150,
+                    //This Can be Socks4 or Socks5
+                 ProxyConfig.SocksVersion.Five
+                 );
+                var proxy = new SocksWebProxy(proxyConfig);
 
-            var proxy = new SocksWebProxy(new ProxyConfig(
-                //This is an internal http->socks proxy that runs in process
-            IPAddress.Parse(Settings.BrowserProxy),
-                //This is the port your in process http->socks proxy will run on
-            12345,
-                //This could be an address to a local socks proxy (ex: Tor / Tor Browser, If Tor is running it will be on 127.0.0.1)
-            IPAddress.Parse(Settings.BrowserProxy),
-                //This is the port that the socks proxy lives on (ex: Tor / Tor Browser, Tor is 9150)
-            9150,
-                //This Can be Socks4 or Socks5
-            ProxyConfig.SocksVersion.Five
-            ));
-
-            wc.Proxy = proxy;// new WebProxy(Settings.BrowserProxy, true);
+                wc.Proxy = proxy;// new WebProxy(Settings.BrowserProxy, true);
+            }
+            catch (Exception ex)
+            {
+                Logging.Log("Error: not able to establish Tor proxy.");
+            }
 
             return wc;
         }
