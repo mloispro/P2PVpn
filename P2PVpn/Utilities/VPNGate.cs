@@ -47,7 +47,11 @@ namespace P2PVpn.Utilities
             FileStream file = null;
             if (File.Exists(ServersCSV))
             {
-                File.Delete(ServersCSV);
+                File.WriteAllText(ServersCSV, "");
+            }
+            else
+            {
+                File.Create(ServersCSV).Close();
             }
             file = File.OpenWrite(ServersCSV);
             
@@ -67,6 +71,7 @@ namespace P2PVpn.Utilities
         {
             Settings settings = Settings.Get();
             if (settings.VPNServer.LastVPNGateServerListDownload == null ||
+                !File.Exists(ServersCSV) ||
                 settings.VPNServer.LastVPNGateServerListDownload < DateTime.Now.AddMinutes(-30))
             {
                 DownloadServerList();
