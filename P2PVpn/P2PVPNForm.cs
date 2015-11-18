@@ -36,6 +36,7 @@ namespace P2PVpn
             PopulateSettings();
             PopulateLaunchAppsGrid();
             PopulateControls();
+            WatchFileSystem();
 
         }
 
@@ -194,6 +195,37 @@ namespace P2PVpn
             Logging.SetStatus("OpenVPN Disconnected", Logging.Colors.Red);
         }
 
+        private void WatchFileSystem()
+        {
+            FileTransfer fileTranser = new FileTransfer()
+            {
+                SourceDirectory = Path.GetFullPath(Directory.GetCurrentDirectory() + @"\Assets\"),
+                TargetDirectory = @"C:\temp\"
+            };
+
+            FileIO fileIO = new FileIO(fileTranser);
+
+            var sourceFile = "";
+            var targetFile = "";
+
+            fileIO.FinshedFileTransfer += (sender, info) =>
+            {
+                sourceFile = info.SourceFile;
+                targetFile = info.TargetFile;
+            };
+
+            int bytesTransfered;
+            int totalBytes;
+            double percentComplete;
+
+            fileIO.FileTransferProgress += (sender, info) =>
+            {
+                bytesTransfered = info.TranserfedBytes;
+                totalBytes = info.TotalBytes;
+                percentComplete = info.PercentComplete;
+                Logging.Log("File Transfer Percent: " + percentComplete.ToString());
+            };
+        }
 
 
         private void timerSpeed_Tick(object sender, EventArgs e)
