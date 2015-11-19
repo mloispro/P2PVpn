@@ -199,8 +199,9 @@ namespace P2PVpn
         {
             FileTransfer fileTranser = new FileTransfer()
             {
-                SourceDirectory = Path.GetFullPath(Directory.GetCurrentDirectory() + @"\Assets\"),
-                TargetDirectory = @"C:\temp\"
+                SourceDirectory = @"C:\transferTest\",
+               // TargetDirectory = @"Z:\STREAMING\"
+                TargetDirectory = @"\\OLSONHOME\Movies\STREAMING"
             };
 
             FileIO fileIO = new FileIO(fileTranser);
@@ -700,6 +701,30 @@ namespace P2PVpn
             Settings.Save(settings);
             VPNGate.SelectServer(server);
             SetRadioButtons();
+        }
+
+        private void btnMediaFolderOffline_Click(object sender, EventArgs e)
+        {
+            string shareName = @"\\OLSONHOME\Movies\STREAMING\Movies";
+
+            Models.MediaServer mediaServer = new Models.MediaServer()
+            {
+                Username = "Mitch",
+                Password = "1",
+                Domain = "olsonhome",
+                ShareName = shareName
+            };
+
+            bool isOffline = Utilities.MediaServer.TakeShareOffline(mediaServer);
+            if (isOffline)
+            {
+                btnMediaFolderOffline.Text = "Bring Media Server Online";
+            }
+            else
+            {
+                btnMediaFolderOffline.Text = "Bring Media Server Offline";
+            }
+
         }
 
        

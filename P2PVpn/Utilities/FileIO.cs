@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Security.AccessControl;
 using System.Security.Principal;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using P2PVpn.Models;
+
 
 namespace P2PVpn.Utilities
 {
@@ -72,7 +74,7 @@ namespace P2PVpn.Utilities
 
         private void _fileSystemWatcher_Created(object sender, FileSystemEventArgs e)
         {
-            if (e.ChangeType == WatcherChangeTypes.Created)
+            if (e.ChangeType == WatcherChangeTypes.Changed)
             {
                 string sourceDir = Path.GetDirectoryName(_fileTransfer.SourceDirectory);
                 string sourceDir2 = Path.GetDirectoryName(e.FullPath);
@@ -86,7 +88,11 @@ namespace P2PVpn.Utilities
                     // if anyone has subscribed, notify them
                     if (FinshedFileTransfer != null)
                     {
+        
+                        Networking.LoginToUNCShare("Mitch", "1", "olsonhome", "olsonhome");
+
                         TransferFile(e.FullPath, targetFile);
+
                         FinshedFileTransfer(this, FinshedFileTransferInfo);
                     }
                 }
@@ -113,92 +119,48 @@ namespace P2PVpn.Utilities
             Logging.Log("File Transfer Error: " + e.GetException());
         }
 
-        /// <summary> Time the Move
-        /// </summary> 
-        /// <param name="source">Source file path</param> 
-        /// <param name="destination">Destination file path</param> 
         public void TransferFile(string source, string destination)
         {
-            Logging.Log("Transfering File: " + source);
-            DateTime start_time = DateTime.Now;
-            FastTransferFile(source, destination);
-            long size = new FileInfo(destination).Length;
-            int milliseconds = 1 + (int)((DateTime.Now - start_time).TotalMilliseconds);
-            // size time in milliseconds per hour
-            long tsize = size * 3600000 / milliseconds;
-            tsize = tsize / (int)Math.Pow(2, 30);
-            //Console.WriteLine(tsize + "GB/hour");
-            Logging.Log("Copying {0} to {1} at {2} GB/hour", source, destination, tsize);
+            Thread.Sleep(5000);
+            if (!IsFileClosed(source)) return;
+
+            
+            try
+            {
+                Logging.Log("Transfering File: " + source);
+                //File.Copy(source, destination);
+                
+                FileCopyLib.FileCopier.CopyWithProgress(source, destination,
+                    (x) => Logging.Log("Copying {0}", x.Percentage));
+
+                //return 0;
+            }
+            catch (Exception e)
+            {
+                Logging.Log("Error: File Transfer Failed {0} {1} {2}", source, Environment.NewLine, e.Message);
+                //return 1;
+            }
         }
 
-        /// <summary> Fast file move with big buffers
-        /// </summary>
-        /// <param name="source">Source file path</param> 
-        /// <param name="destination">Destination file path</param> 
-        private void FastTransferFile(string source, string destination)
+        public static bool IsFileClosed(string filename)
         {
-
-            //while (true)
-            //{
-            //    try
-            //    {
-            //        using (FileStream Fs = new FileStream(fileName, FileMode.Open, FileAccess.ReadWrite, FileShare.None, 100))
-            //        {
-            //            //the file is close
-            //            break;
-            //        }
-            //    }
-            //    catch (IOException)
-            //    {
-            //        //wait and retry
-            //        Thread.Sleep(1000);
-            //    }
-            //}
-
-            int array_length = (int)Math.Pow(2, 19);
-            byte[] dataArray = new byte[array_length];
-            while (true)
+            try
             {
-                try
+                using (var inputStream = File.Open(filename, FileMode.Open, FileAccess.Read, FileShare.None))
                 {
-                    using (FileStream fsread = new FileStream(source, FileMode.Open, FileAccess.Read, FileShare.None, array_length))
-                    {
-                        using (BinaryReader bwread = new BinaryReader(fsread))
-                        {
-                            using (FileStream fswrite = new FileStream
-                            (destination, FileMode.Create, FileAccess.Write, FileShare.None, array_length))
-                            {
-                                using (BinaryWriter bwwrite = new BinaryWriter(fswrite))
-                                {
-                                    for (; ; )
-                                    {
-                                        int read = bwread.Read(dataArray, 0, array_length);
-
-                                        FileTransferProgressEventArgs fileTransferProgressInfo =
-                                            new FileTransferProgressEventArgs(read, array_length);
-
-                                        // if anyone has subscribed, notify them
-                                        if (FileTransferProgress != null)
-                                        {
-                                            FileTransferProgress(this, fileTransferProgressInfo);
-                                        }
-
-                                        if (0 == read)
-                                            break;
-                                        bwwrite.Write(dataArray, 0, read);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-                catch (IOException)
-                {
-                    //wait and retry
-                    Thread.Sleep(1000);
+                    return true;
                 }
             }
-            File.Delete(source);
+            catch (IOException)
+            {
+                return false;
+            }
+        }
+        public static void ChangeFolderName(string folderName, string newFolderName)
+        {
+            //Networking.LoginToUNCShare("Mitch", "1", "olsonhome", "olsonhome");
+            if (folderName.Equals(newFolderName)) return;
+            Directory.Move(folderName, newFolderName);
         }
     }
 

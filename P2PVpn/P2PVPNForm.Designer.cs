@@ -106,6 +106,8 @@
             this.linkDownloadPeerBlock = new System.Windows.Forms.LinkLabel();
             this.linkGetTorBrowser = new System.Windows.Forms.LinkLabel();
             this.firewallTimer = new System.Windows.Forms.Timer(this.components);
+            this.tabMediaServer = new System.Windows.Forms.TabPage();
+            this.btnMediaFolderOffline = new System.Windows.Forms.Button();
             this.statusStrip.SuspendLayout();
             this.tabVPNTraffic.SuspendLayout();
             this.tabVPNBook.SuspendLayout();
@@ -121,6 +123,7 @@
             this.tabs.SuspendLayout();
             this.tabVPNGate.SuspendLayout();
             this.tabSecurity.SuspendLayout();
+            this.tabMediaServer.SuspendLayout();
             this.SuspendLayout();
             // 
             // timerSpeed
@@ -184,18 +187,16 @@
             // 
             // lbLog
             // 
-            this.lbLog.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lbLog.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lbLog.FormattingEnabled = true;
             this.lbLog.HorizontalScrollbar = true;
             this.lbLog.Items.AddRange(new object[] {
             "hello",
             "good"});
-            this.lbLog.Location = new System.Drawing.Point(6, 5);
+            this.lbLog.Location = new System.Drawing.Point(3, 3);
             this.lbLog.Name = "lbLog";
             this.lbLog.ScrollAlwaysVisible = true;
-            this.lbLog.Size = new System.Drawing.Size(531, 212);
+            this.lbLog.Size = new System.Drawing.Size(566, 267);
             this.lbLog.TabIndex = 0;
             // 
             // tabVPNBook
@@ -763,6 +764,7 @@
             this.tabs.Controls.Add(this.tabVPNGate);
             this.tabs.Controls.Add(this.tabVPNBook);
             this.tabs.Controls.Add(this.tabSecurity);
+            this.tabs.Controls.Add(this.tabMediaServer);
             this.tabs.Controls.Add(this.tabVPNTraffic);
             this.tabs.Location = new System.Drawing.Point(12, 12);
             this.tabs.Name = "tabs";
@@ -930,6 +932,27 @@
             this.firewallTimer.Interval = 20000;
             this.firewallTimer.Tick += new System.EventHandler(this.firewallTimer_Tick);
             // 
+            // tabMediaServer
+            // 
+            this.tabMediaServer.Controls.Add(this.btnMediaFolderOffline);
+            this.tabMediaServer.Location = new System.Drawing.Point(4, 22);
+            this.tabMediaServer.Name = "tabMediaServer";
+            this.tabMediaServer.Padding = new System.Windows.Forms.Padding(3);
+            this.tabMediaServer.Size = new System.Drawing.Size(572, 273);
+            this.tabMediaServer.TabIndex = 8;
+            this.tabMediaServer.Text = "Media Server";
+            this.tabMediaServer.UseVisualStyleBackColor = true;
+            // 
+            // btnMediaFolderOffline
+            // 
+            this.btnMediaFolderOffline.Location = new System.Drawing.Point(6, 124);
+            this.btnMediaFolderOffline.Name = "btnMediaFolderOffline";
+            this.btnMediaFolderOffline.Size = new System.Drawing.Size(190, 23);
+            this.btnMediaFolderOffline.TabIndex = 0;
+            this.btnMediaFolderOffline.Text = "Bring Media Folder Offline";
+            this.btnMediaFolderOffline.UseVisualStyleBackColor = true;
+            this.btnMediaFolderOffline.Click += new System.EventHandler(this.btnMediaFolderOffline_Click);
+            // 
             // P2PVPNForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -966,6 +989,7 @@
             this.tabVPNGate.PerformLayout();
             this.tabSecurity.ResumeLayout(false);
             this.tabSecurity.PerformLayout();
+            this.tabMediaServer.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1049,6 +1073,8 @@
         private System.Windows.Forms.Label lblVPNGateServerInfo;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.ComboBox cbVPNGateServer;
+        private System.Windows.Forms.TabPage tabMediaServer;
+        private System.Windows.Forms.Button btnMediaFolderOffline;
     }
 }
 

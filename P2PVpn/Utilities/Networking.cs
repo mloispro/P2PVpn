@@ -471,6 +471,13 @@ namespace P2PVpn.Utilities
             if (isVpnAdapter) NetworkAdapter.OpenVpnAdapter = adapter;
             return isVpnAdapter;
         }
+        public static void LoginToUNCShare(string username, string password, string domain, string share)
+        {
+            NetworkCredential theNetworkCredential = new NetworkCredential(username, password, domain);
+            CredentialCache theNetCache = new CredentialCache();
+
+            theNetCache.Add(new Uri(@"\\" + share), "Basic", theNetworkCredential);
+        }
         public void ShowNetworkTraffic()
         {
             //PerformanceCounterCategory performanceCounterCategory = new PerformanceCounterCategory("Network Interface");

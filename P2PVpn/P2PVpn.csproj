@@ -38,6 +38,9 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FileCopyLib">
+      <HintPath>..\packages\FileCopyLib.1.1.0.0\lib\net45\FileCopyLib.dll</HintPath>
+    </Reference>
     <Reference Include="Fizzler, Version=0.1.15619.0, Culture=neutral, PublicKeyToken=4ebff4844e382110, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Fizzler.1.0.0\lib\net35\Fizzler.dll</HintPath>
@@ -97,6 +100,7 @@
   <ItemGroup>
     <Compile Include="Models\Apps.cs" />
     <Compile Include="Models\FileTransfer.cs" />
+    <Compile Include="Models\MediaServer.cs" />
     <Compile Include="Models\NetworkAdapter.cs" />
     <Compile Include="Models\VPNGateServer.cs" />
     <Compile Include="Models\VPNService.cs" />
@@ -119,6 +123,7 @@
     <Compile Include="Utilities\DataPropertyName.cs" />
     <Compile Include="Utilities\FileIO.cs" />
     <Compile Include="Utilities\Logging.cs" />
+    <Compile Include="Utilities\MediaServer.cs" />
     <Compile Include="Utilities\Networking.cs" />
     <Compile Include="Utilities\OpenVPN.cs" />
     <Compile Include="Utilities\Settings.cs" />
