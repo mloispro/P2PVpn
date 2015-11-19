@@ -12,29 +12,29 @@ namespace P2PVpn.Tests
         [TestMethod]
         public void TransferFileTest()
         {
-            FileTransfer fileTranser = new FileTransfer()
-            {
-                SourceDirectory = Path.GetFullPath(Directory.GetCurrentDirectory() + @"\Assets\"),
-                TargetDirectory = @"C:\Temp"
-            };
+            //FileTransfer fileTranser = new FileTransfer()
+            //{
+            //    SourceDirectory = Path.GetFullPath(Directory.GetCurrentDirectory() + @"\Assets\"),
+            //    TargetDirectory = @"C:\Temp"
+            //};
 
-            FileIO fileIO = new FileIO(fileTranser);
+            //FileIO fileIO = new FileIO(fileTranser);
 
-            //_entryValidator.OnInvalidEntry += delegate { eventRaised = true; };
+            ////_entryValidator.OnInvalidEntry += delegate { eventRaised = true; };
 
-            //Assert.IsFalse(_entryValidator.IsValidEntry(_selectedEntry, _selectedEntry.Ticker));
-            //Assert.IsTrue(eventRaised);
+            ////Assert.IsFalse(_entryValidator.IsValidEntry(_selectedEntry, _selectedEntry.Ticker));
+            ////Assert.IsTrue(eventRaised);
 
-            //EventHandler handler = (s, e) => MessageBox.Show("Woho");
+            ////EventHandler handler = (s, e) => MessageBox.Show("Woho");
 
-            var sourceFile = "";
-            var targetFile= "";
+            //var sourceFile = "";
+            //var targetFile= "";
 
-            fileIO.FinshedFileTransfer += (sender, info) =>
-            {
-                sourceFile = info.SourceFile;
-                targetFile = info.TargetFile;
-            };
+            //fileIO.FinshedFileTransfer += (sender, info) =>
+            //{
+            //    sourceFile = info.SourceFile;
+            //    targetFile = info.TargetFile;
+            //};
             //var threadTest = new ThreadRunner();
             //var finished = new ManualResetEvent(false);
             //threadTest.Finished += delegate(object sender, EventArgs e)

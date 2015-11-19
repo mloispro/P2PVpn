@@ -55,8 +55,12 @@ namespace P2PVpn.Utilities
         public bool RetrieveVPNBookCredsOnLoad { get; set; }
         public bool SplitRoute { get; set; }
         public string VPNGateServerHost { get; set; }
+        public FileTransfer MediaFileTransfer { get; set; }
+        public Models.MediaServer MediaServer { get; set; }
 
         private static Settings _settings;
+
+        
         
         public static Settings Get()
         {
@@ -76,6 +80,14 @@ namespace P2PVpn.Utilities
             {
                 _settings.VPNServer = new VPNService() { VPNBook = true };
                 _settings.RetrieveVPNBookCredsOnLoad = true;
+            }
+            if (_settings.MediaFileTransfer == null)
+            {
+                _settings.MediaFileTransfer = new FileTransfer();
+            }
+            if (_settings.MediaServer == null)
+            {
+                _settings.MediaServer = new Models.MediaServer();
             }
 
             return _settings;

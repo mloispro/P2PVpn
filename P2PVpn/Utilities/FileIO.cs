@@ -20,6 +20,7 @@ namespace P2PVpn.Utilities
 
         private FileTransfer _fileTransfer;
         private FileTransfer _fileTransfer2;
+        private Models.MediaServer _mediaServer;
 
         // the delegate the subscribers must implement
         public delegate void FinshedFileTransferHandler(object sender,
@@ -35,9 +36,10 @@ namespace P2PVpn.Utilities
         // an instance of the delegate
         public FileTransferProgressHandler FileTransferProgress;
 
-        public FileIO(FileTransfer fileTransfer)
+        public FileIO(FileTransfer fileTransfer, Models.MediaServer mediaServer)
         {
             _fileTransfer = fileTransfer;
+            _mediaServer = mediaServer;
 
             //var di = new DirectoryInfo(Path.GetDirectoryName(fileTransfer.TargetDirectory));
             //di.Attributes = FileAttributes.Normal;
@@ -45,13 +47,16 @@ namespace P2PVpn.Utilities
             //DirectorySecurity ds = Directory.GetAccessControl(Path.GetDirectoryName(fileTransfer.TargetDirectory));
             //ds.AddAccessRule(new FileSystemAccessRule(WindowsIdentity.GetCurrent().Name, FileSystemRights.FullControl, AccessControlType.Allow));
             //Directory.SetAccessControl(Path.GetDirectoryName(fileTransfer.TargetDirectory), ds);
+  
+            _fileSystemWatcher.Changed += _fileSystemWatcher_Created;
+            _fileSystemWatcher.Error += _fileSystemWatcher_Error;
 
             _fileSystemWatcher = new FileSystemWatcher(fileTransfer.SourceDirectory);
             //_fileSystemWatcher.WaitForChanged(WatcherChangeTypes.Created);
             _fileSystemWatcher.NotifyFilter = NotifyFilters.LastAccess | NotifyFilters.LastWrite
                                                 | NotifyFilters.FileName | NotifyFilters.DirectoryName;
             _fileSystemWatcher.Filter = "*.*";
-            _fileSystemWatcher.Created += _fileSystemWatcher_Created;
+            //_fileSystemWatcher.Created += _fileSystemWatcher_Created;
             _fileSystemWatcher.Changed += _fileSystemWatcher_Created;
             _fileSystemWatcher.Error += _fileSystemWatcher_Error;
             //_fileSystemWatcher.NotifyFilter = NotifyFilters.LastWrite;
@@ -59,25 +64,25 @@ namespace P2PVpn.Utilities
             _fileSystemWatcher.EnableRaisingEvents = true;
         }
 
-        public FileIO(FileTransfer fileTransfer, FileTransfer fileTransfer2)
-            : this(fileTransfer)
-        {
-            _fileTransfer2 = fileTransfer2;
-            _fileSystemWatcher2 = new FileSystemWatcher(fileTransfer2.SourceDirectory);
-            _fileSystemWatcher2.Created += _fileSystemWatcher_Created;
-            _fileSystemWatcher2.Error += _fileSystemWatcher_Error;
-            _fileSystemWatcher2.NotifyFilter = NotifyFilters.LastWrite;
-            _fileSystemWatcher2.Filter = "*.*";
-            _fileSystemWatcher2.EnableRaisingEvents = true;
-        }
+        //public FileIO(FileTransfer fileTransfer, FileTransfer fileTransfer2)
+        //    : this(fileTransfer)
+        //{
+        //    _fileTransfer2 = fileTransfer2;
+        //    _fileSystemWatcher2 = new FileSystemWatcher(fileTransfer2.SourceDirectory);
+        //    _fileSystemWatcher2.Created += _fileSystemWatcher_Created;
+        //    _fileSystemWatcher2.Error += _fileSystemWatcher_Error;
+        //    _fileSystemWatcher2.NotifyFilter = NotifyFilters.LastWrite;
+        //    _fileSystemWatcher2.Filter = "*.*";
+        //    _fileSystemWatcher2.EnableRaisingEvents = true;
+        //}
 
 
         private void _fileSystemWatcher_Created(object sender, FileSystemEventArgs e)
         {
             if (e.ChangeType == WatcherChangeTypes.Changed)
             {
-                string sourceDir = Path.GetDirectoryName(_fileTransfer.SourceDirectory);
-                string sourceDir2 = Path.GetDirectoryName(e.FullPath);
+                string sourceDir = EnsureDirectoryTrialingSlash(_fileTransfer.SourceDirectory);
+                string sourceDir2 = EnsureDirectoryTrialingSlash(Path.GetDirectoryName(e.FullPath));
 
                 if (sourceDir == sourceDir2)
                 {
@@ -88,28 +93,15 @@ namespace P2PVpn.Utilities
                     // if anyone has subscribed, notify them
                     if (FinshedFileTransfer != null)
                     {
-        
-                        Networking.LoginToUNCShare("Mitch", "1", "olsonhome", "olsonhome");
+
+                        MediaServer.LoginToMediaShare(_mediaServer);
 
                         TransferFile(e.FullPath, targetFile);
 
                         FinshedFileTransfer(this, FinshedFileTransferInfo);
                     }
                 }
-                else if (sourceDir == sourceDir2)
-                {
-                    string targetFile = Path.Combine(_fileTransfer.TargetDirectory, e.Name);
-
-                    FinshedFileTransferEventArgs FinshedFileTransferInfo =
-                        new FinshedFileTransferEventArgs(e.FullPath, targetFile);
-
-                    // if anyone has subscribed, notify them
-                    if (FinshedFileTransfer != null)
-                    {
-                        TransferFile(e.FullPath, targetFile);
-                        FinshedFileTransfer(this, FinshedFileTransferInfo);
-                    }
-                }
+              
 
             }
         }
@@ -118,7 +110,12 @@ namespace P2PVpn.Utilities
         {
             Logging.Log("File Transfer Error: " + e.GetException());
         }
-
+        public string EnsureDirectoryTrialingSlash(string filePath)
+        {
+            filePath = filePath.TrimEnd(@"\".ToCharArray());
+            filePath += @"\";
+            return Path.GetDirectoryName(filePath) + @"\";
+        }
         public void TransferFile(string source, string destination)
         {
             Thread.Sleep(5000);

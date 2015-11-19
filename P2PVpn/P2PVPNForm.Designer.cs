@@ -77,10 +77,6 @@
             this.btnMoveAppUp = new System.Windows.Forms.Button();
             this.btnSaveApps = new System.Windows.Forms.Button();
             this.dgOpenApps = new System.Windows.Forms.DataGridView();
-            this.launchDataGridViewCheckBoxColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.closeDataGridViewCheckBoxColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.programDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.appsBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.tabConnection = new System.Windows.Forms.TabPage();
             this.label4 = new System.Windows.Forms.Label();
             this.lblConnectionStatus = new System.Windows.Forms.Label();
@@ -105,9 +101,31 @@
             this.linkDownloadOpenVPN = new System.Windows.Forms.LinkLabel();
             this.linkDownloadPeerBlock = new System.Windows.Forms.LinkLabel();
             this.linkGetTorBrowser = new System.Windows.Forms.LinkLabel();
-            this.firewallTimer = new System.Windows.Forms.Timer(this.components);
             this.tabMediaServer = new System.Windows.Forms.TabPage();
+            this.picParentalControls = new System.Windows.Forms.PictureBox();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.lblMediaNetworkShare = new System.Windows.Forms.Label();
+            this.btnMediaNetworkShare = new System.Windows.Forms.Button();
             this.btnMediaFolderOffline = new System.Windows.Forms.Button();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.lblMediaDestination = new System.Windows.Forms.Label();
+            this.lblMediaSource = new System.Windows.Forms.Label();
+            this.btnMediaSource = new System.Windows.Forms.Button();
+            this.btnMediaTarget = new System.Windows.Forms.Button();
+            this.tbMediaDomain = new System.Windows.Forms.TextBox();
+            this.tbMediaPassword = new System.Windows.Forms.TextBox();
+            this.tbMediaUsername = new System.Windows.Forms.TextBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.lblMediaUsername = new System.Windows.Forms.Label();
+            this.firewallTimer = new System.Windows.Forms.Timer(this.components);
+            this.openMediaDestFolderBrowser = new System.Windows.Forms.FolderBrowserDialog();
+            this.toolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.lblMediaCopyProgress = new System.Windows.Forms.Label();
+            this.launchDataGridViewCheckBoxColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.closeDataGridViewCheckBoxColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.programDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.appsBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.statusStrip.SuspendLayout();
             this.tabVPNTraffic.SuspendLayout();
             this.tabVPNBook.SuspendLayout();
@@ -118,12 +136,15 @@
             this.pnlOpenVPNServer.SuspendLayout();
             this.tabOpenApps.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgOpenApps)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.appsBindingSource)).BeginInit();
             this.tabConnection.SuspendLayout();
             this.tabs.SuspendLayout();
             this.tabVPNGate.SuspendLayout();
             this.tabSecurity.SuspendLayout();
             this.tabMediaServer.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picParentalControls)).BeginInit();
+            this.groupBox2.SuspendLayout();
+            this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.appsBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // timerSpeed
@@ -634,33 +655,6 @@
             this.dgOpenApps.Size = new System.Drawing.Size(477, 195);
             this.dgOpenApps.TabIndex = 0;
             // 
-            // launchDataGridViewCheckBoxColumn
-            // 
-            this.launchDataGridViewCheckBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
-            this.launchDataGridViewCheckBoxColumn.DataPropertyName = "Launch";
-            this.launchDataGridViewCheckBoxColumn.HeaderText = "Launch";
-            this.launchDataGridViewCheckBoxColumn.Name = "launchDataGridViewCheckBoxColumn";
-            this.launchDataGridViewCheckBoxColumn.Width = 49;
-            // 
-            // closeDataGridViewCheckBoxColumn
-            // 
-            this.closeDataGridViewCheckBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
-            this.closeDataGridViewCheckBoxColumn.DataPropertyName = "Close";
-            this.closeDataGridViewCheckBoxColumn.HeaderText = "Close";
-            this.closeDataGridViewCheckBoxColumn.Name = "closeDataGridViewCheckBoxColumn";
-            this.closeDataGridViewCheckBoxColumn.Width = 39;
-            // 
-            // programDataGridViewTextBoxColumn
-            // 
-            this.programDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.programDataGridViewTextBoxColumn.DataPropertyName = "Program";
-            this.programDataGridViewTextBoxColumn.HeaderText = "Program";
-            this.programDataGridViewTextBoxColumn.Name = "programDataGridViewTextBoxColumn";
-            // 
-            // appsBindingSource
-            // 
-            this.appsBindingSource.DataSource = typeof(P2PVpn.Models.Apps);
-            // 
             // tabConnection
             // 
             this.tabConnection.AutoScroll = true;
@@ -926,15 +920,17 @@
             this.linkGetTorBrowser.Text = "Download Tor Web Browser";
             this.linkGetTorBrowser.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkGetTorBrowser_LinkClicked);
             // 
-            // firewallTimer
-            // 
-            this.firewallTimer.Enabled = true;
-            this.firewallTimer.Interval = 20000;
-            this.firewallTimer.Tick += new System.EventHandler(this.firewallTimer_Tick);
-            // 
             // tabMediaServer
             // 
-            this.tabMediaServer.Controls.Add(this.btnMediaFolderOffline);
+            this.tabMediaServer.Controls.Add(this.picParentalControls);
+            this.tabMediaServer.Controls.Add(this.groupBox2);
+            this.tabMediaServer.Controls.Add(this.groupBox1);
+            this.tabMediaServer.Controls.Add(this.tbMediaDomain);
+            this.tabMediaServer.Controls.Add(this.tbMediaPassword);
+            this.tabMediaServer.Controls.Add(this.tbMediaUsername);
+            this.tabMediaServer.Controls.Add(this.label9);
+            this.tabMediaServer.Controls.Add(this.label8);
+            this.tabMediaServer.Controls.Add(this.lblMediaUsername);
             this.tabMediaServer.Location = new System.Drawing.Point(4, 22);
             this.tabMediaServer.Name = "tabMediaServer";
             this.tabMediaServer.Padding = new System.Windows.Forms.Padding(3);
@@ -943,15 +939,210 @@
             this.tabMediaServer.Text = "Media Server";
             this.tabMediaServer.UseVisualStyleBackColor = true;
             // 
+            // picParentalControls
+            // 
+            this.picParentalControls.Image = global::P2PVpn.Properties.Resources.Stop_red1;
+            this.picParentalControls.Location = new System.Drawing.Point(437, 17);
+            this.picParentalControls.Name = "picParentalControls";
+            this.picParentalControls.Size = new System.Drawing.Size(79, 72);
+            this.picParentalControls.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.picParentalControls.TabIndex = 13;
+            this.picParentalControls.TabStop = false;
+            this.toolTip.SetToolTip(this.picParentalControls, "Media Share is Online (Parental Controls are off)");
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.lblMediaNetworkShare);
+            this.groupBox2.Controls.Add(this.btnMediaNetworkShare);
+            this.groupBox2.Controls.Add(this.btnMediaFolderOffline);
+            this.groupBox2.Location = new System.Drawing.Point(6, 101);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(560, 51);
+            this.groupBox2.TabIndex = 12;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Parental Controls";
+            // 
+            // lblMediaNetworkShare
+            // 
+            this.lblMediaNetworkShare.AutoSize = true;
+            this.lblMediaNetworkShare.Location = new System.Drawing.Point(100, 24);
+            this.lblMediaNetworkShare.Name = "lblMediaNetworkShare";
+            this.lblMediaNetworkShare.Size = new System.Drawing.Size(43, 13);
+            this.lblMediaNetworkShare.TabIndex = 12;
+            this.lblMediaNetworkShare.Text = "Not Set";
+            // 
+            // btnMediaNetworkShare
+            // 
+            this.btnMediaNetworkShare.Location = new System.Drawing.Point(6, 19);
+            this.btnMediaNetworkShare.Name = "btnMediaNetworkShare";
+            this.btnMediaNetworkShare.Size = new System.Drawing.Size(88, 23);
+            this.btnMediaNetworkShare.TabIndex = 11;
+            this.btnMediaNetworkShare.Text = "Network Share";
+            this.btnMediaNetworkShare.UseVisualStyleBackColor = true;
+            this.btnMediaNetworkShare.Click += new System.EventHandler(this.btnMediaNetworkShare_Click);
+            // 
             // btnMediaFolderOffline
             // 
-            this.btnMediaFolderOffline.Location = new System.Drawing.Point(6, 124);
+            this.btnMediaFolderOffline.Image = ((System.Drawing.Image)(resources.GetObject("btnMediaFolderOffline.Image")));
+            this.btnMediaFolderOffline.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnMediaFolderOffline.Location = new System.Drawing.Point(402, 13);
             this.btnMediaFolderOffline.Name = "btnMediaFolderOffline";
-            this.btnMediaFolderOffline.Size = new System.Drawing.Size(190, 23);
+            this.btnMediaFolderOffline.Size = new System.Drawing.Size(152, 29);
             this.btnMediaFolderOffline.TabIndex = 0;
-            this.btnMediaFolderOffline.Text = "Bring Media Folder Offline";
+            this.btnMediaFolderOffline.Text = "Bring Media Share Offline";
+            this.btnMediaFolderOffline.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnMediaFolderOffline.UseVisualStyleBackColor = true;
             this.btnMediaFolderOffline.Click += new System.EventHandler(this.btnMediaFolderOffline_Click);
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.lblMediaCopyProgress);
+            this.groupBox1.Controls.Add(this.lblMediaDestination);
+            this.groupBox1.Controls.Add(this.lblMediaSource);
+            this.groupBox1.Controls.Add(this.btnMediaSource);
+            this.groupBox1.Controls.Add(this.btnMediaTarget);
+            this.groupBox1.Location = new System.Drawing.Point(6, 158);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(560, 95);
+            this.groupBox1.TabIndex = 11;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Copy Files";
+            // 
+            // lblMediaDestination
+            // 
+            this.lblMediaDestination.AutoSize = true;
+            this.lblMediaDestination.Location = new System.Drawing.Point(388, 24);
+            this.lblMediaDestination.Name = "lblMediaDestination";
+            this.lblMediaDestination.Size = new System.Drawing.Size(43, 13);
+            this.lblMediaDestination.TabIndex = 13;
+            this.lblMediaDestination.Text = "Not Set";
+            // 
+            // lblMediaSource
+            // 
+            this.lblMediaSource.AutoSize = true;
+            this.lblMediaSource.Location = new System.Drawing.Point(112, 24);
+            this.lblMediaSource.Name = "lblMediaSource";
+            this.lblMediaSource.Size = new System.Drawing.Size(43, 13);
+            this.lblMediaSource.TabIndex = 13;
+            this.lblMediaSource.Text = "Not Set";
+            // 
+            // btnMediaSource
+            // 
+            this.btnMediaSource.Location = new System.Drawing.Point(6, 19);
+            this.btnMediaSource.Name = "btnMediaSource";
+            this.btnMediaSource.Size = new System.Drawing.Size(100, 23);
+            this.btnMediaSource.TabIndex = 10;
+            this.btnMediaSource.Text = "Media Source";
+            this.btnMediaSource.UseVisualStyleBackColor = true;
+            this.btnMediaSource.Click += new System.EventHandler(this.btnMediaSource_Click);
+            // 
+            // btnMediaTarget
+            // 
+            this.btnMediaTarget.Location = new System.Drawing.Point(282, 19);
+            this.btnMediaTarget.Name = "btnMediaTarget";
+            this.btnMediaTarget.Size = new System.Drawing.Size(100, 23);
+            this.btnMediaTarget.TabIndex = 9;
+            this.btnMediaTarget.Text = "Media Destination";
+            this.btnMediaTarget.UseVisualStyleBackColor = true;
+            this.btnMediaTarget.Click += new System.EventHandler(this.btnMediaTarget_Click);
+            // 
+            // tbMediaDomain
+            // 
+            this.tbMediaDomain.Location = new System.Drawing.Point(96, 69);
+            this.tbMediaDomain.Name = "tbMediaDomain";
+            this.tbMediaDomain.Size = new System.Drawing.Size(100, 20);
+            this.tbMediaDomain.TabIndex = 7;
+            this.tbMediaDomain.Leave += new System.EventHandler(this.tbMediaDomain_Leave);
+            // 
+            // tbMediaPassword
+            // 
+            this.tbMediaPassword.Location = new System.Drawing.Point(96, 43);
+            this.tbMediaPassword.Name = "tbMediaPassword";
+            this.tbMediaPassword.PasswordChar = '*';
+            this.tbMediaPassword.Size = new System.Drawing.Size(100, 20);
+            this.tbMediaPassword.TabIndex = 6;
+            this.tbMediaPassword.Leave += new System.EventHandler(this.tbMediaPassword_Leave);
+            // 
+            // tbMediaUsername
+            // 
+            this.tbMediaUsername.Location = new System.Drawing.Point(96, 17);
+            this.tbMediaUsername.Name = "tbMediaUsername";
+            this.tbMediaUsername.Size = new System.Drawing.Size(100, 20);
+            this.tbMediaUsername.TabIndex = 5;
+            this.tbMediaUsername.Leave += new System.EventHandler(this.tbMediaUsername_Leave);
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(44, 69);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(46, 13);
+            this.label9.TabIndex = 3;
+            this.label9.Text = "Domain:";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(34, 43);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(56, 13);
+            this.label8.TabIndex = 2;
+            this.label8.Text = "Password:";
+            // 
+            // lblMediaUsername
+            // 
+            this.lblMediaUsername.AutoSize = true;
+            this.lblMediaUsername.Location = new System.Drawing.Point(32, 17);
+            this.lblMediaUsername.Name = "lblMediaUsername";
+            this.lblMediaUsername.Size = new System.Drawing.Size(58, 13);
+            this.lblMediaUsername.TabIndex = 1;
+            this.lblMediaUsername.Text = "Username:";
+            // 
+            // firewallTimer
+            // 
+            this.firewallTimer.Enabled = true;
+            this.firewallTimer.Interval = 20000;
+            this.firewallTimer.Tick += new System.EventHandler(this.firewallTimer_Tick);
+            // 
+            // toolTip
+            // 
+            this.toolTip.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
+            // 
+            // lblMediaCopyProgress
+            // 
+            this.lblMediaCopyProgress.AutoSize = true;
+            this.lblMediaCopyProgress.Location = new System.Drawing.Point(7, 49);
+            this.lblMediaCopyProgress.Name = "lblMediaCopyProgress";
+            this.lblMediaCopyProgress.Size = new System.Drawing.Size(111, 13);
+            this.lblMediaCopyProgress.TabIndex = 14;
+            this.lblMediaCopyProgress.Text = "lblMediaCopyProgress";
+            // 
+            // launchDataGridViewCheckBoxColumn
+            // 
+            this.launchDataGridViewCheckBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
+            this.launchDataGridViewCheckBoxColumn.DataPropertyName = "Launch";
+            this.launchDataGridViewCheckBoxColumn.HeaderText = "Launch";
+            this.launchDataGridViewCheckBoxColumn.Name = "launchDataGridViewCheckBoxColumn";
+            this.launchDataGridViewCheckBoxColumn.Width = 49;
+            // 
+            // closeDataGridViewCheckBoxColumn
+            // 
+            this.closeDataGridViewCheckBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
+            this.closeDataGridViewCheckBoxColumn.DataPropertyName = "Close";
+            this.closeDataGridViewCheckBoxColumn.HeaderText = "Close";
+            this.closeDataGridViewCheckBoxColumn.Name = "closeDataGridViewCheckBoxColumn";
+            this.closeDataGridViewCheckBoxColumn.Width = 39;
+            // 
+            // programDataGridViewTextBoxColumn
+            // 
+            this.programDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.programDataGridViewTextBoxColumn.DataPropertyName = "Program";
+            this.programDataGridViewTextBoxColumn.HeaderText = "Program";
+            this.programDataGridViewTextBoxColumn.Name = "programDataGridViewTextBoxColumn";
+            // 
+            // appsBindingSource
+            // 
+            this.appsBindingSource.DataSource = typeof(P2PVpn.Models.Apps);
             // 
             // P2PVPNForm
             // 
@@ -981,7 +1172,6 @@
             this.pnlOpenVPNServer.PerformLayout();
             this.tabOpenApps.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgOpenApps)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.appsBindingSource)).EndInit();
             this.tabConnection.ResumeLayout(false);
             this.tabConnection.PerformLayout();
             this.tabs.ResumeLayout(false);
@@ -990,6 +1180,13 @@
             this.tabSecurity.ResumeLayout(false);
             this.tabSecurity.PerformLayout();
             this.tabMediaServer.ResumeLayout(false);
+            this.tabMediaServer.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picParentalControls)).EndInit();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.appsBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1075,6 +1272,24 @@
         private System.Windows.Forms.ComboBox cbVPNGateServer;
         private System.Windows.Forms.TabPage tabMediaServer;
         private System.Windows.Forms.Button btnMediaFolderOffline;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label lblMediaUsername;
+        private System.Windows.Forms.Button btnMediaTarget;
+        private System.Windows.Forms.TextBox tbMediaDomain;
+        private System.Windows.Forms.TextBox tbMediaPassword;
+        private System.Windows.Forms.TextBox tbMediaUsername;
+        private System.Windows.Forms.FolderBrowserDialog openMediaDestFolderBrowser;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.PictureBox picParentalControls;
+        private System.Windows.Forms.Label lblMediaNetworkShare;
+        private System.Windows.Forms.Button btnMediaNetworkShare;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.Label lblMediaDestination;
+        private System.Windows.Forms.Label lblMediaSource;
+        private System.Windows.Forms.Button btnMediaSource;
+        private System.Windows.Forms.ToolTip toolTip;
+        private System.Windows.Forms.Label lblMediaCopyProgress;
     }
 }
 

@@ -117,4 +117,713 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="Arrow-turn-right" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\32\Arrow-turn-right.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Backup-restore" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\32\Backup-restore.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Bar-chart" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\32\Bar-chart.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Clockwise-arrow" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\32\Clockwise-arrow.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Comment" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\32\Comment.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Comment-add" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\32\Comment-add.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Comment--delete" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\32\Comment--delete.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Counterclockwise-arrow" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\32\Counterclockwise-arrow.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Custom-reports" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\32\Custom-reports.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Downleft" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\32\Downleft.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Downright" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\32\Downright.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Eye" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\32\Eye.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Flag1-blue" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\32\Flag1-blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Flag1-green" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\32\Flag1-green.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Flag1-orange" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\32\Flag1-orange.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Flag-blue" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\32\Flag-blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Flag-green" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\32\Flag-green.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Flag-orange" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\32\Flag-orange.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Flag-red" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\32\Flag-red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Generate-keys" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\32\Generate-keys.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Generate-tables" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\32\Generate-tables.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Import-export" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\32\Import-export.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Iphone" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\32\Iphone.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Line-chart" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\32\Line-chart.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Login" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\32\Login.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Logout" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\32\Logout.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Mobile" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\32\Mobile.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Monitoring" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\32\Monitoring.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Pie-chart" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\32\Pie-chart.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Pin-green" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\32\Pin-green.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Pin-red" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\32\Pin-red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Polls" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\32\Polls.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Printer-blue" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\32\Printer-blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Printer-green" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\32\Printer-green.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Printer-orange" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\32\Printer-orange.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Prohibit" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\32\Prohibit.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Puzzle" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\32\Puzzle.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Question-type-drag-drop" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\32\Question-type-drag-drop.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Question-type-multiple-correct" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\32\Question-type-multiple-correct.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Question-type-one-correct" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\32\Question-type-one-correct.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Question-type-true-false" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\32\Question-type-true-false.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Save" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\32\Save.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Save-as" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\32\Save-as.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Start" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\32\Start.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Stop" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\32\Stop.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Stop-red" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\32\Stop-red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Surveys" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\32\Surveys.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Tests" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\32\Tests.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Themes" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\32\Themes.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Undo" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\32\Undo.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Unit" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\32\Unit.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Unit-completed" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\32\Unit-completed.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Upleft" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\32\Upleft.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Upright" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\32\Upright.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Warning" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\32\Warning.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Wizard" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\32\Wizard.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Xml-tool" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\32\Xml-tool.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Accept" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\32\Accept.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Arrow-turn-left" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\32\Arrow-turn-left.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Accept1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\128\Accept.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Arrow-turn-left1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\128\Arrow-turn-left.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Arrow-turn-right1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\128\Arrow-turn-right.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Backup-restore1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\128\Backup-restore.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Bar-chart1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\128\Bar-chart.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Clockwise-arrow1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\128\Clockwise-arrow.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Comment1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\128\Comment.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Comment-add1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\128\Comment-add.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Comment--delete1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\128\Comment--delete.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Counterclockwise-arrow1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\128\Counterclockwise-arrow.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Custom-reports1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\128\Custom-reports.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Downleft1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\128\Downleft.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Downright1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\128\Downright.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Eye1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\128\Eye.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Flag1-blue1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\128\Flag1-blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Flag1-green1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\128\Flag1-green.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Flag1-orange1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\128\Flag1-orange.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Flag-blue1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\128\Flag-blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Flag-green1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\128\Flag-green.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Flag-orange1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\128\Flag-orange.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Flag-red1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\128\Flag-red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Generate-keys1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\128\Generate-keys.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Generate-tables1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\128\Generate-tables.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Import-export1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\128\Import-export.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Iphone1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\128\Iphone.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Line-chart1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\128\Line-chart.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Login1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\128\Login.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Logout1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\128\Logout.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Mobile1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\128\Mobile.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Monitoring1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\128\Monitoring.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Pie-chart1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\128\Pie-chart.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Pin-green1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\128\Pin-green.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Pin-red1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\128\Pin-red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Polls1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\128\Polls.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Printer-blue1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\128\Printer-blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Printer-green1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\128\Printer-green.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Printer-orange1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\128\Printer-orange.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Prohibit1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\128\Prohibit.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Puzzle1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\128\Puzzle.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Question-type-drag-drop1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\128\Question-type-drag-drop.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Question-type-multiple-correct1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\128\Question-type-multiple-correct.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Question-type-one-correct1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\128\Question-type-one-correct.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Question-type-true-false1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\128\Question-type-true-false.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Save1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\128\Save.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Save-as1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\128\Save-as.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Start1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\128\Start.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Stop1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\128\Stop.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Stop-red1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\128\Stop-red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Surveys1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\128\Surveys.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Tests1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\128\Tests.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Themes1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\128\Themes.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Undo1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\128\Undo.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Unit1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\128\Unit.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Unit-completed1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\128\Unit-completed.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Upleft1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\128\Upleft.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Upright1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\128\Upright.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Warning1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\128\Warning.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Wizard1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\128\Wizard.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Xml-tool1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\128\Xml-tool.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Accept2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\16\Accept.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Arrow-turn-left2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\16\Arrow-turn-left.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Arrow-turn-right2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\16\Arrow-turn-right.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Backup-restore2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\16\Backup-restore.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Bar-chart2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\16\Bar-chart.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Clockwise-arrow2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\16\Clockwise-arrow.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Comment2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\16\Comment.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Comment-add2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\16\Comment-add.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Comment--delete2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\16\Comment--delete.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Counterclockwise-arrow2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\16\Counterclockwise-arrow.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Custom-reports2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\16\Custom-reports.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Downleft2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\16\Downleft.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Downright2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\16\Downright.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Eye2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\16\Eye.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Flag1-blue2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\16\Flag1-blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Flag1-green2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\16\Flag1-green.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Flag1-orange2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\16\Flag1-orange.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Flag-blue2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\16\Flag-blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Flag-green2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\16\Flag-green.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Flag-orange2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\16\Flag-orange.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Flag-red2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\16\Flag-red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Generate-keys2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\16\Generate-keys.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Generate-tables2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\16\Generate-tables.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Import-export2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\16\Import-export.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Iphone2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\16\Iphone.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Line-chart2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\16\Line-chart.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Login2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\16\Login.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Logout2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\16\Logout.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Mobile2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\16\Mobile.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Monitoring2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\16\Monitoring.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Pie-chart2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\16\Pie-chart.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Pin-green2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\16\Pin-green.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Pin-red2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\16\Pin-red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Polls2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\16\Polls.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Printer-blue2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\16\Printer-blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Printer-green2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\16\Printer-green.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Printer-orange2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\16\Printer-orange.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Prohibit2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\16\Prohibit.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Puzzle2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\16\Puzzle.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Question-type-drag-drop2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\16\Question-type-drag-drop.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Question-type-multiple-correct2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\16\Question-type-multiple-correct.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Question-type-one-correct2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\16\Question-type-one-correct.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Question-type-true-false2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\16\Question-type-true-false.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Save2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\16\Save.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Save-as2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\16\Save-as.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Start2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\16\Start.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Stop2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\16\Stop.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Stop-red2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\16\Stop-red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Surveys2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\16\Surveys.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Tests2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\16\Tests.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Themes2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\16\Themes.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Undo2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\16\Undo.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Unit2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\16\Unit.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Unit-completed2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\16\Unit-completed.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Upleft2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\16\Upleft.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Upright2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\16\Upright.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Warning2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\16\Warning.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Wizard2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\16\Wizard.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Xml-tool2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\16\Xml-tool.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Accept3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\24\Accept.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Arrow-turn-left3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\24\Arrow-turn-left.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Arrow-turn-right3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\24\Arrow-turn-right.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Backup-restore3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\24\Backup-restore.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Bar-chart3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\24\Bar-chart.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Clockwise-arrow3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\24\Clockwise-arrow.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Comment3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\24\Comment.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Comment-add3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\24\Comment-add.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Comment--delete3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\24\Comment--delete.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Counterclockwise-arrow3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\24\Counterclockwise-arrow.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Custom-reports3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\24\Custom-reports.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Downleft3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\24\Downleft.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Downright3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\24\Downright.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Eye3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\24\Eye.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Flag1-blue3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\24\Flag1-blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Flag1-green3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\24\Flag1-green.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Flag1-orange3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\24\Flag1-orange.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Flag-blue3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\24\Flag-blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Flag-green3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\24\Flag-green.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Flag-orange3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\24\Flag-orange.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Flag-red3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\24\Flag-red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Generate-keys3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\24\Generate-keys.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Generate-tables3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\24\Generate-tables.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Import-export3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\24\Import-export.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Iphone3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\24\Iphone.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Line-chart3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\24\Line-chart.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Login3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\24\Login.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Logout3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\24\Logout.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Mobile3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\24\Mobile.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Monitoring3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\24\Monitoring.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Pie-chart3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\24\Pie-chart.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Pin-green3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\24\Pin-green.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Pin-red3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\24\Pin-red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Polls3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\24\Polls.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Printer-blue3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\24\Printer-blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Printer-green3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\24\Printer-green.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Printer-orange3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\24\Printer-orange.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Prohibit3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\24\Prohibit.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Puzzle3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\24\Puzzle.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Question-type-drag-drop3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\24\Question-type-drag-drop.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Question-type-multiple-correct3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\24\Question-type-multiple-correct.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Question-type-one-correct3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\24\Question-type-one-correct.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Question-type-true-false3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\24\Question-type-true-false.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Save3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\24\Save.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Save-as3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\24\Save-as.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Start3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\24\Start.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Stop3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\24\Stop.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Stop-red3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\24\Stop-red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Surveys3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\24\Surveys.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Tests3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\24\Tests.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Themes3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\24\Themes.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Undo3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\24\Undo.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Unit3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\24\Unit.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Unit-completed3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\24\Unit-completed.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Upleft3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\24\Upleft.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Upright3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\24\Upright.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Warning3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\24\Warning.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Wizard3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\24\Wizard.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Xml-tool3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\24\Xml-tool.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>

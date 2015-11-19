@@ -36,7 +36,7 @@ namespace P2PVpn
             PopulateSettings();
             PopulateLaunchAppsGrid();
             PopulateControls();
-            WatchFileSystem();
+            //WatchFileSystem();
 
         }
 
@@ -195,40 +195,6 @@ namespace P2PVpn
             Logging.SetStatus("OpenVPN Disconnected", Logging.Colors.Red);
         }
 
-        private void WatchFileSystem()
-        {
-            FileTransfer fileTranser = new FileTransfer()
-            {
-                SourceDirectory = @"C:\transferTest\",
-               // TargetDirectory = @"Z:\STREAMING\"
-                TargetDirectory = @"\\OLSONHOME\Movies\STREAMING"
-            };
-
-            FileIO fileIO = new FileIO(fileTranser);
-
-            var sourceFile = "";
-            var targetFile = "";
-
-            fileIO.FinshedFileTransfer += (sender, info) =>
-            {
-                sourceFile = info.SourceFile;
-                targetFile = info.TargetFile;
-            };
-
-            int bytesTransfered;
-            int totalBytes;
-            double percentComplete;
-
-            fileIO.FileTransferProgress += (sender, info) =>
-            {
-                bytesTransfered = info.TranserfedBytes;
-                totalBytes = info.TotalBytes;
-                percentComplete = info.PercentComplete;
-                Logging.Log("File Transfer Percent: " + percentComplete.ToString());
-            };
-        }
-
-
         private void timerSpeed_Tick(object sender, EventArgs e)
         {
 
@@ -267,6 +233,185 @@ namespace P2PVpn
         {
 
         }
+
+        #region MediaServer
+
+        private void PopulateMediaServerControls()
+        {
+            Settings settings = Settings.Get();
+            tbMediaUsername.Text = settings.MediaServer.Username;
+            tbMediaPassword.Text = settings.MediaServer.Password;
+            tbMediaDomain.Text = settings.MediaServer.Domain;
+
+            lblMediaNetworkShare.Text = settings.MediaServer.ShareName;
+
+            lblMediaSource.Text = settings.MediaFileTransfer.SourceDirectory;
+
+            lblMediaDestination.Text = settings.MediaFileTransfer.TargetDirectory;
+
+            bool isOffline = Utilities.MediaServer.IsShareOffline(settings.MediaServer);
+            if (isOffline)
+            {
+                btnMediaFolderOffline.Text = "Bring Media Share Online";
+                toolTip.SetToolTip(picParentalControls, "Media Share is Offline (Parental Controls are On)");
+                picParentalControls.Image = P2PVpn.Properties.Resources.Stop_red1;
+                btnMediaFolderOffline.Image = P2PVpn.Properties.Resources.Start2;
+            }
+            else
+            {
+                btnMediaFolderOffline.Text = "Bring Media Share Offline";
+                toolTip.SetToolTip(picParentalControls, "Media Share is Online (Parental Controls are Off)");
+                picParentalControls.Image = P2PVpn.Properties.Resources.Start1;
+                btnMediaFolderOffline.Image = P2PVpn.Properties.Resources.Stop_red2;
+            }
+            lblMediaCopyProgress.Text = "";
+            WatchFileSystem();
+        }
+
+        private void btnMediaFolderOffline_Click(object sender, EventArgs e)
+        {
+            //string shareName = @"\\OLSONHOME\Movies\STREAMING\Movies";
+
+            //Models.MediaServer mediaServer = new Models.MediaServer()
+            //{
+            //    Username = "Mitch",
+            //    Password = "1",
+            //    Domain = "olsonhome",
+            //    ShareName = shareName
+            //};
+            Settings settings = Settings.Get();
+            if (string.IsNullOrWhiteSpace(settings.MediaServer.ShareName))
+            {
+                ControlHelpers.ShowMessageBox("Enter a media share.", ControlHelpers.MessageBoxType.Warning, false);
+                return;
+            }
+            bool isOffline = Utilities.MediaServer.TakeShareOffline(settings.MediaServer);
+
+            PopulateMediaServerControls();
+           
+
+        }
+        private void WatchFileSystem()
+        {
+            Settings settings = Settings.Get();
+           //tb settings.MediaFileTransfer.SourceDirectory
+
+            //FileTransfer fileTranser = new FileTransfer()
+            //{
+            //    SourceDirectory = @"C:\transferTest\",
+            //    // TargetDirectory = @"Z:\STREAMING\"
+            //    TargetDirectory = @"\\OLSONHOME\Movies\STREAMING"
+            //};
+
+            if(string.IsNullOrWhiteSpace(settings.MediaFileTransfer.SourceDirectory) ||
+                string.IsNullOrWhiteSpace(settings.MediaFileTransfer.TargetDirectory))
+            {
+                return;
+            }
+
+            FileIO fileIO = null;
+            try
+            {
+                fileIO = new FileIO(settings.MediaFileTransfer, settings.MediaServer);
+            }
+            catch (Exception ex)
+            {
+                ControlHelpers.ShowMessageBox(ex.Message, ControlHelpers.MessageBoxType.Error);
+                return;
+            }
+            
+
+            var sourceFile = "";
+            var targetFile = "";
+
+            fileIO.FinshedFileTransfer += (sender, info) =>
+            {
+                sourceFile = info.SourceFile;
+                targetFile = info.TargetFile;
+            };
+
+            int bytesTransfered;
+            int totalBytes;
+            double percentComplete;
+
+            fileIO.FileTransferProgress += (sender, info) =>
+            {
+                bytesTransfered = info.TranserfedBytes;
+                totalBytes = info.TotalBytes;
+                percentComplete = info.PercentComplete;
+                Logging.Log("File Transfer Percent: " + percentComplete.ToString());
+            };
+        }
+
+        private void btnMediaTarget_Click(object sender, EventArgs e)
+        {
+            Settings settings = Settings.Get();
+            this.openMediaDestFolderBrowser.SelectedPath = settings.MediaFileTransfer.TargetDirectory;
+
+            var result = this.openMediaDestFolderBrowser.ShowDialog();
+            if (result == DialogResult.OK)
+            {
+                settings.MediaFileTransfer.TargetDirectory = this.openMediaDestFolderBrowser.SelectedPath;
+                Settings.Save(settings);
+                //PopulateMediaServerControls();
+                lblMediaDestination.Text = settings.MediaFileTransfer.TargetDirectory;
+                WatchFileSystem();
+            }
+        }
+        private void btnMediaSource_Click(object sender, EventArgs e)
+        {
+            Settings settings = Settings.Get();
+            this.openMediaDestFolderBrowser.SelectedPath = settings.MediaFileTransfer.SourceDirectory;
+
+            var result = this.openMediaDestFolderBrowser.ShowDialog();
+            if (result == DialogResult.OK)
+            {
+                settings.MediaFileTransfer.SourceDirectory = this.openMediaDestFolderBrowser.SelectedPath;
+                Settings.Save(settings);
+                //PopulateMediaServerControls();
+                lblMediaSource.Text = settings.MediaFileTransfer.SourceDirectory;
+                WatchFileSystem();
+            }
+        }
+        private void tbMediaUsername_Leave(object sender, EventArgs e)
+        {
+            Settings settings = Settings.Get();
+            settings.MediaServer.Username = tbMediaUsername.Text;
+            Settings.Save(settings);
+        }
+
+        private void tbMediaPassword_Leave(object sender, EventArgs e)
+        {
+            Settings settings = Settings.Get();
+            settings.MediaServer.Password = tbMediaPassword.Text;
+            Settings.Save(settings);
+        }
+
+        private void tbMediaDomain_Leave(object sender, EventArgs e)
+        {
+            Settings settings = Settings.Get();
+            settings.MediaServer.Domain = tbMediaDomain.Text;
+            Settings.Save(settings);
+        }
+
+        private void btnMediaNetworkShare_Click(object sender, EventArgs e)
+        {
+            Settings settings = Settings.Get();
+            this.openMediaDestFolderBrowser.SelectedPath = settings.MediaServer.ShareName;
+
+            var result = this.openMediaDestFolderBrowser.ShowDialog();
+            if (result == DialogResult.OK)
+            {
+                settings.MediaServer.ShareName = this.openMediaDestFolderBrowser.SelectedPath;
+                Settings.Save(settings);
+                //PopulateSettings();
+                lblMediaNetworkShare.Text = settings.MediaServer.ShareName;
+            }
+        }
+
+       
+
+        #endregion MediaServer
 
         #region Apps
         private void PopulateLaunchAppsGrid()
@@ -315,8 +460,11 @@ namespace P2PVpn
             btnOpenVpnDirDefault.MoveRightOf(btnBrowseForOpenVpn);
             PopulateVPNConfigs();
             PopulateTextBoxes();
+            PopulateMediaServerControls();
             SetRadioButtons();
         }
+
+       
         private void PopulateVPNConfigs()
         {
             Settings settings = Settings.Get();
@@ -413,7 +561,7 @@ namespace P2PVpn
             var result = this.openVPNFolderBrowser.ShowDialog();
             if (result == DialogResult.OK)
             {
-                Settings settings = new Settings();
+                Settings settings = Settings.Get();
                 settings.OpenVPNDirectory = this.openVPNFolderBrowser.SelectedPath;
                 Settings.Save(settings);
                 PopulateSettings();
@@ -422,7 +570,7 @@ namespace P2PVpn
 
         private void btnOpenVpnDirDefault_Click(object sender, EventArgs e)
         {
-            Settings settings = new Settings();
+            Settings settings = Settings.Get();
             settings.OpenVPNDirectory = Settings.DefaultOpenVPNDirectory;
             Settings.Save(settings);
             PopulateSettings();
@@ -702,35 +850,6 @@ namespace P2PVpn
             VPNGate.SelectServer(server);
             SetRadioButtons();
         }
-
-        private void btnMediaFolderOffline_Click(object sender, EventArgs e)
-        {
-            string shareName = @"\\OLSONHOME\Movies\STREAMING\Movies";
-
-            Models.MediaServer mediaServer = new Models.MediaServer()
-            {
-                Username = "Mitch",
-                Password = "1",
-                Domain = "olsonhome",
-                ShareName = shareName
-            };
-
-            bool isOffline = Utilities.MediaServer.TakeShareOffline(mediaServer);
-            if (isOffline)
-            {
-                btnMediaFolderOffline.Text = "Bring Media Server Online";
-            }
-            else
-            {
-                btnMediaFolderOffline.Text = "Bring Media Server Offline";
-            }
-
-        }
-
-       
-
-      
-        
 
         //private void linkDownloadChromeKProxy_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         //{
