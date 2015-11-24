@@ -104,10 +104,13 @@
             this.tabMediaServer = new System.Windows.Forms.TabPage();
             this.picParentalControls = new System.Windows.Forms.PictureBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.cbMediaParentalTime = new System.Windows.Forms.ComboBox();
+            this.label10 = new System.Windows.Forms.Label();
             this.lblMediaNetworkShare = new System.Windows.Forms.Label();
             this.btnMediaNetworkShare = new System.Windows.Forms.Button();
             this.btnMediaFolderOffline = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.lblMediaCopyProgress = new System.Windows.Forms.Label();
             this.lblMediaDestination = new System.Windows.Forms.Label();
             this.lblMediaSource = new System.Windows.Forms.Label();
             this.btnMediaSource = new System.Windows.Forms.Button();
@@ -121,7 +124,7 @@
             this.firewallTimer = new System.Windows.Forms.Timer(this.components);
             this.openMediaDestFolderBrowser = new System.Windows.Forms.FolderBrowserDialog();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.lblMediaCopyProgress = new System.Windows.Forms.Label();
+            this.timerMediaServerOffline = new System.Windows.Forms.Timer(this.components);
             this.launchDataGridViewCheckBoxColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.closeDataGridViewCheckBoxColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.programDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -952,15 +955,46 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.cbMediaParentalTime);
+            this.groupBox2.Controls.Add(this.label10);
             this.groupBox2.Controls.Add(this.lblMediaNetworkShare);
             this.groupBox2.Controls.Add(this.btnMediaNetworkShare);
             this.groupBox2.Controls.Add(this.btnMediaFolderOffline);
             this.groupBox2.Location = new System.Drawing.Point(6, 101);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(560, 51);
+            this.groupBox2.Size = new System.Drawing.Size(560, 75);
             this.groupBox2.TabIndex = 12;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Parental Controls";
+            // 
+            // cbMediaParentalTime
+            // 
+            this.cbMediaParentalTime.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbMediaParentalTime.FormattingEnabled = true;
+            this.cbMediaParentalTime.Items.AddRange(new object[] {
+            "",
+            "1 hour",
+            "2 hours",
+            "3 hours",
+            "4 hours",
+            "5 hours",
+            "6 hours",
+            "7 hours ",
+            "8 hours"});
+            this.cbMediaParentalTime.Location = new System.Drawing.Point(172, 49);
+            this.cbMediaParentalTime.Name = "cbMediaParentalTime";
+            this.cbMediaParentalTime.Size = new System.Drawing.Size(82, 21);
+            this.cbMediaParentalTime.TabIndex = 14;
+            this.cbMediaParentalTime.SelectedIndexChanged += new System.EventHandler(this.cbMediaParentalTime_SelectedIndexChanged);
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(7, 52);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(160, 13);
+            this.label10.TabIndex = 13;
+            this.label10.Text = "Enforce Parental Controls Every:";
             // 
             // lblMediaNetworkShare
             // 
@@ -996,17 +1030,28 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox1.Controls.Add(this.lblMediaCopyProgress);
             this.groupBox1.Controls.Add(this.lblMediaDestination);
             this.groupBox1.Controls.Add(this.lblMediaSource);
             this.groupBox1.Controls.Add(this.btnMediaSource);
             this.groupBox1.Controls.Add(this.btnMediaTarget);
-            this.groupBox1.Location = new System.Drawing.Point(6, 158);
+            this.groupBox1.Location = new System.Drawing.Point(6, 182);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(560, 95);
+            this.groupBox1.Size = new System.Drawing.Size(560, 71);
             this.groupBox1.TabIndex = 11;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Copy Files";
+            // 
+            // lblMediaCopyProgress
+            // 
+            this.lblMediaCopyProgress.AutoSize = true;
+            this.lblMediaCopyProgress.Location = new System.Drawing.Point(7, 49);
+            this.lblMediaCopyProgress.Name = "lblMediaCopyProgress";
+            this.lblMediaCopyProgress.Size = new System.Drawing.Size(111, 13);
+            this.lblMediaCopyProgress.TabIndex = 14;
+            this.lblMediaCopyProgress.Text = "lblMediaCopyProgress";
             // 
             // lblMediaDestination
             // 
@@ -1108,14 +1153,10 @@
             // 
             this.toolTip.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
             // 
-            // lblMediaCopyProgress
+            // timerMediaServerOffline
             // 
-            this.lblMediaCopyProgress.AutoSize = true;
-            this.lblMediaCopyProgress.Location = new System.Drawing.Point(7, 49);
-            this.lblMediaCopyProgress.Name = "lblMediaCopyProgress";
-            this.lblMediaCopyProgress.Size = new System.Drawing.Size(111, 13);
-            this.lblMediaCopyProgress.TabIndex = 14;
-            this.lblMediaCopyProgress.Text = "lblMediaCopyProgress";
+            this.timerMediaServerOffline.Interval = 10000;
+            this.timerMediaServerOffline.Tick += new System.EventHandler(this.timerMediaServerOffline_Tick);
             // 
             // launchDataGridViewCheckBoxColumn
             // 
@@ -1191,6 +1232,8 @@
             this.PerformLayout();
 
         }
+
+       
 
         #endregion
 
@@ -1290,6 +1333,9 @@
         private System.Windows.Forms.Button btnMediaSource;
         private System.Windows.Forms.ToolTip toolTip;
         private System.Windows.Forms.Label lblMediaCopyProgress;
+        private System.Windows.Forms.ComboBox cbMediaParentalTime;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Timer timerMediaServerOffline;
     }
 }
 

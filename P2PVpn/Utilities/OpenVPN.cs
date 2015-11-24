@@ -16,7 +16,8 @@ namespace P2PVpn.Utilities
         private static string _p2pVpnSettings = "{0}{0}#P2PVpn Settings#{0}" +
                             "script-security 2{0}" +
                             "auth-user-pass \"{1}\\\\config\\\\{2}\"{0}" +
-                            "plugin \"{1}\\\\bin\\\\fix-dns-leak-32.dll\"{0}";
+                            "plugin \"{1}\\\\bin\\\\fix-dns-leak-32.dll\"{0}";//+
+                            //"route-up \"{1}\\\\config\\\\P2PVpnUp.cmd\"{0}";
 
         private static string _p2pVpnRouteSettings =
            string.Format("route 0.0.0.0 192.0.0.0 net_gateway{0}" +
@@ -179,6 +180,9 @@ namespace P2PVpn.Utilities
             {
                 credFile = VPNBookCredsFile;
             }
+
+            string p2pVpnExePath = Settings.AppDir + "\\" + "P2PVpnUp.cmd";
+            p2pVpnExePath = p2pVpnExePath.Replace("\\", "\\\\");
 
             string p2pVpnSettings =
             string.Format(_p2pVpnSettings,

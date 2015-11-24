@@ -243,13 +243,32 @@ namespace P2PVpn
             tbMediaPassword.Text = settings.MediaServer.Password;
             tbMediaDomain.Text = settings.MediaServer.Domain;
 
-            lblMediaNetworkShare.Text = settings.MediaServer.ShareName;
+            
 
             lblMediaSource.Text = settings.MediaFileTransfer.SourceDirectory;
 
             lblMediaDestination.Text = settings.MediaFileTransfer.TargetDirectory;
 
-            bool isOffline = Utilities.MediaServer.IsShareOffline(settings.MediaServer);
+            bool isOffline = true;
+
+            try
+            {
+                isOffline = Utilities.MediaServer.IsShareOffline(settings.MediaServer);
+                
+            }
+            catch (Exception ex)
+            {
+                timerMediaServerOffline.Enabled = false;
+                settings.MediaServer.ShareName = "";
+                Settings.Save(settings);
+                ControlHelpers.ShowMessageBox(ex.Message, ControlHelpers.MessageBoxType.Error);
+                
+            }
+            lblMediaNetworkShare.Text = settings.MediaServer.ShareName;
+            if (!string.IsNullOrEmpty(settings.MediaServer.ShareName))
+            {
+                timerMediaServerOffline.Enabled = true;
+            }
             if (isOffline)
             {
                 btnMediaFolderOffline.Text = "Bring Media Share Online";
@@ -265,6 +284,9 @@ namespace P2PVpn
                 btnMediaFolderOffline.Image = P2PVpn.Properties.Resources.Stop_red2;
             }
             lblMediaCopyProgress.Text = "";
+            cbMediaParentalTime.SelectedIndexChanged -= cbMediaParentalTime_SelectedIndexChanged;
+            cbMediaParentalTime.Text = Utilities.MediaServer.GetSelectedOfflineValue(settings.MediaServer);
+            cbMediaParentalTime.SelectedIndexChanged += cbMediaParentalTime_SelectedIndexChanged;
             WatchFileSystem();
         }
 
@@ -285,7 +307,18 @@ namespace P2PVpn
                 ControlHelpers.ShowMessageBox("Enter a media share.", ControlHelpers.MessageBoxType.Warning, false);
                 return;
             }
-            bool isOffline = Utilities.MediaServer.TakeShareOffline(settings.MediaServer);
+            try
+            {
+                bool isOffline = Utilities.MediaServer.TakeShareOffline(settings.MediaServer);
+            }
+            catch (Exception ex)
+            {
+                timerMediaServerOffline.Enabled = false;
+                settings.MediaServer.ShareName = "";
+                Settings.Save(settings);
+                ControlHelpers.ShowMessageBox(ex.Message, ControlHelpers.MessageBoxType.Error);
+                
+            }
 
             PopulateMediaServerControls();
            
@@ -294,14 +327,6 @@ namespace P2PVpn
         private void WatchFileSystem()
         {
             Settings settings = Settings.Get();
-           //tb settings.MediaFileTransfer.SourceDirectory
-
-            //FileTransfer fileTranser = new FileTransfer()
-            //{
-            //    SourceDirectory = @"C:\transferTest\",
-            //    // TargetDirectory = @"Z:\STREAMING\"
-            //    TargetDirectory = @"\\OLSONHOME\Movies\STREAMING"
-            //};
 
             if(string.IsNullOrWhiteSpace(settings.MediaFileTransfer.SourceDirectory) ||
                 string.IsNullOrWhiteSpace(settings.MediaFileTransfer.TargetDirectory))
@@ -321,25 +346,16 @@ namespace P2PVpn
             }
             
 
-            var sourceFile = "";
-            var targetFile = "";
-
             fileIO.FinshedFileTransfer += (sender, info) =>
             {
-                sourceFile = info.SourceFile;
-                targetFile = info.TargetFile;
+                lblMediaCopyProgress.SetLabelText("");
             };
-
-            int bytesTransfered;
-            int totalBytes;
-            double percentComplete;
 
             fileIO.FileTransferProgress += (sender, info) =>
             {
-                bytesTransfered = info.TranserfedBytes;
-                totalBytes = info.TotalBytes;
-                percentComplete = info.PercentComplete;
-                Logging.Log("File Transfer Percent: " + percentComplete.ToString());
+                string transfer = string.Format("Copying: {0}   {1}%", info.SourceFile, info.PercentComplete);
+                lblMediaCopyProgress.SetLabelText(transfer);
+                //Logging.Log("File Transfer Percent: " + percentComplete.ToString());
             };
         }
 
@@ -355,6 +371,7 @@ namespace P2PVpn
                 Settings.Save(settings);
                 //PopulateMediaServerControls();
                 lblMediaDestination.Text = settings.MediaFileTransfer.TargetDirectory;
+                timerMediaServerOffline.Enabled = true;
                 WatchFileSystem();
             }
         }
@@ -409,8 +426,27 @@ namespace P2PVpn
             }
         }
 
-       
-
+        private void cbMediaParentalTime_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Settings settings = Settings.Get();
+            string offlineVal = cbMediaParentalTime.Text;
+            if (string.IsNullOrEmpty(offlineVal)) return;
+            string val = offlineVal[0].ToString();
+            settings.MediaServer.EnableParentalControlsEvery = int.Parse(val);
+            Settings.Save(settings);
+        }
+        private void timerMediaServerOffline_Tick(object sender, EventArgs e)
+        {
+            Settings settings = Settings.Get();
+            if (settings.MediaServer.EnableParentalControlsEvery > 0 && !Utilities.MediaServer.IsShareOffline(settings.MediaServer))
+            {
+                DateTime bringMediaServerOfflineTime = settings.MediaServer.ParentalControlsLastEnabled.AddMinutes(settings.MediaServer.EnableParentalControlsEvery);//DateTime.Now.AddHours(settings.MediaServer.EnableParentalControlsEvery);
+                if (DateTime.Now >= bringMediaServerOfflineTime)
+                {
+                    btnMediaFolderOffline_Click(null, null);
+                }
+            }
+        }
         #endregion MediaServer
 
         #region Apps
@@ -850,6 +886,12 @@ namespace P2PVpn
             VPNGate.SelectServer(server);
             SetRadioButtons();
         }
+
+      
+
+       
+
+      
 
         //private void linkDownloadChromeKProxy_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         //{

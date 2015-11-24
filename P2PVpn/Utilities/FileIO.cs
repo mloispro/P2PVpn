@@ -21,6 +21,8 @@ namespace P2PVpn.Utilities
         private FileTransfer _fileTransfer;
         private FileTransfer _fileTransfer2;
         private Models.MediaServer _mediaServer;
+        //private string _currentFileTransfer = "";
+        private static List<FileTransfer> _transferQue = new List<FileTransfer>();
 
         // the delegate the subscribers must implement
         public delegate void FinshedFileTransferHandler(object sender,
@@ -48,14 +50,15 @@ namespace P2PVpn.Utilities
             //ds.AddAccessRule(new FileSystemAccessRule(WindowsIdentity.GetCurrent().Name, FileSystemRights.FullControl, AccessControlType.Allow));
             //Directory.SetAccessControl(Path.GetDirectoryName(fileTransfer.TargetDirectory), ds);
   
-            _fileSystemWatcher.Changed += _fileSystemWatcher_Created;
-            _fileSystemWatcher.Error += _fileSystemWatcher_Error;
+            _fileSystemWatcher.Changed -= _fileSystemWatcher_Created;
+            _fileSystemWatcher.Error -= _fileSystemWatcher_Error;
 
             _fileSystemWatcher = new FileSystemWatcher(fileTransfer.SourceDirectory);
             //_fileSystemWatcher.WaitForChanged(WatcherChangeTypes.Created);
-            _fileSystemWatcher.NotifyFilter = NotifyFilters.LastAccess | NotifyFilters.LastWrite
-                                                | NotifyFilters.FileName | NotifyFilters.DirectoryName;
+            _fileSystemWatcher.NotifyFilter = NotifyFilters.FileName | NotifyFilters.Size;
+
             _fileSystemWatcher.Filter = "*.*";
+            _fileSystemWatcher.IncludeSubdirectories = false;
             //_fileSystemWatcher.Created += _fileSystemWatcher_Created;
             _fileSystemWatcher.Changed += _fileSystemWatcher_Created;
             _fileSystemWatcher.Error += _fileSystemWatcher_Error;
@@ -81,12 +84,13 @@ namespace P2PVpn.Utilities
         {
             if (e.ChangeType == WatcherChangeTypes.Changed)
             {
-                string sourceDir = EnsureDirectoryTrialingSlash(_fileTransfer.SourceDirectory);
-                string sourceDir2 = EnsureDirectoryTrialingSlash(Path.GetDirectoryName(e.FullPath));
+                string sourceDir = GetPath(_fileTransfer.SourceDirectory);
+                string sourceDir2 = GetPath(e.FullPath);
 
                 if (sourceDir == sourceDir2)
                 {
                     string targetFile = Path.Combine(_fileTransfer.TargetDirectory, e.Name);
+
                     FinshedFileTransferEventArgs FinshedFileTransferInfo =
                          new FinshedFileTransferEventArgs(e.FullPath, targetFile);
 
@@ -96,7 +100,7 @@ namespace P2PVpn.Utilities
 
                         MediaServer.LoginToMediaShare(_mediaServer);
 
-                        TransferFile(e.FullPath, targetFile);
+                        TransferFile(new FileTransfer { SourceDirectory = e.FullPath, TargetDirectory = targetFile });
 
                         FinshedFileTransfer(this, FinshedFileTransferInfo);
                     }
@@ -105,39 +109,89 @@ namespace P2PVpn.Utilities
 
             }
         }
+        public void TransferFile(FileTransfer fileTransfer)
+        {
+            if (_transferQue.Find(x => x.SourceDirectory == fileTransfer.SourceDirectory) != null) return;
+            
+            _transferQue.Add(fileTransfer);
+            if (_transferQue.Count > 1) return;
 
+            while (!IsFileClosed(fileTransfer.SourceDirectory))
+            {
+                Thread.Sleep(500);
+            }
+
+            try
+            {
+                Logging.Log("Transfering File: " + fileTransfer.SourceDirectory);
+                //File.Copy(source, destination);
+
+                FileCopyLib.FileCopier.CopyWithProgress(fileTransfer.SourceDirectory, fileTransfer.TargetDirectory,
+                    (x) => FileTransferProgress(this, new FileTransferProgressEventArgs(x.Percentage, fileTransfer)));
+                    //(x) => Logging.Log("Copying {0}", x.Percentage));
+
+                Logging.Log("Finished Transfering File: {0}{1}{2}to: {3} ", fileTransfer.SourceDirectory, Environment.NewLine, "\t", fileTransfer.TargetDirectory);
+
+                if (File.Exists(fileTransfer.SourceDirectory))
+                {
+                    while (!IsFileClosed(fileTransfer.SourceDirectory))
+                    {
+                        Thread.Sleep(500);
+                    }
+                    File.Delete(fileTransfer.SourceDirectory);
+                }
+            }
+            catch (Exception e)
+            {
+                Logging.Log("Error: File Transfer Failed {0} {1} {2}", fileTransfer.SourceDirectory, Environment.NewLine, e.Message);
+                //return 1;
+            }
+            finally
+            {
+                _transferQue.Remove(fileTransfer);
+            }
+            
+            ProcessTransferQueue();
+        }
+
+        private void ProcessTransferQueue()
+        {
+            while (_transferQue.Count > 0)
+            {
+                Thread.Sleep(5000);
+                TransferFile(_transferQue.First());
+            }
+        }
         private void _fileSystemWatcher_Error(object sender, ErrorEventArgs e)
         {
             Logging.Log("File Transfer Error: " + e.GetException());
         }
-        public string EnsureDirectoryTrialingSlash(string filePath)
+        public string GetPath(string fileOrDirPath)
         {
-            filePath = filePath.TrimEnd(@"\".ToCharArray());
-            filePath += @"\";
-            return Path.GetDirectoryName(filePath) + @"\";
+            bool isDirectory = IsDirectory(fileOrDirPath);
+            if (!isDirectory)
+            {
+                fileOrDirPath = Path.GetDirectoryName(fileOrDirPath) + @"\";
+            }
+            if (isDirectory)
+            {
+                fileOrDirPath = fileOrDirPath.TrimEnd(@"\".ToCharArray());
+                fileOrDirPath += @"\";
+                fileOrDirPath =  Path.GetDirectoryName(fileOrDirPath) + @"\";
+            }
+            return fileOrDirPath;
         }
-        public void TransferFile(string source, string destination)
+        private static bool IsDirectory(string path)
         {
-            Thread.Sleep(5000);
-            if (!IsFileClosed(source)) return;
-
-            
-            try
+            System.IO.FileAttributes fa = System.IO.File.GetAttributes(path);
+            bool isDirectory = false;
+            if ((fa & FileAttributes.Directory) != 0)
             {
-                Logging.Log("Transfering File: " + source);
-                //File.Copy(source, destination);
-                
-                FileCopyLib.FileCopier.CopyWithProgress(source, destination,
-                    (x) => Logging.Log("Copying {0}", x.Percentage));
-
-                //return 0;
+                isDirectory = true;
             }
-            catch (Exception e)
-            {
-                Logging.Log("Error: File Transfer Failed {0} {1} {2}", source, Environment.NewLine, e.Message);
-                //return 1;
-            }
+            return isDirectory;
         }
+        
 
         public static bool IsFileClosed(string filename)
         {
@@ -155,9 +209,17 @@ namespace P2PVpn.Utilities
         }
         public static void ChangeFolderName(string folderName, string newFolderName)
         {
-            //Networking.LoginToUNCShare("Mitch", "1", "olsonhome", "olsonhome");
+            
             if (folderName.Equals(newFolderName)) return;
-            Directory.Move(folderName, newFolderName);
+            try
+            {
+                Directory.Move(folderName, newFolderName);
+            }
+            catch(Exception ex)
+            {
+                Logging.Log("Error: Folder not available : " + folderName);
+                throw ex;
+            }
         }
     }
 
@@ -174,15 +236,22 @@ namespace P2PVpn.Utilities
     }
     public class FileTransferProgressEventArgs : EventArgs
     {
-        public int TranserfedBytes { get; set; }
-        public int TotalBytes { get; set; }
-        public double PercentComplete { get; set; }
+        //public int TranserfedBytes { get; set; }
+        //public int TotalBytes { get; set; }
+        public string PercentComplete { get; set; }
+        public string SourceFile { get; set; }
 
-        public FileTransferProgressEventArgs(int transferedBytes, int totalBytes)
+        //public FileTransferProgressEventArgs(int transferedBytes, int totalBytes)
+        //{
+        //    TranserfedBytes = transferedBytes;
+        //    TotalBytes = totalBytes;
+        //    PercentComplete = transferedBytes / totalBytes;
+        //}
+        public FileTransferProgressEventArgs(double percentComplete, FileTransfer fileTransfer)
         {
-            TranserfedBytes = transferedBytes;
-            TotalBytes = totalBytes;
-            PercentComplete = transferedBytes / totalBytes;
+            percentComplete = (int)Math.Round(percentComplete, 0);
+            PercentComplete = percentComplete.ToString();
+            SourceFile = Path.GetFileName(fileTransfer.SourceDirectory);
         }
     }
 }

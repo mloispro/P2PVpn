@@ -478,6 +478,14 @@ namespace P2PVpn.Utilities
 
             theNetCache.Add(new Uri(@"\\" + share), "Basic", theNetworkCredential);
         }
+        public static void LogoutOfUNCShare(string username, string password, string domain, string share)
+        {
+            NetworkCredential theNetworkCredential = new NetworkCredential(username, password, domain);
+            CredentialCache theNetCache = new CredentialCache();
+            
+            //theNetCache.Add(new Uri(@"\\" + share), "Basic", theNetworkCredential);
+            theNetCache.Remove(new Uri(@"\\" + share), "Basic");
+        }
         public void ShowNetworkTraffic()
         {
             //PerformanceCounterCategory performanceCounterCategory = new PerformanceCounterCategory("Network Interface");

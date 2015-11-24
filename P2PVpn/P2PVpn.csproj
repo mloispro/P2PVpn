@@ -150,6 +150,7 @@
     <None Include="Assets\CurrPorts\cports.chm">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Assets\OpenVPN\P2PVpnUp.cmd" />
     <None Include="Assets\VPNGateServers.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

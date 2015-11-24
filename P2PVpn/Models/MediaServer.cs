@@ -12,6 +12,8 @@ namespace P2PVpn.Models
         public string Password { get; set; }
         public string ShareName { get; set; }
         public string Domain { get; set; }
+        public int EnableParentalControlsEvery { get; set; }
+        public DateTime ParentalControlsLastEnabled { get; set; }
         //public string Username { get; set; }
     }
 }
