@@ -30,7 +30,7 @@ namespace P2PVpn
             InitializeComponent();
 
             Logging.Init(lbLog, statusStrip, lblStatusText);
-            _network = new Networking(lbLog);
+            _network = new Networking(this, lbLog);
             _network.NetworkListManager.NetworkConnectivityChanged += NetworkListManager_NetworkConnectivityChanged;
             _network.ShowNetworkTraffic();
             PopulateSettings();
@@ -204,8 +204,17 @@ namespace P2PVpn
 
         private void P2PVPNForm_FormClosing(object sender, FormClosingEventArgs e)
         {
+            FileIO.StopQueue = true;
+            tabs.SelectedTab = tabVPNTraffic;
             Disconnect().Wait();
-            btnMediaFolderOffline_Click(null, null);
+            try
+            {
+                Utilities.MediaServer.TakeShareOffline(true);
+            }
+            catch
+            {
+            }
+            FileIO.ResetTransfers();
         }
         private void CopyOpenVPNAssets()
         {
@@ -258,8 +267,8 @@ namespace P2PVpn
             catch (Exception ex)
             {
                 timerMediaServerOffline.Enabled = false;
-                settings.MediaServer.ShareName = "";
-                Settings.Save(settings);
+                //settings.MediaServer.ShareName = "";
+                //Settings.Save(settings);
                 ControlHelpers.ShowMessageBox(ex.Message, ControlHelpers.MessageBoxType.Error);
                 
             }
@@ -289,7 +298,7 @@ namespace P2PVpn
             cbMediaParentalTime.Text = Utilities.MediaServer.GetSelectedOfflineValue(settings.MediaServer);
             cbMediaParentalTime.SelectedIndexChanged += cbMediaParentalTime_SelectedIndexChanged;
             timerMediaServerOffline_Tick(null, null);
-            WatchFileSystem();
+            //WatchFileSystem();
         }
 
         private void btnMediaFolderOffline_Click(object sender, EventArgs e)
@@ -311,13 +320,13 @@ namespace P2PVpn
             }
             try
             {
-                bool isOffline = Utilities.MediaServer.TakeShareOffline(settings.MediaServer);
+                bool isOffline = Utilities.MediaServer.TakeShareOffline();
             }
             catch (Exception ex)
             {
                 timerMediaServerOffline.Enabled = false;
-                settings.MediaServer.ShareName = "";
-                Settings.Save(settings);
+                //settings.MediaServer.ShareName = "";
+                //Settings.Save(settings);
                 ControlHelpers.ShowMessageBox(ex.Message, ControlHelpers.MessageBoxType.Error);
                 
             }
@@ -326,7 +335,8 @@ namespace P2PVpn
            
 
         }
-        private void WatchFileSystem()
+        private FileIO _fileIO = null;
+        public void WatchFileSystem()
         {
             Settings settings = Settings.Get();
 
@@ -336,10 +346,15 @@ namespace P2PVpn
                 return;
             }
 
-            FileIO fileIO = null;
+           // FileIO fileIO = null;
             try
             {
-                fileIO = new FileIO(settings.MediaFileTransfer, settings.MediaServer);
+                //if (_fileIO == null)
+                //{
+                //    _fileIO = new FileIO(settings.MediaFileTransfer, settings.MediaServer);
+                //}
+                _fileIO = new FileIO(settings.MediaFileTransfer, settings.MediaServer);
+                _fileIO.ProcessTransferQueue();
             }
             catch (Exception ex)
             {
@@ -348,12 +363,12 @@ namespace P2PVpn
             }
             
 
-            fileIO.FinshedFileTransfer += (sender, info) =>
+            _fileIO.FinshedFileTransfer += (sender, info) =>
             {
                 lblMediaCopyProgress.SetLabelText("");
             };
 
-            fileIO.FileTransferProgress += (sender, info) =>
+            _fileIO.FileTransferProgress += (sender, info) =>
             {
                 string transfer = string.Format("Copying: {0}   {1}%", info.SourceFile, info.PercentComplete);
                 lblMediaCopyProgress.SetLabelText(transfer);
@@ -439,24 +454,30 @@ namespace P2PVpn
         }
         private void timerMediaServerOffline_Tick(object sender, EventArgs e)
         {
+            if (timerMediaServerOffline.Enabled == false) return;
             Settings settings = Settings.Get();
-            if (settings.MediaServer.EnableParentalControlsEvery > 0 && !Utilities.MediaServer.IsShareOffline(settings.MediaServer))
+            try
             {
-                DateTime bringMediaServerOfflineTime = settings.MediaServer.ParentalControlsLastEnabled.AddHours(settings.MediaServer.EnableParentalControlsEvery);
-                TimeSpan timeRemaining = bringMediaServerOfflineTime - DateTime.Now;
-
-                lblMediaTimeRemaining.Text = string.Format("{0}:{1} Remaining", timeRemaining.Hours, timeRemaining.Minutes);
-                statusStrip.SetStatusBarLabel(lblStatusMediaShare, string.Format("Media Share is Online {0}:{1}", timeRemaining.Hours, timeRemaining.Minutes), P2PVpn.Properties.Resources.Start2);
-                if (DateTime.Now >= bringMediaServerOfflineTime)
+                if (settings.MediaServer.EnableParentalControlsEvery > 0 && !Utilities.MediaServer.IsShareOffline(settings.MediaServer))
                 {
-                    btnMediaFolderOffline_Click(null, null);
+                    DateTime bringMediaServerOfflineTime = settings.MediaServer.ParentalControlsLastEnabled.AddHours(settings.MediaServer.EnableParentalControlsEvery);
+                    TimeSpan timeRemaining = bringMediaServerOfflineTime - DateTime.Now;
+
+                    lblMediaTimeRemaining.Text = string.Format("{0}:{1} Remaining", timeRemaining.Hours, timeRemaining.Minutes);
+                    statusStrip.SetStatusBarLabel(lblStatusMediaShare, string.Format("Media Share is Online {0}:{1}", timeRemaining.Hours, timeRemaining.Minutes), P2PVpn.Properties.Resources.Start2);
+                    if (DateTime.Now >= bringMediaServerOfflineTime)
+                    {
+                        btnMediaFolderOffline_Click(null, null);
+                        lblMediaTimeRemaining.Text = "";
+                    }
+                }
+                else
+                {
                     lblMediaTimeRemaining.Text = "";
                 }
             }
-            else
-            {
-                lblMediaTimeRemaining.Text = "";
-            }
+            catch { timerMediaServerOffline.Enabled = false; }
+            //WatchFileSystem();
         }
         #endregion MediaServer
 
@@ -897,6 +918,21 @@ namespace P2PVpn
             Settings.Save(settings);
             VPNGate.SelectServer(server);
             SetRadioButtons();
+        }
+
+        private void P2PVPNForm_Leave(object sender, EventArgs e)
+        {
+
+        }
+
+        private void P2PVPNForm_Load(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void P2PVPNForm_Shown(object sender, EventArgs e)
+        {
+            WatchFileSystem();
         }
 
       

@@ -10,5 +10,6 @@ namespace P2PVpn.Models
     {
         public string SourceDirectory { get; set; }
         public string TargetDirectory { get; set; }
+        public bool IsTransfering { get; set; }
     }
 }

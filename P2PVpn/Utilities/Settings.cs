@@ -57,6 +57,7 @@ namespace P2PVpn.Utilities
         public string VPNGateServerHost { get; set; }
         public FileTransfer MediaFileTransfer { get; set; }
         public Models.MediaServer MediaServer { get; set; }
+        public List<FileTransfer> MediaFileTransferQue { get; set; }
 
         private static Settings _settings;
 
@@ -89,7 +90,10 @@ namespace P2PVpn.Utilities
             {
                 _settings.MediaServer = new Models.MediaServer();
             }
-
+            if (_settings.MediaFileTransferQue == null)
+            {
+                _settings.MediaFileTransferQue = new List<FileTransfer>();
+            }
             return _settings;
         }
         private static void FillOPNVPNConfigs()
@@ -104,7 +108,10 @@ namespace P2PVpn.Utilities
             foreach (var file in configFiles)
             {
                 var fileName = Path.GetFileName(file);
-                _settings.OpenVPNConfigs.Add(fileName, file);
+                if (!_settings.OpenVPNConfigs.ContainsKey(fileName))
+                {
+                    _settings.OpenVPNConfigs.Add(fileName, file);
+                }
             }
         }
         public static void Save(Settings settings)

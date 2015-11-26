@@ -13,7 +13,7 @@ using P2PVpn.Models;
 
 namespace P2PVpn.Utilities
 {
-    public class FileIO
+    public class FileIO:IDisposable
     {
         private FileSystemWatcher _fileSystemWatcher = new FileSystemWatcher();
         private FileSystemWatcher _fileSystemWatcher2 = new FileSystemWatcher();
@@ -22,7 +22,8 @@ namespace P2PVpn.Utilities
         private FileTransfer _fileTransfer2;
         private Models.MediaServer _mediaServer;
         //private string _currentFileTransfer = "";
-        private static List<FileTransfer> _transferQue = new List<FileTransfer>();
+        public static bool StopQueue = false;
+        private bool _isTranserferingFile = false;
 
         // the delegate the subscribers must implement
         public delegate void FinshedFileTransferHandler(object sender,
@@ -53,6 +54,11 @@ namespace P2PVpn.Utilities
             _fileSystemWatcher.Changed -= _fileSystemWatcher_Created;
             _fileSystemWatcher.Error -= _fileSystemWatcher_Error;
 
+            if (_fileSystemWatcher != null)
+            {
+                _fileSystemWatcher.Dispose();
+                _fileSystemWatcher = null;
+            }
             _fileSystemWatcher = new FileSystemWatcher(fileTransfer.SourceDirectory);
             //_fileSystemWatcher.WaitForChanged(WatcherChangeTypes.Created);
             _fileSystemWatcher.NotifyFilter = NotifyFilters.FileName | NotifyFilters.Size;
@@ -111,10 +117,34 @@ namespace P2PVpn.Utilities
         }
         public void TransferFile(FileTransfer fileTransfer)
         {
-            if (_transferQue.Find(x => x.SourceDirectory == fileTransfer.SourceDirectory) != null) return;
-            
-            _transferQue.Add(fileTransfer);
-            if (_transferQue.Count > 1) return;
+            Settings settings = Settings.Get();
+            var transferQue = settings.MediaFileTransferQue;
+
+            var foundTransfer = transferQue.Find(x => x.SourceDirectory == fileTransfer.SourceDirectory);
+            if (foundTransfer == null)
+            {
+                transferQue.Add(fileTransfer);
+                Settings.Save(settings);
+                foundTransfer = fileTransfer;
+            }
+            else
+            {
+                if (!_isTranserferingFile)
+                {
+                    ResetTransfers();
+                    foundTransfer.IsTransfering = false;
+                }
+                if (foundTransfer.IsTransfering) return;
+            }
+            var anyTransfering = transferQue.Find(x => x.IsTransfering);
+            if (anyTransfering != null) return;
+
+            if (!File.Exists(foundTransfer.SourceDirectory))
+            {
+                transferQue.Remove(foundTransfer);
+                Settings.Save(settings);
+                return;
+            }
 
             while (!IsFileClosed(fileTransfer.SourceDirectory))
             {
@@ -123,6 +153,10 @@ namespace P2PVpn.Utilities
 
             try
             {
+                _isTranserferingFile = true;
+                foundTransfer.IsTransfering = true;
+                Settings.Save(settings);
+
                 Logging.Log("Transfering File: " + fileTransfer.SourceDirectory);
                 //File.Copy(source, destination);
 
@@ -139,28 +173,47 @@ namespace P2PVpn.Utilities
                         Thread.Sleep(500);
                     }
                     File.Delete(fileTransfer.SourceDirectory);
+                    settings.MediaFileTransferQue.Remove(fileTransfer);
+                    Settings.Save(settings);
                 }
             }
             catch (Exception e)
             {
+                StopQueue = true;
                 Logging.Log("Error: File Transfer Failed {0} {1} {2}", fileTransfer.SourceDirectory, Environment.NewLine, e.Message);
                 //return 1;
             }
             finally
             {
-                _transferQue.Remove(fileTransfer);
+                transferQue.Remove(fileTransfer);
             }
-            
+
             ProcessTransferQueue();
         }
 
-        private void ProcessTransferQueue()
+        //public async void ProcessTransferQueue()
+        public async void ProcessTransferQueue()
         {
-            while (_transferQue.Count > 0)
+            if (StopQueue) return;
+
+            Settings settings = Settings.Get();
+            var transferQue = settings.MediaFileTransferQue;
+
+            if (transferQue.Count == 0) return;
+
+            while (transferQue.Count > 0)
             {
-                Thread.Sleep(5000);
-                TransferFile(_transferQue.First());
+                if (StopQueue) break;
+                await ControlHelpers.Sleep(5000);
+                await Task.Run(() => TransferFile(transferQue.First()));
+                
             }
+        }
+        public static void ResetTransfers()
+        {
+            var settings = Settings.Get();
+            settings.MediaFileTransferQue.ForEach(x => x.IsTransfering = false);
+            Settings.Save(settings);
         }
         private void _fileSystemWatcher_Error(object sender, ErrorEventArgs e)
         {
@@ -221,6 +274,35 @@ namespace P2PVpn.Utilities
                 throw ex;
             }
         }
+
+       #region Dispose
+
+        private bool _disposed;
+        ~FileIO()
+        {
+            Dispose(true);
+        }
+
+        public async void Dispose()
+        {
+            await Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+        public async Task Dispose(bool disposing)
+        {
+            if (!_disposed)
+            {
+                if (disposing)
+                {
+                    //_networkListManager.NetworkConnectivityChanged -= _networkListManager_NetworkConnectivityChanged;
+                }
+                StopQueue = true;
+                ResetTransfers();
+                _disposed = true;
+            }
+
+        }
+        #endregion Dispose
     }
 
     public class FinshedFileTransferEventArgs : EventArgs

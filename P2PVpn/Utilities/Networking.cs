@@ -22,15 +22,18 @@ namespace P2PVpn.Utilities
     public class Networking : IDisposable
     {
         private static ListBox _log;
+        private P2PVPNForm _p2PVPNForm;
         public List<NetworkAdapter> ActiveNetworkAdapters = new List<NetworkAdapter>();
         public NetworkListManager NetworkListManager;
         public static bool DisableDisconnect = false;
 
-        public Networking(ListBox listBox)
+        public Networking(P2PVPNForm p2PVPNForm, ListBox listBox)
         {
             
             listBox.Items.Clear();
             _log = listBox;
+            _p2PVPNForm = p2PVPNForm;
+
             //EnableAllNeworkInterfaces();
             NetworkListManager = new NetworkListManager();
             ScanNetworkInterfaces();
@@ -76,6 +79,8 @@ namespace P2PVpn.Utilities
             }
             ScanNetworkInterfaces();
             LogNetworkInfo();
+            //FileIO.StopQueue = false;
+            //_p2PVPNForm.WatchFileSystem();
 
         }
 

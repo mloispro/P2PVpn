@@ -34,6 +34,8 @@
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.lblStatusText = new System.Windows.Forms.ToolStripStatusLabel();
             this.lblOpenVPNConifg = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.lblStatusMediaShare = new System.Windows.Forms.ToolStripStatusLabel();
             this.openVPNFolderBrowser = new System.Windows.Forms.FolderBrowserDialog();
             this.tabVPNTraffic = new System.Windows.Forms.TabPage();
             this.lbLog = new System.Windows.Forms.ListBox();
@@ -102,6 +104,7 @@
             this.tabMediaServer = new System.Windows.Forms.TabPage();
             this.picParentalControls = new System.Windows.Forms.PictureBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.lblMediaTimeRemaining = new System.Windows.Forms.Label();
             this.cbMediaParentalTime = new System.Windows.Forms.ComboBox();
             this.label10 = new System.Windows.Forms.Label();
             this.lblMediaNetworkShare = new System.Windows.Forms.Label();
@@ -123,13 +126,10 @@
             this.openMediaDestFolderBrowser = new System.Windows.Forms.FolderBrowserDialog();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.timerMediaServerOffline = new System.Windows.Forms.Timer(this.components);
-            this.lblStatusMediaShare = new System.Windows.Forms.ToolStripStatusLabel();
-            this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.launchDataGridViewCheckBoxColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.closeDataGridViewCheckBoxColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.programDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.appsBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.lblMediaTimeRemaining = new System.Windows.Forms.Label();
             this.statusStrip.SuspendLayout();
             this.tabVPNTraffic.SuspendLayout();
             this.tabVPNBook.SuspendLayout();
@@ -187,6 +187,20 @@
             this.lblOpenVPNConifg.Size = new System.Drawing.Size(53, 19);
             this.lblOpenVPNConifg.Text = "Conifg: ";
             // 
+            // toolStripStatusLabel1
+            // 
+            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(304, 19);
+            this.toolStripStatusLabel1.Spring = true;
+            // 
+            // lblStatusMediaShare
+            // 
+            this.lblStatusMediaShare.Image = global::P2PVpn.Properties.Resources.Stop_red2;
+            this.lblStatusMediaShare.Margin = new System.Windows.Forms.Padding(8, 3, 0, 2);
+            this.lblStatusMediaShare.Name = "lblStatusMediaShare";
+            this.lblStatusMediaShare.Size = new System.Drawing.Size(138, 19);
+            this.lblStatusMediaShare.Text = "Media Share is Offline";
+            // 
             // openVPNFolderBrowser
             // 
             this.openVPNFolderBrowser.Description = "OpenVPN Directory";
@@ -200,7 +214,7 @@
             this.tabVPNTraffic.Location = new System.Drawing.Point(4, 22);
             this.tabVPNTraffic.Name = "tabVPNTraffic";
             this.tabVPNTraffic.Padding = new System.Windows.Forms.Padding(3);
-            this.tabVPNTraffic.Size = new System.Drawing.Size(572, 273);
+            this.tabVPNTraffic.Size = new System.Drawing.Size(644, 266);
             this.tabVPNTraffic.TabIndex = 4;
             this.tabVPNTraffic.Text = "Log";
             this.tabVPNTraffic.UseVisualStyleBackColor = true;
@@ -216,7 +230,7 @@
             this.lbLog.Location = new System.Drawing.Point(3, 3);
             this.lbLog.Name = "lbLog";
             this.lbLog.ScrollAlwaysVisible = true;
-            this.lbLog.Size = new System.Drawing.Size(566, 267);
+            this.lbLog.Size = new System.Drawing.Size(638, 260);
             this.lbLog.TabIndex = 0;
             // 
             // tabVPNBook
@@ -233,7 +247,7 @@
             this.tabVPNBook.Location = new System.Drawing.Point(4, 22);
             this.tabVPNBook.Name = "tabVPNBook";
             this.tabVPNBook.Padding = new System.Windows.Forms.Padding(3);
-            this.tabVPNBook.Size = new System.Drawing.Size(572, 273);
+            this.tabVPNBook.Size = new System.Drawing.Size(644, 266);
             this.tabVPNBook.TabIndex = 5;
             this.tabVPNBook.Text = "VPN Book";
             this.tabVPNBook.UseVisualStyleBackColor = true;
@@ -337,7 +351,7 @@
             this.tabSettings.Location = new System.Drawing.Point(4, 22);
             this.tabSettings.Name = "tabSettings";
             this.tabSettings.Padding = new System.Windows.Forms.Padding(3);
-            this.tabSettings.Size = new System.Drawing.Size(572, 273);
+            this.tabSettings.Size = new System.Drawing.Size(644, 266);
             this.tabSettings.TabIndex = 3;
             this.tabSettings.Text = "Settings";
             this.tabSettings.UseVisualStyleBackColor = true;
@@ -599,7 +613,7 @@
             this.tabOpenApps.Location = new System.Drawing.Point(4, 22);
             this.tabOpenApps.Name = "tabOpenApps";
             this.tabOpenApps.Padding = new System.Windows.Forms.Padding(3, 3, 3, 40);
-            this.tabOpenApps.Size = new System.Drawing.Size(572, 273);
+            this.tabOpenApps.Size = new System.Drawing.Size(644, 266);
             this.tabOpenApps.TabIndex = 1;
             this.tabOpenApps.Text = "Open Apps";
             this.tabOpenApps.UseVisualStyleBackColor = true;
@@ -667,7 +681,7 @@
             this.tabConnection.Location = new System.Drawing.Point(4, 22);
             this.tabConnection.Name = "tabConnection";
             this.tabConnection.Padding = new System.Windows.Forms.Padding(3);
-            this.tabConnection.Size = new System.Drawing.Size(572, 273);
+            this.tabConnection.Size = new System.Drawing.Size(644, 266);
             this.tabConnection.TabIndex = 0;
             this.tabConnection.Text = "Connection Info";
             this.tabConnection.UseVisualStyleBackColor = true;
@@ -763,7 +777,7 @@
             this.tabVPNGate.Controls.Add(this.cbVPNGateServer);
             this.tabVPNGate.Location = new System.Drawing.Point(4, 22);
             this.tabVPNGate.Name = "tabVPNGate";
-            this.tabVPNGate.Size = new System.Drawing.Size(572, 273);
+            this.tabVPNGate.Size = new System.Drawing.Size(644, 266);
             this.tabVPNGate.TabIndex = 7;
             this.tabVPNGate.Text = "VPN Gate";
             this.tabVPNGate.UseVisualStyleBackColor = true;
@@ -809,7 +823,7 @@
             this.tabSecurity.Location = new System.Drawing.Point(4, 22);
             this.tabSecurity.Name = "tabSecurity";
             this.tabSecurity.Padding = new System.Windows.Forms.Padding(3);
-            this.tabSecurity.Size = new System.Drawing.Size(572, 273);
+            this.tabSecurity.Size = new System.Drawing.Size(644, 266);
             this.tabSecurity.TabIndex = 6;
             this.tabSecurity.Text = "Privacy";
             this.tabSecurity.UseVisualStyleBackColor = true;
@@ -953,6 +967,14 @@
             this.groupBox2.TabIndex = 12;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Parental Controls";
+            // 
+            // lblMediaTimeRemaining
+            // 
+            this.lblMediaTimeRemaining.AutoSize = true;
+            this.lblMediaTimeRemaining.Location = new System.Drawing.Point(261, 52);
+            this.lblMediaTimeRemaining.Name = "lblMediaTimeRemaining";
+            this.lblMediaTimeRemaining.Size = new System.Drawing.Size(0, 13);
+            this.lblMediaTimeRemaining.TabIndex = 15;
             // 
             // cbMediaParentalTime
             // 
@@ -1145,20 +1167,6 @@
             this.timerMediaServerOffline.Interval = 10000;
             this.timerMediaServerOffline.Tick += new System.EventHandler(this.timerMediaServerOffline_Tick);
             // 
-            // lblStatusMediaShare
-            // 
-            this.lblStatusMediaShare.Image = global::P2PVpn.Properties.Resources.Stop_red2;
-            this.lblStatusMediaShare.Margin = new System.Windows.Forms.Padding(8, 3, 0, 2);
-            this.lblStatusMediaShare.Name = "lblStatusMediaShare";
-            this.lblStatusMediaShare.Size = new System.Drawing.Size(138, 19);
-            this.lblStatusMediaShare.Text = "Media Share is Offline";
-            // 
-            // toolStripStatusLabel1
-            // 
-            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-            this.toolStripStatusLabel1.Size = new System.Drawing.Size(304, 19);
-            this.toolStripStatusLabel1.Spring = true;
-            // 
             // launchDataGridViewCheckBoxColumn
             // 
             this.launchDataGridViewCheckBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
@@ -1186,14 +1194,6 @@
             // 
             this.appsBindingSource.DataSource = typeof(P2PVpn.Models.Apps);
             // 
-            // lblMediaTimeRemaining
-            // 
-            this.lblMediaTimeRemaining.AutoSize = true;
-            this.lblMediaTimeRemaining.Location = new System.Drawing.Point(261, 52);
-            this.lblMediaTimeRemaining.Name = "lblMediaTimeRemaining";
-            this.lblMediaTimeRemaining.Size = new System.Drawing.Size(0, 13);
-            this.lblMediaTimeRemaining.TabIndex = 15;
-            // 
             // P2PVPNForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1205,6 +1205,9 @@
             this.Name = "P2PVPNForm";
             this.Text = "P2P VPN Monitor";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.P2PVPNForm_FormClosing);
+            this.Load += new System.EventHandler(this.P2PVPNForm_Load);
+            this.Shown += new System.EventHandler(this.P2PVPNForm_Shown);
+            this.Leave += new System.EventHandler(this.P2PVPNForm_Leave);
             this.statusStrip.ResumeLayout(false);
             this.statusStrip.PerformLayout();
             this.tabVPNTraffic.ResumeLayout(false);

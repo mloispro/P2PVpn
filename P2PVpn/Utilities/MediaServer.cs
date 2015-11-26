@@ -21,13 +21,19 @@ namespace P2PVpn.Utilities
             return Directory.Exists(mediaServer.ShareName + _offlinePostfix);
            // return shareName.EndsWith(_offlinePostfix);
         }
-        public static bool TakeShareOffline(Models.MediaServer mediaServer)
+        public static bool TakeShareOffline(bool force=false)
         {
+            Models.MediaServer mediaServer = Settings.Get().MediaServer;
             if (string.IsNullOrWhiteSpace(mediaServer.ShareName))
             {
                 return false;
             }
-
+            if (force)
+            {
+                FileIO.ChangeFolderName(mediaServer.ShareName, mediaServer.ShareName + _offlinePostfix);
+                Logging.Log("Media Share Offline");
+                return true;
+            }
             if (IsShareOffline(mediaServer))
             {
                 FileIO.ChangeFolderName(mediaServer.ShareName + _offlinePostfix, mediaServer.ShareName);
