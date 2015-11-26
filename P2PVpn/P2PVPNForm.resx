@@ -135,14 +135,14 @@
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="btnMediaFolderOffline.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAF2SURBVDhPY2AXZmPwP+fWG3rP+2XgZY/5GlkqMkzsTAxEA2kPCcGQe15/gfg/FH/xPOhQCxTn
-        gCrBD2S8JeWD7nr+x4Lv2y41C+XT4IWqxAGkvSXkA++4/8eFA266HTBo0jJgE2SF6kADIAMC7rj9J4D/
-        eJ1znKmUICfKyMII1QkFUt7i8n63Xf4Tid877rAsErMTRjgHZIDvLef/JOIbxpN0rMGukfQSk/e+5fSf
-        DPxRwl2UG2yA102H/6Riz6sOH8UdRbgZJLxE5T1u2P8nBbtfsLuhU69uzcgM9ALIAPcbdv+JwW6XbN9b
-        LDEsEjTkRwSiuKeIvOt1m/948RWbP3a7zGZKB4iLMqCncpABLtes/2PFV63/O56wPKCap2DAwsMM1YEG
-        xDyF5Z2uWf5HwVeB+Jzlfb0+jVAuOQJZQsRRSNDxisVfx6sW/8H4gsUXs5X6NUKWAsRlJlYBFgbLbYa9
-        9mfNXlrtMZ4vEy4hg5FccQIGBgDb+2CYjVkIbQAAAABJRU5ErkJggg==
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAXZJREFUOE9j
+        YBdmY/A/59Ybes/7ZeBlj/kaWSoyTOxMDEQDaQ8JwZB7Xn+B+D8Uf/E86FALFOeAKsEPZLwl5YPuev7H
+        gu/bLjUL5dPgharEAaS9JeQD77j/x4UDbrodMGjSMmATZIXqQAMgAwLuuP0ngP94nXOcqZQgJ8rIwgjV
+        CQVS3uLyfrdd/hOJ3zvusCwSsxNGOAdkgO8t5/8k4hvGk3Sswa6R9BKT977l9J8M/FHCXZQbbIDXTYf/
+        pGLPqw4fxR1FuBkkvETlPW7Y/ycFu1+wu6FTr27NyAz0AsgA9xt2/4nBbpds31ssMSwSNORHBKK4p4i8
+        63Wb/3jxFZs/drvMZkoHiIsyoKdykAEu16z/Y8VXrf87nrA8oJqnYMDCwwzVgQbEPIXlna5Z/kfBV4H4
+        nOV9vT6NUC45AllCxFFI0PGKxV/Hqxb/wfiCxRezlfo1QpYCxGUmVgEWBstthr32Z81eWu0xni8TLiGD
+        kVxxAgYGANv7YJiNWQhtAAAAAElFTkSuQmCC
 </value>
   </data>
   <metadata name="firewallTimer.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">

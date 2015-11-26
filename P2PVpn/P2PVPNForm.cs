@@ -29,7 +29,7 @@ namespace P2PVpn
         {
             InitializeComponent();
 
-            Logging.Init(lbLog, statusStrip, lblStatusText, lblStatusColor);
+            Logging.Init(lbLog, statusStrip, lblStatusText);
             _network = new Networking(lbLog);
             _network.NetworkListManager.NetworkConnectivityChanged += NetworkListManager_NetworkConnectivityChanged;
             _network.ShowNetworkTraffic();
@@ -63,13 +63,13 @@ namespace P2PVpn
                 if (Networking.IsVPNAdapter(adapter))
                 {
                     vpnFound = true;
-                    lblVPNConnectionStatus.SetLabelText(string.Format("{0} {1} {2}bytes sent: {3}k  bytes received: {4}k  speed: {5}k{2}",
-                        adapter.Description, adapter.ConnectivityString, Environment.NewLine, adapter.BytesSent, adapter.BytesReceived, adapter.Speed));
+                    lblVPNConnectionStatus.SetLabelText(string.Format("{0}    IP: {1} {2}bytes sent: {3}k  bytes received: {4}k  speed: {5}k{2}",
+                        adapter.Name, adapter.IpAddress, Environment.NewLine, adapter.BytesSent, adapter.BytesReceived, adapter.Speed));
                 }
                 else
                 {
-                    connections += string.Format("{0} {1} {2}bytes sent: {3}k  bytes received: {4}k  speed: {5}k{2}",
-                        adapter.Description, adapter.ConnectivityString, Environment.NewLine, adapter.BytesSent, adapter.BytesReceived, adapter.Speed);
+                    connections += string.Format("{0}    IP: {1} {2}bytes sent: {3}k  bytes received: {4}k  speed: {5}k{2}",
+                        adapter.Name, adapter.IpAddress, Environment.NewLine, adapter.BytesSent, adapter.BytesReceived, adapter.Speed);
                     lblConnectionStatus.SetLabelText(connections);
                 }
                 if (!vpnFound)
@@ -205,6 +205,7 @@ namespace P2PVpn
         private void P2PVPNForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             Disconnect().Wait();
+            btnMediaFolderOffline_Click(null, null);
         }
         private void CopyOpenVPNAssets()
         {
@@ -243,8 +244,6 @@ namespace P2PVpn
             tbMediaPassword.Text = settings.MediaServer.Password;
             tbMediaDomain.Text = settings.MediaServer.Domain;
 
-            
-
             lblMediaSource.Text = settings.MediaFileTransfer.SourceDirectory;
 
             lblMediaDestination.Text = settings.MediaFileTransfer.TargetDirectory;
@@ -275,6 +274,7 @@ namespace P2PVpn
                 toolTip.SetToolTip(picParentalControls, "Media Share is Offline (Parental Controls are On)");
                 picParentalControls.Image = P2PVpn.Properties.Resources.Stop_red1;
                 btnMediaFolderOffline.Image = P2PVpn.Properties.Resources.Start2;
+                statusStrip.SetStatusBarLabel(lblStatusMediaShare, "Media Share is Offline", P2PVpn.Properties.Resources.Stop_red1);
             }
             else
             {
@@ -282,11 +282,13 @@ namespace P2PVpn
                 toolTip.SetToolTip(picParentalControls, "Media Share is Online (Parental Controls are Off)");
                 picParentalControls.Image = P2PVpn.Properties.Resources.Start1;
                 btnMediaFolderOffline.Image = P2PVpn.Properties.Resources.Stop_red2;
+                statusStrip.SetStatusBarLabel(lblStatusMediaShare, "Media Share is Online", P2PVpn.Properties.Resources.Start2);
             }
             lblMediaCopyProgress.Text = "";
             cbMediaParentalTime.SelectedIndexChanged -= cbMediaParentalTime_SelectedIndexChanged;
             cbMediaParentalTime.Text = Utilities.MediaServer.GetSelectedOfflineValue(settings.MediaServer);
             cbMediaParentalTime.SelectedIndexChanged += cbMediaParentalTime_SelectedIndexChanged;
+            timerMediaServerOffline_Tick(null, null);
             WatchFileSystem();
         }
 
@@ -440,11 +442,20 @@ namespace P2PVpn
             Settings settings = Settings.Get();
             if (settings.MediaServer.EnableParentalControlsEvery > 0 && !Utilities.MediaServer.IsShareOffline(settings.MediaServer))
             {
-                DateTime bringMediaServerOfflineTime = settings.MediaServer.ParentalControlsLastEnabled.AddMinutes(settings.MediaServer.EnableParentalControlsEvery);//DateTime.Now.AddHours(settings.MediaServer.EnableParentalControlsEvery);
+                DateTime bringMediaServerOfflineTime = settings.MediaServer.ParentalControlsLastEnabled.AddHours(settings.MediaServer.EnableParentalControlsEvery);
+                TimeSpan timeRemaining = bringMediaServerOfflineTime - DateTime.Now;
+
+                lblMediaTimeRemaining.Text = string.Format("{0}:{1} Remaining", timeRemaining.Hours, timeRemaining.Minutes);
+                statusStrip.SetStatusBarLabel(lblStatusMediaShare, string.Format("Media Share is Online {0}:{1}", timeRemaining.Hours, timeRemaining.Minutes), P2PVpn.Properties.Resources.Start2);
                 if (DateTime.Now >= bringMediaServerOfflineTime)
                 {
                     btnMediaFolderOffline_Click(null, null);
+                    lblMediaTimeRemaining.Text = "";
                 }
+            }
+            else
+            {
+                lblMediaTimeRemaining.Text = "";
             }
         }
         #endregion MediaServer
@@ -467,6 +478,7 @@ namespace P2PVpn
             this.appsBindingSource.EndEdit();
             List<Apps> apps = this.appsBindingSource.DataSource as List<Apps>;
             Apps.Save(apps);
+            OpenVPN.UpdateDownScript();
             PopulateLaunchAppsGrid();
         }
 

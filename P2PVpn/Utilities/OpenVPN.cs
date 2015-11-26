@@ -12,12 +12,15 @@ namespace P2PVpn.Utilities
     public static class OpenVPN
     {
         public static string VPNBookCredsFile = "vpnbook-creds.txt";
+        public static string VPNBookDownFile = "p2pVpn-disconnect.cmd";
 
         private static string _p2pVpnSettings = "{0}{0}#P2PVpn Settings#{0}" +
                             "script-security 2{0}" +
                             "auth-user-pass \"{1}\\\\config\\\\{2}\"{0}" +
-                            "plugin \"{1}\\\\bin\\\\fix-dns-leak-32.dll\"{0}";//+
-                            //"route-up \"{1}\\\\config\\\\P2PVpnUp.cmd\"{0}";
+                            "plugin \"{1}\\\\bin\\\\fix-dns-leak-32.dll\"{0}" +
+                            "up-restart{0}" +
+                            "down-pre{0}" +
+                            "down \"{3}\"{0}";
 
         private static string _p2pVpnRouteSettings =
            string.Format("route 0.0.0.0 192.0.0.0 net_gateway{0}" +
@@ -113,6 +116,29 @@ namespace P2PVpn.Utilities
             }
           
         }
+        public static void UpdateDownScript()
+        {
+            StringBuilder buffer = new StringBuilder();
+            var closePrograms = Apps.Get().FindAll(x => x.Close);
+            foreach (var program in closePrograms)
+            {
+                var name = Path.GetFileName(program.Program);
+                buffer.AppendLine("taskkill /F /IM " + name);
+                //ControlHelpers.StartProcess("taskkill", "/F /IM " + name);
+            }
+            Settings settings = Settings.Get();
+
+            var openVpnDownScript = settings.OpenVPNDirectory + @"\config\" + VPNBookDownFile;
+
+            using (var file = File.Create(openVpnDownScript))
+            {
+                using (var sw = new StreamWriter(file))
+                {
+                    sw.Write(buffer.ToString());
+                }
+            } 
+
+        }
         public static void SecureConfigs(bool addRouts = false)
         {
             Settings settings = Settings.Get();
@@ -181,12 +207,14 @@ namespace P2PVpn.Utilities
                 credFile = VPNBookCredsFile;
             }
 
-            string p2pVpnExePath = Settings.AppDir + "\\" + "P2PVpnUp.cmd";
-            p2pVpnExePath = p2pVpnExePath.Replace("\\", "\\\\");
+            //up-restart
+            //down-pre
+            //down "p2pVpn-disconnect.cmd"
+
 
             string p2pVpnSettings =
             string.Format(_p2pVpnSettings,
-                            Environment.NewLine, GetOpenVpnDirectory(), credFile);
+                            Environment.NewLine, GetOpenVpnDirectory(), credFile, VPNBookDownFile);
 
             return p2pVpnSettings;
         }

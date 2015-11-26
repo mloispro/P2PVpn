@@ -13,13 +13,11 @@ namespace P2PVpn.Utilities
         //System.IO.Log.
         private static ListBox _log;
         private static ToolStripStatusLabel _lblStatusText;
-        private static ToolStripStatusLabel _lblStatusColor;
         private static StatusStrip _statusBar;
 
-        public static void Init(ListBox log, StatusStrip statusBar, ToolStripStatusLabel lblStatusText, ToolStripStatusLabel lblStatusColor)
+        public static void Init(ListBox log, StatusStrip statusBar, ToolStripStatusLabel lblStatusText)
         {
             _log = log;
-            _lblStatusColor = lblStatusColor;
             _lblStatusText = lblStatusText;
             _statusBar = statusBar;
         }
@@ -68,28 +66,29 @@ namespace P2PVpn.Utilities
             
             try
             {
-                Color theColor = new Color();
+                Bitmap theColor = new Bitmap(P2PVpn.Properties.Resources.Stop_red2);
                 if (color == Colors.Green)
                 {
-                    theColor = Color.Green;
+                    theColor = P2PVpn.Properties.Resources.Accept2;
                 }
                 else if (color == Colors.Red)
                 {
-                    theColor = Color.Red;
+                    theColor = P2PVpn.Properties.Resources.Stop_red2;
                 }
                 else if (color == Colors.Yellow)
                 {
-                    theColor = Color.Yellow;
+                    theColor = P2PVpn.Properties.Resources.Prohibit2;
                 }
                 if (_statusBar.InvokeRequired)
                 {
                     _statusBar.Invoke(new Action(() => _lblStatusText.Text = text));
-                    _statusBar.Invoke(new Action(() => _lblStatusColor.BackColor = theColor));
+                    _statusBar.Invoke(new Action(() => _lblStatusText.Image = theColor));
+                    
                 }
                 else
                 {
                     _lblStatusText.Text = text;
-                    _lblStatusColor.BackColor = theColor;
+                    _lblStatusText.Image = theColor;
                 }
              
                 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -218,7 +219,7 @@ namespace P2PVpn.Utilities
         }
         private static ToolStripStatusLabel _lblStatusColor;
         private static StatusStrip _statusBar;
-        public static void SetStatusBarLabel(this StatusStrip statusBar, ToolStripStatusLabel label, string text)
+        public static void SetStatusBarLabel(this StatusStrip statusBar, ToolStripStatusLabel label, string text, Bitmap image=null)
         {
 
             try
@@ -227,10 +228,18 @@ namespace P2PVpn.Utilities
                 if (statusBar.InvokeRequired)
                 {
                     statusBar.Invoke(new Action(() => label.Text = text));
+                    if (image != null)
+                    {
+                        statusBar.Invoke(new Action(() => label.Image = image));
+                    }
                 }
                 else
                 {
                     label.Text = text;
+                    if (image != null)
+                    {
+                        label.Image = image;
+                    }
 
                 }
 

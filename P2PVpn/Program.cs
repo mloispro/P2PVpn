@@ -35,6 +35,7 @@ namespace P2PVpn
                 Application.SetCompatibleTextRenderingDefault(false);
                 Application.Run(new P2PVPNForm());
             }
+            catch { }
             finally { mutex.ReleaseMutex(); } // I find this more explicit
             return 0;
         }
