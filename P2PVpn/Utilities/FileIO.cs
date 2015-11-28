@@ -50,27 +50,17 @@ namespace P2PVpn.Utilities
             //DirectorySecurity ds = Directory.GetAccessControl(Path.GetDirectoryName(fileTransfer.TargetDirectory));
             //ds.AddAccessRule(new FileSystemAccessRule(WindowsIdentity.GetCurrent().Name, FileSystemRights.FullControl, AccessControlType.Allow));
             //Directory.SetAccessControl(Path.GetDirectoryName(fileTransfer.TargetDirectory), ds);
-  
-            _fileSystemWatcher.Changed -= _fileSystemWatcher_Created;
-            _fileSystemWatcher.Error -= _fileSystemWatcher_Error;
 
-            if (_fileSystemWatcher != null)
-            {
-                _fileSystemWatcher.Dispose();
-                _fileSystemWatcher = null;
-            }
-            _fileSystemWatcher = new FileSystemWatcher(fileTransfer.SourceDirectory);
-            //_fileSystemWatcher.WaitForChanged(WatcherChangeTypes.Created);
-            _fileSystemWatcher.NotifyFilter = NotifyFilters.FileName | NotifyFilters.Size;
+            //todo: fix this
+            //_fileSystemWatcher = new FileSystemWatcher(fileTransfer.SourceDirectory);
+            //_fileSystemWatcher.NotifyFilter = NotifyFilters.FileName | NotifyFilters.Size;
 
-            _fileSystemWatcher.Filter = "*.*";
-            _fileSystemWatcher.IncludeSubdirectories = false;
-            //_fileSystemWatcher.Created += _fileSystemWatcher_Created;
-            _fileSystemWatcher.Changed += _fileSystemWatcher_Created;
-            _fileSystemWatcher.Error += _fileSystemWatcher_Error;
-            //_fileSystemWatcher.NotifyFilter = NotifyFilters.LastWrite;
+            //_fileSystemWatcher.Filter = "*.*";
+            //_fileSystemWatcher.IncludeSubdirectories = false;
+            //_fileSystemWatcher.Changed += _fileSystemWatcher_Created;
+            //_fileSystemWatcher.Error += _fileSystemWatcher_Error;
 
-            _fileSystemWatcher.EnableRaisingEvents = true;
+            //_fileSystemWatcher.EnableRaisingEvents = true;
         }
 
         //public FileIO(FileTransfer fileTransfer, FileTransfer fileTransfer2)

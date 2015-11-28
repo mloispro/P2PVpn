@@ -481,7 +481,7 @@ namespace P2PVpn
                 }
             }
             catch { } //timerMediaServerOffline.Enabled = false; }
-            WatchFileSystem();
+            //WatchFileSystem(); //todo: fix this
         }
         #endregion MediaServer
 

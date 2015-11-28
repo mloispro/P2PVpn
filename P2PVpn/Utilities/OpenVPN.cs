@@ -18,8 +18,8 @@ namespace P2PVpn.Utilities
                             "script-security 2{0}" +
                             "auth-user-pass \"{1}\\\\config\\\\{2}\"{0}" +
                             "plugin \"{1}\\\\bin\\\\fix-dns-leak-32.dll\"{0}" +
-                            "down-pre{0}" +
                             "down \"{3}\"{0}";
+                            //"down-pre{0}" +
                             //"up-restart{0}" +
 
         private static string _p2pVpnRouteSettings =
