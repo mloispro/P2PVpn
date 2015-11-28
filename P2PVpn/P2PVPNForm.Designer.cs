@@ -1164,6 +1164,7 @@
             // 
             // timerMediaServerOffline
             // 
+            this.timerMediaServerOffline.Enabled = true;
             this.timerMediaServerOffline.Interval = 10000;
             this.timerMediaServerOffline.Tick += new System.EventHandler(this.timerMediaServerOffline_Tick);
             // 

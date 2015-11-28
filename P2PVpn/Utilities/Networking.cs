@@ -22,17 +22,19 @@ namespace P2PVpn.Utilities
     public class Networking : IDisposable
     {
         private static ListBox _log;
-        private P2PVPNForm _p2PVPNForm;
-        public List<NetworkAdapter> ActiveNetworkAdapters = new List<NetworkAdapter>();
+        //private P2PVPNForm _p2PVPNForm;
+        private System.Windows.Forms.Timer _timerMediaShare;
+        public static List<NetworkAdapter> ActiveNetworkAdapters = new List<NetworkAdapter>();
         public NetworkListManager NetworkListManager;
         public static bool DisableDisconnect = false;
 
-        public Networking(P2PVPNForm p2PVPNForm, ListBox listBox)
+        public Networking(System.Windows.Forms.Timer timerMediaShare, ListBox listBox)
         {
             
             listBox.Items.Clear();
             _log = listBox;
-            _p2PVPNForm = p2PVPNForm;
+            //_p2PVPNForm = p2PVPNForm;
+            _timerMediaShare = timerMediaShare;
 
             //EnableAllNeworkInterfaces();
             NetworkListManager = new NetworkListManager();
@@ -80,7 +82,7 @@ namespace P2PVpn.Utilities
             ScanNetworkInterfaces();
             LogNetworkInfo();
             //FileIO.StopQueue = false;
-            //_p2PVPNForm.WatchFileSystem();
+            _timerMediaShare.Enabled = true;
 
         }
 
@@ -222,7 +224,7 @@ namespace P2PVpn.Utilities
                 return;
             }
             settings.StartupNetworkAdapterDns = new List<NetworkAdapterDns>();
-            foreach (var adapter in this.ActiveNetworkAdapters)
+            foreach (var adapter in ActiveNetworkAdapters)
             {
                 if (Networking.IsVPNAdapter(adapter)) continue;
 
@@ -240,6 +242,14 @@ namespace P2PVpn.Utilities
             }
             Settings.Save(settings);
 
+        }
+        public static bool IsLocalNetworkConnected()
+        {
+            bool isConnected = false;
+            var adapters = ActiveNetworkAdapters.FindAll(x => !Networking.IsVPNAdapter(x));
+            isConnected = adapters.Any(x => x.IsConnected || x.IsConnectedToInternet);
+            //isConnected = (adapters != null);
+            return isConnected;
         }
         public static WebClient GetTorWebClient()
         {
@@ -457,7 +467,7 @@ namespace P2PVpn.Utilities
                 if (!enable)
                 {
                     //dissable
-                    var adapter = this.ActiveNetworkAdapters.FirstOrDefault(x => x.Name == (string)item["NetConnectionId"]);
+                    var adapter = ActiveNetworkAdapters.FirstOrDefault(x => x.Name == (string)item["NetConnectionId"]);
                     if (adapter != null) item.InvokeMethod(verb, null);
                     
                 }
@@ -510,7 +520,7 @@ namespace P2PVpn.Utilities
 
         private void LogNetworkInfo()
         {
-            foreach (var adapter in this.ActiveNetworkAdapters)
+            foreach (var adapter in ActiveNetworkAdapters)
             {
                 _log.Log("Network Name: {0} {1}", adapter.NetworkName, adapter.ConnectivityString);
                 _log.Log("\tActive Nework Interface: {0} ({1}) Id:{2}", adapter.Name, adapter.Description, adapter.Id);

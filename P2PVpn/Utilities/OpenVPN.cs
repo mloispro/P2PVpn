@@ -18,9 +18,9 @@ namespace P2PVpn.Utilities
                             "script-security 2{0}" +
                             "auth-user-pass \"{1}\\\\config\\\\{2}\"{0}" +
                             "plugin \"{1}\\\\bin\\\\fix-dns-leak-32.dll\"{0}" +
-                            "up-restart{0}" +
                             "down-pre{0}" +
                             "down \"{3}\"{0}";
+                            //"up-restart{0}" +
 
         private static string _p2pVpnRouteSettings =
            string.Format("route 0.0.0.0 192.0.0.0 net_gateway{0}" +

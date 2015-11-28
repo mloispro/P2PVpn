@@ -22,8 +22,8 @@ namespace P2PVpn.Utilities
         private FileTransfer _fileTransfer2;
         private Models.MediaServer _mediaServer;
         //private string _currentFileTransfer = "";
-        public static bool StopQueue = false;
-        private bool _isTranserferingFile = false;
+        //public static bool StopQueue = false;
+        private static bool _isTranserferingFile = false;
 
         // the delegate the subscribers must implement
         public delegate void FinshedFileTransferHandler(object sender,
@@ -117,6 +117,8 @@ namespace P2PVpn.Utilities
         }
         public void TransferFile(FileTransfer fileTransfer)
         {
+            if (!Networking.IsLocalNetworkConnected()) return;
+
             Settings settings = Settings.Get();
             var transferQue = settings.MediaFileTransferQue;
 
@@ -136,8 +138,7 @@ namespace P2PVpn.Utilities
                 }
                 if (foundTransfer.IsTransfering) return;
             }
-            var anyTransfering = transferQue.Find(x => x.IsTransfering);
-            if (anyTransfering != null) return;
+            if (transferQue.Any(x => x.IsTransfering)) return;
 
             if (!File.Exists(foundTransfer.SourceDirectory))
             {
@@ -179,7 +180,7 @@ namespace P2PVpn.Utilities
             }
             catch (Exception e)
             {
-                StopQueue = true;
+                //StopQueue = true;
                 Logging.Log("Error: File Transfer Failed {0} {1} {2}", fileTransfer.SourceDirectory, Environment.NewLine, e.Message);
                 //return 1;
             }
@@ -191,23 +192,26 @@ namespace P2PVpn.Utilities
             ProcessTransferQueue();
         }
 
+        private static bool _processingQueue = false;
         //public async void ProcessTransferQueue()
         public async void ProcessTransferQueue()
         {
-            if (StopQueue) return;
+            //Networking.
+            //if (StopQueue) return;
+            if (_processingQueue) return;
 
             Settings settings = Settings.Get();
             var transferQue = settings.MediaFileTransferQue;
 
-            if (transferQue.Count == 0) return;
-
             while (transferQue.Count > 0)
             {
-                if (StopQueue) break;
+                if (transferQue.Count == 0) break;
+                _processingQueue = true;
+                //if (StopQueue) break;
                 await ControlHelpers.Sleep(5000);
                 await Task.Run(() => TransferFile(transferQue.First()));
-                
             }
+            _processingQueue = false;
         }
         public static void ResetTransfers()
         {
@@ -296,7 +300,7 @@ namespace P2PVpn.Utilities
                 {
                     //_networkListManager.NetworkConnectivityChanged -= _networkListManager_NetworkConnectivityChanged;
                 }
-                StopQueue = true;
+                //StopQueue = true;
                 ResetTransfers();
                 _disposed = true;
             }

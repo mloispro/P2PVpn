@@ -30,7 +30,7 @@ namespace P2PVpn
             InitializeComponent();
 
             Logging.Init(lbLog, statusStrip, lblStatusText);
-            _network = new Networking(this, lbLog);
+            _network = new Networking(timerMediaServerOffline, lbLog);
             _network.NetworkListManager.NetworkConnectivityChanged += NetworkListManager_NetworkConnectivityChanged;
             _network.ShowNetworkTraffic();
             PopulateSettings();
@@ -45,6 +45,7 @@ namespace P2PVpn
             this.EnableForm(false);
             //wait for network to disconnect
             await ControlHelpers.Sleep(2000);
+            _fileIO = null;
             PopulateControls();
             this.EnableForm();
         }
@@ -52,13 +53,13 @@ namespace P2PVpn
         {
             string connections = "";
             bool vpnFound = false;
-            if (_network.ActiveNetworkAdapters.Count == 0)
+            if (Networking.ActiveNetworkAdapters.Count == 0)
             {
                 lblVPNConnectionStatus.SetLabelText("Disconnected");
                 lblConnectionStatus.SetLabelText("Disconnected");
                 Logging.SetStatus("OpenVPN Disconnected", Logging.Colors.Red);
             }
-            foreach (var adapter in _network.ActiveNetworkAdapters)
+            foreach (var adapter in Networking.ActiveNetworkAdapters)
             {
                 if (Networking.IsVPNAdapter(adapter))
                 {
@@ -105,6 +106,7 @@ namespace P2PVpn
                 runningApps = "None.";
             }
             ControlHelpers.SetLabelText(lblRunningApps, runningApps);
+            //timerMediaServerOffline.Tick += timerMediaServerOffline_Tick;
 
         }
         private async void btnConnect_Click(object sender, EventArgs e)
@@ -204,7 +206,7 @@ namespace P2PVpn
 
         private void P2PVPNForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            FileIO.StopQueue = true;
+            //FileIO.StopQueue = true;
             tabs.SelectedTab = tabVPNTraffic;
             Disconnect().Wait();
             try
@@ -266,7 +268,7 @@ namespace P2PVpn
             }
             catch (Exception ex)
             {
-                timerMediaServerOffline.Enabled = false;
+                //timerMediaServerOffline.Enabled = false;
                 //settings.MediaServer.ShareName = "";
                 //Settings.Save(settings);
                 ControlHelpers.ShowMessageBox(ex.Message, ControlHelpers.MessageBoxType.Error);
@@ -275,7 +277,7 @@ namespace P2PVpn
             lblMediaNetworkShare.Text = settings.MediaServer.ShareName;
             if (!string.IsNullOrEmpty(settings.MediaServer.ShareName))
             {
-                timerMediaServerOffline.Enabled = true;
+                //timerMediaServerOffline.Enabled = true;
             }
             if (isOffline)
             {
@@ -297,7 +299,7 @@ namespace P2PVpn
             cbMediaParentalTime.SelectedIndexChanged -= cbMediaParentalTime_SelectedIndexChanged;
             cbMediaParentalTime.Text = Utilities.MediaServer.GetSelectedOfflineValue(settings.MediaServer);
             cbMediaParentalTime.SelectedIndexChanged += cbMediaParentalTime_SelectedIndexChanged;
-            timerMediaServerOffline_Tick(null, null);
+            //timerMediaServerOffline_Tick(null, null);
             //WatchFileSystem();
         }
 
@@ -324,7 +326,7 @@ namespace P2PVpn
             }
             catch (Exception ex)
             {
-                timerMediaServerOffline.Enabled = false;
+                //timerMediaServerOffline.Enabled = false;
                 //settings.MediaServer.ShareName = "";
                 //Settings.Save(settings);
                 ControlHelpers.ShowMessageBox(ex.Message, ControlHelpers.MessageBoxType.Error);
@@ -349,11 +351,12 @@ namespace P2PVpn
            // FileIO fileIO = null;
             try
             {
-                //if (_fileIO == null)
-                //{
-                //    _fileIO = new FileIO(settings.MediaFileTransfer, settings.MediaServer);
-                //}
-                _fileIO = new FileIO(settings.MediaFileTransfer, settings.MediaServer);
+                if (_fileIO == null)
+                {
+                    _fileIO = new FileIO(settings.MediaFileTransfer, settings.MediaServer);
+                    //_fileIO.ProcessTransferQueue();
+                }
+                //_fileIO = new FileIO(settings.MediaFileTransfer, settings.MediaServer);
                 _fileIO.ProcessTransferQueue();
             }
             catch (Exception ex)
@@ -388,8 +391,8 @@ namespace P2PVpn
                 Settings.Save(settings);
                 //PopulateMediaServerControls();
                 lblMediaDestination.Text = settings.MediaFileTransfer.TargetDirectory;
-                timerMediaServerOffline.Enabled = true;
-                WatchFileSystem();
+                //timerMediaServerOffline.Enabled = true;
+                //WatchFileSystem();
             }
         }
         private void btnMediaSource_Click(object sender, EventArgs e)
@@ -404,7 +407,7 @@ namespace P2PVpn
                 Settings.Save(settings);
                 //PopulateMediaServerControls();
                 lblMediaSource.Text = settings.MediaFileTransfer.SourceDirectory;
-                WatchFileSystem();
+                //WatchFileSystem();
             }
         }
         private void tbMediaUsername_Leave(object sender, EventArgs e)
@@ -454,7 +457,8 @@ namespace P2PVpn
         }
         private void timerMediaServerOffline_Tick(object sender, EventArgs e)
         {
-            if (timerMediaServerOffline.Enabled == false) return;
+            if (!Networking.IsLocalNetworkConnected()) return;
+            
             Settings settings = Settings.Get();
             try
             {
@@ -476,8 +480,8 @@ namespace P2PVpn
                     lblMediaTimeRemaining.Text = "";
                 }
             }
-            catch { timerMediaServerOffline.Enabled = false; }
-            //WatchFileSystem();
+            catch { } //timerMediaServerOffline.Enabled = false; }
+            WatchFileSystem();
         }
         #endregion MediaServer
 
@@ -932,7 +936,7 @@ namespace P2PVpn
 
         private void P2PVPNForm_Shown(object sender, EventArgs e)
         {
-            WatchFileSystem();
+            //WatchFileSystem();
         }
 
       
