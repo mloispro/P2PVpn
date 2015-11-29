@@ -161,6 +161,10 @@ namespace P2PVpn
                     ControlHelpers.StartProcess(@"ipconfig.exe", @"/registerdns");
                     ControlHelpers.StartProcess(@"ipconfig.exe", @"/flushdns");
                     _network.OpenPrograms();
+                    if (settings.PreventSystemSleep)
+                    {
+                        SystemUtils.PreventSleep();
+                    }
                 }
                 //Thread.Sleep(60000);
                 //Networking.DisableDisconnect = false;
@@ -190,7 +194,7 @@ namespace P2PVpn
             _network.ClosePrograms(); //**dont add await here it causes hang
             Networking.DisableDisconnect = true;
             _network.EnableAllNeworkInterfaces();
-            //
+            
 
             //wait for network interfaces to reset
 
@@ -535,6 +539,7 @@ namespace P2PVpn
             PopulateTextBoxes();
             PopulateMediaServerControls();
             SetRadioButtons();
+            PopulateSystemSleepText();
         }
 
        
@@ -754,6 +759,34 @@ namespace P2PVpn
             settings.RetrieveVPNBookCredsOnLoad = cbRetrieveVPNBookCredsOnLoad.Checked;
             Settings.Save(settings);
         }
+        private void cbDisableSystemSleep_CheckedChanged(object sender, EventArgs e)
+        {
+            Settings settings = Settings.Get();
+            settings.PreventSystemSleep = cbDisableSystemSleep.Checked;
+            Settings.Save(settings);
+            PopulateSystemSleepText();
+            if (settings.PreventSystemSleep)
+            {
+                SystemUtils.PreventSleep();
+            }
+            else
+            {
+                SystemUtils.AllowSleep();
+            }
+        }
+        private void PopulateSystemSleepText()
+        {
+            Settings settings = Settings.Get();
+            cbDisableSystemSleep.Checked = settings.PreventSystemSleep;
+            if (settings.PreventSystemSleep)
+            {
+                cbDisableSystemSleep.Text = "Sleep Disabled";
+            }
+            else
+            {
+                cbDisableSystemSleep.Text = "Sleep Enabled";
+            }
+        }
         #region DNS Settings
         private void cbResetOnDisconn_CheckedChanged(object sender, EventArgs e)
         {
@@ -938,6 +971,8 @@ namespace P2PVpn
         {
             //WatchFileSystem();
         }
+
+        
 
       
 

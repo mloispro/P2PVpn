@@ -159,6 +159,7 @@
     <Compile Include="Utilities\Networking.cs" />
     <Compile Include="Utilities\OpenVPN.cs" />
     <Compile Include="Utilities\Settings.cs" />
+    <Compile Include="Utilities\SystemUtils.cs" />
     <Compile Include="Utilities\VPNGate.cs" />
     <Compile Include="Utilities\WinFirewall.cs" />
     <EmbeddedResource Include="P2PVPNForm.resx">

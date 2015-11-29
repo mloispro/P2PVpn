@@ -130,6 +130,8 @@
             this.closeDataGridViewCheckBoxColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.programDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.appsBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.label4 = new System.Windows.Forms.Label();
+            this.cbDisableSystemSleep = new System.Windows.Forms.CheckBox();
             this.statusStrip.SuspendLayout();
             this.tabVPNTraffic.SuspendLayout();
             this.tabVPNBook.SuspendLayout();
@@ -339,6 +341,8 @@
             // 
             // tabSettings
             // 
+            this.tabSettings.Controls.Add(this.cbDisableSystemSleep);
+            this.tabSettings.Controls.Add(this.label4);
             this.tabSettings.Controls.Add(this.pnlRoutes);
             this.tabSettings.Controls.Add(this.tbVPNConnWaitTime);
             this.tabSettings.Controls.Add(this.label6);
@@ -1195,6 +1199,26 @@
             // 
             this.appsBindingSource.DataSource = typeof(P2PVpn.Models.Apps);
             // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(9, 119);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(234, 13);
+            this.label4.TabIndex = 9;
+            this.label4.Text = "Prevent System Sleep when connected to VPN:";
+            // 
+            // cbDisableSystemSleep
+            // 
+            this.cbDisableSystemSleep.AutoSize = true;
+            this.cbDisableSystemSleep.Location = new System.Drawing.Point(249, 118);
+            this.cbDisableSystemSleep.Name = "cbDisableSystemSleep";
+            this.cbDisableSystemSleep.Size = new System.Drawing.Size(97, 17);
+            this.cbDisableSystemSleep.TabIndex = 10;
+            this.cbDisableSystemSleep.Text = "Sleep Disabled";
+            this.cbDisableSystemSleep.UseVisualStyleBackColor = true;
+            this.cbDisableSystemSleep.CheckedChanged += new System.EventHandler(this.cbDisableSystemSleep_CheckedChanged);
+            // 
             // P2PVPNForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1350,6 +1374,8 @@
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
         private System.Windows.Forms.ToolStripStatusLabel lblStatusMediaShare;
         private System.Windows.Forms.Label lblMediaTimeRemaining;
+        private System.Windows.Forms.CheckBox cbDisableSystemSleep;
+        private System.Windows.Forms.Label label4;
     }
 }
 

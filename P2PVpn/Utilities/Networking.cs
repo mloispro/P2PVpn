@@ -62,6 +62,7 @@ namespace P2PVpn.Utilities
                 await ClosePrograms();
                 EnableAllNeworkInterfaces();
                 ResetNetworkInterfaces();
+                SystemUtils.AllowSleep();
                 if (this.IsOpenVPNConnected())
                 {
                     DisableDisconnect = true;

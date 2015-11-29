@@ -23,9 +23,9 @@ namespace P2PVpn
 
             // if you like to wait a few seconds in case that the instance is just 
             // shutting down
-            if (!mutex.WaitOne(TimeSpan.FromSeconds(2), false))
+            if (!mutex.WaitOne(TimeSpan.FromSeconds(2), false) && !System.Diagnostics.Debugger.IsAttached)
             {
-               MessageBox.Show("args: " + args[0], "", MessageBoxButtons.OK);
+              MessageBox.Show("P2PVpn Monitor is already running", "", MessageBoxButtons.OK);
                return 0;
             }
 
@@ -36,7 +36,14 @@ namespace P2PVpn
                 Application.Run(new P2PVPNForm());
             }
             catch { }
-            finally { mutex.ReleaseMutex(); } // I find this more explicit
+            finally
+            {
+                try
+                {
+                    mutex.ReleaseMutex();
+                }
+                catch { }
+            }
             return 0;
         }
     }

@@ -58,6 +58,7 @@ namespace P2PVpn.Utilities
         public FileTransfer MediaFileTransfer { get; set; }
         public Models.MediaServer MediaServer { get; set; }
         public List<FileTransfer> MediaFileTransferQue { get; set; }
+        public bool PreventSystemSleep { get; set; }
 
         private static Settings _settings;
 
