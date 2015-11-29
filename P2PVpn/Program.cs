@@ -31,9 +31,11 @@ namespace P2PVpn
 
             try
             {
+
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
                 Application.Run(new P2PVPNForm());
+
             }
             catch { }
             finally

@@ -62,6 +62,7 @@ namespace P2PVpn.Utilities
                 await ClosePrograms();
                 EnableAllNeworkInterfaces();
                 ResetNetworkInterfaces();
+                FileIO.ResetTransfers();
                 SystemUtils.AllowSleep();
                 if (this.IsOpenVPNConnected())
                 {
@@ -82,8 +83,15 @@ namespace P2PVpn.Utilities
             }
             ScanNetworkInterfaces();
             LogNetworkInfo();
-            //FileIO.StopQueue = false;
-            _timerMediaShare.Enabled = true;
+            if (IsLocalNetworkConnected())
+            {
+                _timerMediaShare.Enabled = true;
+                FileIO.ProcessFileTransferQueue();
+            }
+            else
+            {
+                FileIO.ResetTransfers();
+            }
 
         }
 

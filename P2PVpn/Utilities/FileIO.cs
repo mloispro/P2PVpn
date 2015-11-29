@@ -18,31 +18,32 @@ namespace P2PVpn.Utilities
         private FileSystemWatcher _fileSystemWatcher = new FileSystemWatcher();
         private FileSystemWatcher _fileSystemWatcher2 = new FileSystemWatcher();
 
-        private FileTransfer _fileTransfer;
-        private FileTransfer _fileTransfer2;
-        private Models.MediaServer _mediaServer;
+        //private FileTransfer _fileTransfer;
+        //private FileTransfer _fileTransfer2;
+        //private Models.MediaServer _mediaServer;
         //private string _currentFileTransfer = "";
         //public static bool StopQueue = false;
-        private static bool _isTranserferingFile = false;
+        //private static bool _isTranserferingFile = false;
 
         // the delegate the subscribers must implement
-        public delegate void FinshedFileTransferHandler(object sender,
+        public delegate void FinshedFileTransferHandler(FileTransfer fileTransfer,
                              FinshedFileTransferEventArgs finshedFileTransferInfo);
 
         // an instance of the delegate
-        public FinshedFileTransferHandler FinshedFileTransfer;
+        public static FinshedFileTransferHandler FinshedFileTransfer;
 
         // the delegate the subscribers must implement
         public delegate void FileTransferProgressHandler(object sender,
                              FileTransferProgressEventArgs fileTransferProgressInfo);
 
         // an instance of the delegate
-        public FileTransferProgressHandler FileTransferProgress;
+        public static FileTransferProgressHandler FileTransferProgress;
 
-        public FileIO(FileTransfer fileTransfer, Models.MediaServer mediaServer)
+        //public FileIO(FileTransfer fileTransfer, Models.MediaServer mediaServer)
+        public FileIO()
         {
-            _fileTransfer = fileTransfer;
-            _mediaServer = mediaServer;
+            //_fileTransfer = fileTransfer;
+            //_mediaServer = mediaServer;
 
             //var di = new DirectoryInfo(Path.GetDirectoryName(fileTransfer.TargetDirectory));
             //di.Attributes = FileAttributes.Normal;
@@ -51,16 +52,6 @@ namespace P2PVpn.Utilities
             //ds.AddAccessRule(new FileSystemAccessRule(WindowsIdentity.GetCurrent().Name, FileSystemRights.FullControl, AccessControlType.Allow));
             //Directory.SetAccessControl(Path.GetDirectoryName(fileTransfer.TargetDirectory), ds);
 
-            //todo: fix this
-            //_fileSystemWatcher = new FileSystemWatcher(fileTransfer.SourceDirectory);
-            //_fileSystemWatcher.NotifyFilter = NotifyFilters.FileName | NotifyFilters.Size;
-
-            //_fileSystemWatcher.Filter = "*.*";
-            //_fileSystemWatcher.IncludeSubdirectories = false;
-            //_fileSystemWatcher.Changed += _fileSystemWatcher_Created;
-            //_fileSystemWatcher.Error += _fileSystemWatcher_Error;
-
-            //_fileSystemWatcher.EnableRaisingEvents = true;
         }
 
         //public FileIO(FileTransfer fileTransfer, FileTransfer fileTransfer2)
@@ -74,134 +65,153 @@ namespace P2PVpn.Utilities
         //    _fileSystemWatcher2.Filter = "*.*";
         //    _fileSystemWatcher2.EnableRaisingEvents = true;
         //}
+        static FileIO()
+        {
 
+        }
+        public static void WatchFileSystem()
+        {
+            //todo: fix this
+            Settings settings = Settings.Get();
 
-        private void _fileSystemWatcher_Created(object sender, FileSystemEventArgs e)
+            if (string.IsNullOrWhiteSpace(settings.MediaFileTransfer.SourceDirectory) ||
+                string.IsNullOrWhiteSpace(settings.MediaFileTransfer.TargetDirectory))
+            {
+                throw new Exception("Select a Source and Target Directory");
+            }
+
+            var fileSystemWatcher = new FileSystemWatcher(settings.MediaFileTransfer.SourceDirectory);
+            fileSystemWatcher.NotifyFilter = NotifyFilters.FileName | NotifyFilters.Size;
+
+            fileSystemWatcher.Filter = "*.*";
+            fileSystemWatcher.IncludeSubdirectories = false;
+            fileSystemWatcher.Changed += fileSystemWatcher_Changed;
+            //fileSystemWatcher.Error += _fileSystemWatcher_Error;
+
+            fileSystemWatcher.EnableRaisingEvents = true;
+        }
+
+        private static void fileSystemWatcher_Changed(object sender, FileSystemEventArgs e)
         {
             if (e.ChangeType == WatcherChangeTypes.Changed)
             {
-                string sourceDir = GetPath(_fileTransfer.SourceDirectory);
+                Settings settings = Settings.Get();
+
+                string sourceDir = GetPath(settings.MediaFileTransfer.SourceDirectory);
                 string sourceDir2 = GetPath(e.FullPath);
 
                 if (sourceDir == sourceDir2)
                 {
-                    string targetFile = Path.Combine(_fileTransfer.TargetDirectory, e.Name);
+                    string targetFile = Path.Combine(settings.MediaFileTransfer.TargetDirectory, e.Name);
 
-                    FinshedFileTransferEventArgs FinshedFileTransferInfo =
-                         new FinshedFileTransferEventArgs(e.FullPath, targetFile);
-
-                    // if anyone has subscribed, notify them
-                    if (FinshedFileTransfer != null)
+                    var prepedTransfer = new FileTransfer { SourceDirectory = e.FullPath, TargetDirectory = targetFile };
+                    
+                    //add to queue
+                    if (!settings.MediaFileTransferQue.Contains(prepedTransfer))
                     {
-
-                        MediaServer.LoginToMediaShare(_mediaServer);
-
-                        TransferFile(new FileTransfer { SourceDirectory = e.FullPath, TargetDirectory = targetFile });
-
-                        FinshedFileTransfer(this, FinshedFileTransferInfo);
+                        settings.MediaFileTransferQue.Add(prepedTransfer);
+                        ProcessFileTransferQueue();
                     }
                 }
-              
-
             }
         }
-        public void TransferFile(FileTransfer fileTransfer)
+
+        private static void TransferToMediaServer(FileTransfer fileTransfer)
         {
             if (!Networking.IsLocalNetworkConnected()) return;
 
+            FinshedFileTransferEventArgs FinshedFileTransferInfo =
+                        new FinshedFileTransferEventArgs(fileTransfer.SourceDirectory, fileTransfer.TargetDirectory);
+
+            // if anyone has subscribed, notify them
+
             Settings settings = Settings.Get();
-            var transferQue = settings.MediaFileTransferQue;
+            MediaServer.LoginToMediaShare(settings.MediaServer);
 
-            var foundTransfer = transferQue.Find(x => x.SourceDirectory == fileTransfer.SourceDirectory);
-            if (foundTransfer == null)
-            {
-                transferQue.Add(fileTransfer);
-                Settings.Save(settings);
-                foundTransfer = fileTransfer;
-            }
-            else
-            {
-                if (!_isTranserferingFile)
-                {
-                    ResetTransfers();
-                    foundTransfer.IsTransfering = false;
-                }
-                if (foundTransfer.IsTransfering) return;
-            }
-            if (transferQue.Any(x => x.IsTransfering)) return;
-
-            if (!File.Exists(foundTransfer.SourceDirectory))
-            {
-                transferQue.Remove(foundTransfer);
-                Settings.Save(settings);
-                return;
-            }
-
+            //Transfer File
             while (!IsFileClosed(fileTransfer.SourceDirectory))
             {
-                Thread.Sleep(500);
+                //Thread.Sleep(500);
+                ControlHelpers.Sleep(500).Wait();
             }
+            fileTransfer.IsTransfering = true;
+            Settings.Save(settings);
 
-            try
+            Logging.Log("Transfering File: " + fileTransfer.SourceDirectory);
+
+            Task fileCopyTask = Task.Run(() =>
             {
-                _isTranserferingFile = true;
-                foundTransfer.IsTransfering = true;
-                Settings.Save(settings);
-
-                Logging.Log("Transfering File: " + fileTransfer.SourceDirectory);
-                //File.Copy(source, destination);
 
                 FileCopyLib.FileCopier.CopyWithProgress(fileTransfer.SourceDirectory, fileTransfer.TargetDirectory,
-                    (x) => FileTransferProgress(this, new FileTransferProgressEventArgs(x.Percentage, fileTransfer)));
-                    //(x) => Logging.Log("Copying {0}", x.Percentage));
+                    (x) => FileTransferProgress(null, new FileTransferProgressEventArgs(x.Percentage, fileTransfer)));
 
-                Logging.Log("Finished Transfering File: {0}{1}{2}to: {3} ", fileTransfer.SourceDirectory, Environment.NewLine, "\t", fileTransfer.TargetDirectory);
 
-                if (File.Exists(fileTransfer.SourceDirectory))
+            }).ContinueWith((t) =>
+            {
+
+                if (!t.IsFaulted && !t.IsCanceled)
                 {
-                    while (!IsFileClosed(fileTransfer.SourceDirectory))
-                    {
-                        Thread.Sleep(500);
-                    }
+                    Logging.Log("Finished Transfering File: {0}{1}{2}to: {3} ", fileTransfer.SourceDirectory, Environment.NewLine, "\t", fileTransfer.TargetDirectory);
+
                     File.Delete(fileTransfer.SourceDirectory);
-                    settings.MediaFileTransferQue.Remove(fileTransfer);
+
+                    fileTransfer.IsTransfering = false;
                     Settings.Save(settings);
+
+                    if (FinshedFileTransfer != null)
+                    {
+                        FinshedFileTransfer(fileTransfer, FinshedFileTransferInfo);
+                    }
                 }
-            }
-            catch (Exception e)
-            {
-                //StopQueue = true;
-                Logging.Log("Error: File Transfer Failed {0} {1} {2}", fileTransfer.SourceDirectory, Environment.NewLine, e.Message);
-                //return 1;
-            }
-            finally
-            {
-                transferQue.Remove(fileTransfer);
-            }
+                else if (t.IsFaulted)
+                {
+                    Exception ex = t.Exception;
+                    while (ex is AggregateException && ex.InnerException != null)
+                        ex = ex.InnerException;
 
-            ProcessTransferQueue();
+                    var dialogResult = ControlHelpers.ShowMessageBox(ex.Message, ControlHelpers.MessageBoxType.Error);
+                    if (dialogResult == System.Windows.Forms.DialogResult.OK)
+                    {
+                        ProcessFileTransferQueue();
+                    }
+                }
+            });
+
+            //if (fileCopyTask.IsFaulted)
+            //{
+               
+            //}
+
+
         }
+        //private static Task FileTransferCompleted()
+        //{
 
-        private static bool _processingQueue = false;
-        //public async void ProcessTransferQueue()
-        public async void ProcessTransferQueue()
+        //}
+        public static void ProcessFileTransferQueue()
         {
-            //Networking.
-            //if (StopQueue) return;
-            if (_processingQueue) return;
-
             Settings settings = Settings.Get();
             var transferQue = settings.MediaFileTransferQue;
 
-            while (transferQue.Count > 0)
+            if (transferQue.Count == 0) return;
+            if (IsFileTransferInProgress()) return;
+
+            var transferFile = transferQue.First();
+
+            TransferToMediaServer(transferFile);
+
+            FileIO.FinshedFileTransfer += (fileTransfer, info) =>
             {
-                if (transferQue.Count == 0) break;
-                _processingQueue = true;
-                //if (StopQueue) break;
-                await ControlHelpers.Sleep(5000);
-                await Task.Run(() => TransferFile(transferQue.First()));
-            }
-            _processingQueue = false;
+                transferQue.Remove(fileTransfer);
+                Settings.Save(settings);
+                ProcessFileTransferQueue();
+            };
+        }
+        private static bool IsFileTransferInProgress()
+        {
+            Settings settings = Settings.Get();
+            bool anyTransfers = settings.MediaFileTransferQue.Any(x => x.IsTransfering);
+            return anyTransfers;
         }
         public static void ResetTransfers()
         {
@@ -209,11 +219,139 @@ namespace P2PVpn.Utilities
             settings.MediaFileTransferQue.ForEach(x => x.IsTransfering = false);
             Settings.Save(settings);
         }
+        //private void _fileSystemWatcher_Created(object sender, FileSystemEventArgs e)
+        //{
+        //    if (e.ChangeType == WatcherChangeTypes.Changed)
+        //    {
+        //        string sourceDir = GetPath(_fileTransfer.SourceDirectory);
+        //        string sourceDir2 = GetPath(e.FullPath);
+
+        //        if (sourceDir == sourceDir2)
+        //        {
+        //            string targetFile = Path.Combine(_fileTransfer.TargetDirectory, e.Name);
+
+        //            FinshedFileTransferEventArgs FinshedFileTransferInfo =
+        //                 new FinshedFileTransferEventArgs(e.FullPath, targetFile);
+
+        //            // if anyone has subscribed, notify them
+        //            if (FinshedFileTransfer != null)
+        //            {
+
+        //                MediaServer.LoginToMediaShare(_mediaServer);
+
+        //                TransferFile(new FileTransfer { SourceDirectory = e.FullPath, TargetDirectory = targetFile });
+
+        //                FinshedFileTransfer(this, FinshedFileTransferInfo);
+        //            }
+        //        }
+              
+
+        //    }
+        //}
+    //public void TransferFile(FileTransfer fileTransfer)
+    //{
+    //    if (!Networking.IsLocalNetworkConnected()) return;
+
+    //    Settings settings = Settings.Get();
+    //    var transferQue = settings.MediaFileTransferQue;
+
+    //    var foundTransfer = transferQue.Find(x => x.SourceDirectory == fileTransfer.SourceDirectory);
+    //    if (foundTransfer == null)
+    //    {
+    //        transferQue.Add(fileTransfer);
+    //        Settings.Save(settings);
+    //        foundTransfer = fileTransfer;
+    //    }
+    //    else
+    //    {
+    //        if (!_isTranserferingFile)
+    //        {
+    //            ResetTransfers();
+    //            foundTransfer.IsTransfering = false;
+    //        }
+    //        if (foundTransfer.IsTransfering) return;
+    //    }
+    //    if (transferQue.Any(x => x.IsTransfering)) return;
+
+    //    if (!File.Exists(foundTransfer.SourceDirectory))
+    //    {
+    //        transferQue.Remove(foundTransfer);
+    //        Settings.Save(settings);
+    //        return;
+    //    }
+
+    //    while (!IsFileClosed(fileTransfer.SourceDirectory))
+    //    {
+    //        Thread.Sleep(500);
+    //    }
+
+    //    try
+    //    {
+    //        _isTranserferingFile = true;
+    //        foundTransfer.IsTransfering = true;
+    //        Settings.Save(settings);
+
+    //        Logging.Log("Transfering File: " + fileTransfer.SourceDirectory);
+    //        //File.Copy(source, destination);
+
+    //        FileCopyLib.FileCopier.CopyWithProgress(fileTransfer.SourceDirectory, fileTransfer.TargetDirectory,
+    //            (x) => FileTransferProgress(this, new FileTransferProgressEventArgs(x.Percentage, fileTransfer)));
+    //            //(x) => Logging.Log("Copying {0}", x.Percentage));
+
+    //        Logging.Log("Finished Transfering File: {0}{1}{2}to: {3} ", fileTransfer.SourceDirectory, Environment.NewLine, "\t", fileTransfer.TargetDirectory);
+
+    //        if (File.Exists(fileTransfer.SourceDirectory))
+    //        {
+    //            while (!IsFileClosed(fileTransfer.SourceDirectory))
+    //            {
+    //                Thread.Sleep(500);
+    //            }
+    //            File.Delete(fileTransfer.SourceDirectory);
+    //            settings.MediaFileTransferQue.Remove(fileTransfer);
+    //            Settings.Save(settings);
+    //        }
+    //    }
+    //    catch (Exception e)
+    //    {
+    //        //StopQueue = true;
+    //        Logging.Log("Error: File Transfer Failed {0} {1} {2}", fileTransfer.SourceDirectory, Environment.NewLine, e.Message);
+    //        //return 1;
+    //    }
+    //    finally
+    //    {
+    //        transferQue.Remove(fileTransfer);
+    //    }
+
+    //    ProcessTransferQueue();
+    //}
+
+    //private static bool _processingQueue = false;
+    ////public async void ProcessTransferQueue()
+    //public async void ProcessTransferQueue()
+    //{
+    //    //Networking.
+    //    //if (StopQueue) return;
+    //    if (_processingQueue) return;
+
+    //    Settings settings = Settings.Get();
+    //    var transferQue = settings.MediaFileTransferQue;
+
+    //    while (transferQue.Count > 0)
+    //    {
+    //        if (transferQue.Count == 0) break;
+    //        _processingQueue = true;
+    //        //if (StopQueue) break;
+    //        await ControlHelpers.Sleep(5000);
+    //        await Task.Run(() => TransferFile(transferQue.First()));
+    //    }
+    //    _processingQueue = false;
+    //}
+       
         private void _fileSystemWatcher_Error(object sender, ErrorEventArgs e)
         {
             Logging.Log("File Transfer Error: " + e.GetException());
         }
-        public string GetPath(string fileOrDirPath)
+        public static string GetPath(string fileOrDirPath)
         {
             bool isDirectory = IsDirectory(fileOrDirPath);
             if (!isDirectory)
@@ -288,9 +426,9 @@ namespace P2PVpn.Utilities
             {
                 if (disposing)
                 {
-                    //_networkListManager.NetworkConnectivityChanged -= _networkListManager_NetworkConnectivityChanged;
+                    
                 }
-                //StopQueue = true;
+                
                 ResetTransfers();
                 _disposed = true;
             }

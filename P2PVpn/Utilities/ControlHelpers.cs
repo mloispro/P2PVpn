@@ -183,18 +183,19 @@ namespace P2PVpn.Utilities
             Info,
             Warning
         }
-        public static void ShowMessageBox(string message, MessageBoxType type = MessageBoxType.Info, bool log = true)
+        public static DialogResult ShowMessageBox(string message, MessageBoxType type = MessageBoxType.Info, bool log = true)
         {
             string caption = "";
             if (type != MessageBoxType.Info)
             {
                 caption = type.ToString();
             }
-            MessageBox.Show(message, caption, MessageBoxButtons.OK);
             if (log)
             {
                 Logging.Log(message);
             }
+            var result = MessageBox.Show(message, caption, MessageBoxButtons.OK);
+            return result;
         }
         public static void ShowMessageBoxYesNo(string message, string yesProcess, MessageBoxType type = MessageBoxType.Info)
         {

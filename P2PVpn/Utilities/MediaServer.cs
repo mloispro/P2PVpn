@@ -13,6 +13,7 @@ namespace P2PVpn.Utilities
 
         public static bool IsShareOffline(Models.MediaServer mediaServer)
         {
+            if (!Networking.IsLocalNetworkConnected()) return true;
             if (!LoginToMediaShare(mediaServer)) return true;
             if (!Directory.Exists(mediaServer.ShareName + _offlinePostfix) && !Directory.Exists(mediaServer.ShareName))
             {
