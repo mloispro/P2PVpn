@@ -87,8 +87,17 @@ namespace P2PVpn.Utilities
             fileSystemWatcher.IncludeSubdirectories = false;
             fileSystemWatcher.Changed += fileSystemWatcher_Changed;
             //fileSystemWatcher.Error += _fileSystemWatcher_Error;
+            fileSystemWatcher.Deleted += fileSystemWatcher_Deleted;
 
             fileSystemWatcher.EnableRaisingEvents = true;
+        }
+
+        private static void fileSystemWatcher_Deleted(object sender, FileSystemEventArgs e)
+        {
+            if (e.ChangeType == WatcherChangeTypes.Deleted)
+            {
+                ProcessFileTransferQueue();
+            }
         }
 
         private static void fileSystemWatcher_Changed(object sender, FileSystemEventArgs e)
@@ -110,6 +119,7 @@ namespace P2PVpn.Utilities
                     if (!settings.MediaFileTransferQue.Contains(prepedTransfer))
                     {
                         settings.MediaFileTransferQue.Add(prepedTransfer);
+                        Settings.Save(settings);
                         ProcessFileTransferQueue();
                     }
                 }
@@ -190,6 +200,8 @@ namespace P2PVpn.Utilities
         //}
         public static void ProcessFileTransferQueue()
         {
+            CleanTransferQueue();
+
             Settings settings = Settings.Get();
             var transferQue = settings.MediaFileTransferQue;
 
@@ -207,6 +219,17 @@ namespace P2PVpn.Utilities
                 ProcessFileTransferQueue();
             };
         }
+        private static void CleanTransferQueue()
+        {
+            Settings settings = Settings.Get();
+            if (settings.MediaFileTransferQue.Count == 0) return;
+
+            settings.MediaFileTransferQue = settings.MediaFileTransferQue.DistinctBy(x => x.SourceDirectory).ToList();
+            settings.MediaFileTransferQue.RemoveAll(x => !File.Exists(x.SourceDirectory));
+            
+            Settings.Save(settings);
+
+        }
         private static bool IsFileTransferInProgress()
         {
             Settings settings = Settings.Get();
@@ -218,138 +241,6 @@ namespace P2PVpn.Utilities
             var settings = Settings.Get();
             settings.MediaFileTransferQue.ForEach(x => x.IsTransfering = false);
             Settings.Save(settings);
-        }
-        //private void _fileSystemWatcher_Created(object sender, FileSystemEventArgs e)
-        //{
-        //    if (e.ChangeType == WatcherChangeTypes.Changed)
-        //    {
-        //        string sourceDir = GetPath(_fileTransfer.SourceDirectory);
-        //        string sourceDir2 = GetPath(e.FullPath);
-
-        //        if (sourceDir == sourceDir2)
-        //        {
-        //            string targetFile = Path.Combine(_fileTransfer.TargetDirectory, e.Name);
-
-        //            FinshedFileTransferEventArgs FinshedFileTransferInfo =
-        //                 new FinshedFileTransferEventArgs(e.FullPath, targetFile);
-
-        //            // if anyone has subscribed, notify them
-        //            if (FinshedFileTransfer != null)
-        //            {
-
-        //                MediaServer.LoginToMediaShare(_mediaServer);
-
-        //                TransferFile(new FileTransfer { SourceDirectory = e.FullPath, TargetDirectory = targetFile });
-
-        //                FinshedFileTransfer(this, FinshedFileTransferInfo);
-        //            }
-        //        }
-              
-
-        //    }
-        //}
-    //public void TransferFile(FileTransfer fileTransfer)
-    //{
-    //    if (!Networking.IsLocalNetworkConnected()) return;
-
-    //    Settings settings = Settings.Get();
-    //    var transferQue = settings.MediaFileTransferQue;
-
-    //    var foundTransfer = transferQue.Find(x => x.SourceDirectory == fileTransfer.SourceDirectory);
-    //    if (foundTransfer == null)
-    //    {
-    //        transferQue.Add(fileTransfer);
-    //        Settings.Save(settings);
-    //        foundTransfer = fileTransfer;
-    //    }
-    //    else
-    //    {
-    //        if (!_isTranserferingFile)
-    //        {
-    //            ResetTransfers();
-    //            foundTransfer.IsTransfering = false;
-    //        }
-    //        if (foundTransfer.IsTransfering) return;
-    //    }
-    //    if (transferQue.Any(x => x.IsTransfering)) return;
-
-    //    if (!File.Exists(foundTransfer.SourceDirectory))
-    //    {
-    //        transferQue.Remove(foundTransfer);
-    //        Settings.Save(settings);
-    //        return;
-    //    }
-
-    //    while (!IsFileClosed(fileTransfer.SourceDirectory))
-    //    {
-    //        Thread.Sleep(500);
-    //    }
-
-    //    try
-    //    {
-    //        _isTranserferingFile = true;
-    //        foundTransfer.IsTransfering = true;
-    //        Settings.Save(settings);
-
-    //        Logging.Log("Transfering File: " + fileTransfer.SourceDirectory);
-    //        //File.Copy(source, destination);
-
-    //        FileCopyLib.FileCopier.CopyWithProgress(fileTransfer.SourceDirectory, fileTransfer.TargetDirectory,
-    //            (x) => FileTransferProgress(this, new FileTransferProgressEventArgs(x.Percentage, fileTransfer)));
-    //            //(x) => Logging.Log("Copying {0}", x.Percentage));
-
-    //        Logging.Log("Finished Transfering File: {0}{1}{2}to: {3} ", fileTransfer.SourceDirectory, Environment.NewLine, "\t", fileTransfer.TargetDirectory);
-
-    //        if (File.Exists(fileTransfer.SourceDirectory))
-    //        {
-    //            while (!IsFileClosed(fileTransfer.SourceDirectory))
-    //            {
-    //                Thread.Sleep(500);
-    //            }
-    //            File.Delete(fileTransfer.SourceDirectory);
-    //            settings.MediaFileTransferQue.Remove(fileTransfer);
-    //            Settings.Save(settings);
-    //        }
-    //    }
-    //    catch (Exception e)
-    //    {
-    //        //StopQueue = true;
-    //        Logging.Log("Error: File Transfer Failed {0} {1} {2}", fileTransfer.SourceDirectory, Environment.NewLine, e.Message);
-    //        //return 1;
-    //    }
-    //    finally
-    //    {
-    //        transferQue.Remove(fileTransfer);
-    //    }
-
-    //    ProcessTransferQueue();
-    //}
-
-    //private static bool _processingQueue = false;
-    ////public async void ProcessTransferQueue()
-    //public async void ProcessTransferQueue()
-    //{
-    //    //Networking.
-    //    //if (StopQueue) return;
-    //    if (_processingQueue) return;
-
-    //    Settings settings = Settings.Get();
-    //    var transferQue = settings.MediaFileTransferQue;
-
-    //    while (transferQue.Count > 0)
-    //    {
-    //        if (transferQue.Count == 0) break;
-    //        _processingQueue = true;
-    //        //if (StopQueue) break;
-    //        await ControlHelpers.Sleep(5000);
-    //        await Task.Run(() => TransferFile(transferQue.First()));
-    //    }
-    //    _processingQueue = false;
-    //}
-       
-        private void _fileSystemWatcher_Error(object sender, ErrorEventArgs e)
-        {
-            Logging.Log("File Transfer Error: " + e.GetException());
         }
         public static string GetPath(string fileOrDirPath)
         {

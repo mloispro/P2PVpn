@@ -29,8 +29,18 @@ namespace P2PVpn.Utilities
             {
                 return false;
             }
-            if (force)
+
+            //int count = 0;
+            //while (!Networking.IsLocalNetworkConnected())
+            //{
+            //    if (count == 5) break;
+            //    ControlHelpers.Sleep(1000).Wait();
+            //    count++;
+            //}
+
+            if (force && !IsShareOffline(mediaServer))
             {
+                
                 FileIO.ChangeFolderName(mediaServer.ShareName, mediaServer.ShareName + _offlinePostfix);
                 Logging.Log("Media Share Offline");
                 return true;

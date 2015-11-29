@@ -223,6 +223,7 @@ namespace P2PVpn
             catch
             {
             }
+            
             FileIO.ResetTransfers();
         }
         private void CopyOpenVPNAssets()

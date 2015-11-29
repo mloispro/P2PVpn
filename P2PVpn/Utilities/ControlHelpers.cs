@@ -220,7 +220,7 @@ namespace P2PVpn.Utilities
         }
         private static ToolStripStatusLabel _lblStatusColor;
         private static StatusStrip _statusBar;
-        public static void SetStatusBarLabel(this StatusStrip statusBar, ToolStripStatusLabel label, string text, Bitmap image=null)
+        public static void SetStatusBarLabel(this StatusStrip statusBar, ToolStripStatusLabel label, string text, Bitmap image = null)
         {
 
             try
@@ -250,6 +250,14 @@ namespace P2PVpn.Utilities
             {
 
             }
+
+        }
+        public static IEnumerable<TSource> DistinctBy<TSource, TKey>(
+            this IEnumerable<TSource> source,
+            Func<TSource, TKey> keySelector)
+        {
+            var knownKeys = new HashSet<TKey>();
+            return source.Where(element => knownKeys.Add(keySelector(element)));
         }
     }
 }
