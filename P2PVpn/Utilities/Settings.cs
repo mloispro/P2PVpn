@@ -49,7 +49,7 @@ namespace P2PVpn.Utilities
         public string SecondaryDNS { get; set; }
         public bool DontResetDNS { get; set; }
         public List<NetworkAdapterDns> StartupNetworkAdapterDns { get; set; }
-        public Dictionary<string, string> OpenVPNConfigs { get; set; }
+        public List<KeyValue> OpenVPNConfigs { get; set; }
         public bool EnableTorProxyForChrome { get; set; }
         public VPNService VPNServer { get; set; }
         public bool RetrieveVPNBookCredsOnLoad { get; set; }
@@ -59,6 +59,8 @@ namespace P2PVpn.Utilities
         public Models.MediaServer MediaServer { get; set; }
         public List<FileTransfer> MediaFileTransferQue { get; set; }
         public bool PreventSystemSleep { get; set; }
+        public VPNGateServer SelectedVPNGateServer { get; set; }
+        public bool RetryVPNGateConnect { get; set; }
 
         private static Settings _settings;
 
@@ -100,7 +102,7 @@ namespace P2PVpn.Utilities
         private static void FillOPNVPNConfigs()
         {
             string configDir = _settings.OpenVPNDirectory + @"\config";
-            _settings.OpenVPNConfigs = new Dictionary<string, string>();
+            _settings.OpenVPNConfigs = new List<KeyValue>();
 
             var ext = new List<string> { ".ovpn" };
             var configFiles = Directory.GetFiles(configDir, "*.*", SearchOption.AllDirectories)
@@ -109,9 +111,9 @@ namespace P2PVpn.Utilities
             foreach (var file in configFiles)
             {
                 var fileName = Path.GetFileName(file);
-                if (!_settings.OpenVPNConfigs.ContainsKey(fileName))
+                if (!_settings.OpenVPNConfigs.Any(x => x.Key == fileName))
                 {
-                    _settings.OpenVPNConfigs.Add(fileName, file);
+                    _settings.OpenVPNConfigs.Add(new KeyValue { Key = fileName, Value = file });
                 }
             }
         }
@@ -193,15 +195,20 @@ namespace P2PVpn.Utilities
             var binDir = UserSettingsDir;
             var file = binDir + @"\" + filename;
 
-            if (!File.Exists(file))
+            Task.Factory.StartNew(() =>
             {
-                File.Create(file).Close();
-            }
-            //clear file
-            File.WriteAllText(file, String.Empty);
+                if (!File.Exists(file))
+                {
+                    File.Create(file).Close();
+                }
+                //clear file
+                //File.WriteAllText(file, String.Empty);
+                File.Delete(file);
 
-            var json = JsonConvert.SerializeObject(obj);
-            File.WriteAllText(file, json);
+                var json = JsonConvert.SerializeObject(obj);
+                //var json = JsonConvert.SerializeObjectAsync(obj).Result;
+                File.WriteAllText(file, json);
+            });
 
         }
     }

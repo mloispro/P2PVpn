@@ -11,6 +11,8 @@ namespace P2PVpn.Utilities
 {
     public static class ControlHelpers
     {
+        public static P2PVPNForm P2PVPNForm { get; set; }
+
         public static void SetLabelText(this Label lbl, string text)
         {
             if (lbl.InvokeRequired)
@@ -39,8 +41,8 @@ namespace P2PVpn.Utilities
             {
                 if (frm.InvokeRequired)
                 {
-                    frm.Invoke(new Action(() => frm.UseWaitCursor = !enable));
-                    frm.Invoke(new Action(() => frm.Enabled = enable));
+                    frm.BeginInvoke(new Action(() => frm.UseWaitCursor = !enable));
+                    frm.BeginInvoke(new Action(() => frm.Enabled = enable));
                 }
                 else
                 {

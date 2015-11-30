@@ -22,16 +22,18 @@ namespace P2PVpn
 {
     public partial class P2PVPNForm : Form
     {
-        private Networking _network;
+        public Networking Network;
         //BindingSource appsBindingSource = new BindingSource();
 
         public P2PVPNForm()
         {
             InitializeComponent();
             Logging.Init(lbLog, statusStrip, lblStatusText);
-            _network = new Networking(timerMediaServerOffline, lbLog);
-            _network.NetworkListManager.NetworkConnectivityChanged += NetworkListManager_NetworkConnectivityChanged;
-            _network.ShowNetworkTraffic();
+            Network = new Networking(timerMediaServerOffline, lbLog);
+            Network.NetworkListManager.NetworkConnectivityChanged += NetworkListManager_NetworkConnectivityChanged;
+            Network.ShowNetworkTraffic();
+
+            ControlHelpers.P2PVPNForm = this;
 
             if (Debugger.IsAttached)
             {
@@ -44,11 +46,11 @@ namespace P2PVpn
             
         }
 
-        private async void NetworkListManager_NetworkConnectivityChanged(Guid networkId, NETWORKLIST.NLM_CONNECTIVITY newConnectivity)
+        private void NetworkListManager_NetworkConnectivityChanged(Guid networkId, NETWORKLIST.NLM_CONNECTIVITY newConnectivity)
         {
             this.EnableForm(false);
             //wait for network to disconnect
-            await ControlHelpers.Sleep(2000);
+            ControlHelpers.Sleep(2000).Wait();
             PopulateControls();
             this.EnableForm();
         }
@@ -83,7 +85,7 @@ namespace P2PVpn
             }
 
 
-            if (_network.IsOpenVPNConnected())
+            if (Network.IsOpenVPNConnected())
             {
                 btnConnect.SetButtonText("Disconnect");
                 Logging.SetStatus("OpenVPN Connected", Logging.Colors.Green);
@@ -112,18 +114,22 @@ namespace P2PVpn
             //timerMediaServerOffline.Tick += timerMediaServerOffline_Tick;
 
         }
-        private async void btnConnect_Click(object sender, EventArgs e)
+        private void btnConnect_Click(object sender, EventArgs e)
         {
-
+            Connect();
+            
+        }
+        public void Connect()
+        {
             this.EnableForm(false);
 
-            if (_network.IsOpenVPNConnected())
+            if (Network.IsOpenVPNConnected())
             {
                 //connected to vpn, so dissconnect
-                await Disconnect();
+                Disconnect();
 
                 //Networking.DisableDisconnect = true;
-                _network.ScanNetworkInterfaces();
+                Network.ScanNetworkInterfaces();
             }
             else
             {
@@ -136,7 +142,7 @@ namespace P2PVpn
                 CopyOpenVPNAssets();
                 OpenVPN.SecureConfigs(false);
 
-                _network.EnableAllNeworkInterfaces();
+                Network.EnableAllNeworkInterfaces();
                 Networking.DisableDisconnect = true;
 
                 //wait for vpn to connect
@@ -150,12 +156,12 @@ namespace P2PVpn
 
                 //Thread.Sleep(25000);
 
-                _network.ScanNetworkInterfaces();
-                if (_network.IsOpenVPNConnected())
+                Network.ScanNetworkInterfaces();
+                if (Network.IsOpenVPNConnected())
                 {
                     if (settings.SplitRoute)
                     {
-                        _network.SetRoutesAndDNS();
+                        Network.SetRoutesAndDNS();
                     }
 
                     Logging.SetStatus("OpenVPN Connected", Logging.Colors.Green);
@@ -163,7 +169,7 @@ namespace P2PVpn
                     //ensure dns is flushed
                     ControlHelpers.StartProcess(@"ipconfig.exe", @"/registerdns");
                     ControlHelpers.StartProcess(@"ipconfig.exe", @"/flushdns");
-                    _network.OpenPrograms();
+                    Network.OpenPrograms();
                     if (settings.PreventSystemSleep)
                     {
                         SystemUtils.PreventSleep();
@@ -175,18 +181,19 @@ namespace P2PVpn
             this.EnableForm();
 
             PopulateControls();
-            await ControlHelpers.Sleep(10000);
+           // Thread.Sleep(10000);
+            Task.Delay(5000).Wait();
             //Thread.Sleep(20000);
             Networking.DisableDisconnect = false;
         }
-
-        private async Task Disconnect()
+        private void Disconnect()
         {
+            Networking.DisableRetryConnect = true;
             Logging.SetStatus("Disconnecting...", Logging.Colors.Yellow);
             lbLog.Log("Closing OpenVpn...");
             ControlHelpers.StartProcess("taskkill", "/F /IM openvpn-gui.exe");
             ControlHelpers.StartProcess("taskkill", "/F /IM openvpn.exe");
-            _network.ResetNetworkInterfaces();
+            Network.ResetNetworkInterfaces();
             lbLog.Log("Flushing DNS...");
             ControlHelpers.StartProcess(@"ipconfig.exe", @"/flushdns");
             ControlHelpers.StartProcess(@"ipconfig.exe", @"/registerdns");
@@ -194,20 +201,29 @@ namespace P2PVpn
 
             //wait for dns flush
             //await ControlHelpers.Sleep(10000);
-            _network.ClosePrograms(); //**dont add await here it causes hang
+            Network.ClosePrograms(); //**dont add await here it causes hang
             Networking.DisableDisconnect = true;
-            _network.EnableAllNeworkInterfaces();
+            Network.EnableAllNeworkInterfaces();
             
+            Task.Delay(60000).ContinueWith((t) =>
+            {
+                Networking.DisableRetryConnect = false;
+            });
 
-            //wait for network interfaces to reset
-
+            //Task.Run(() =>
+            //{
+                
+               
+            //});
+            //delayReconnect.Start();
+            
             Logging.SetStatus("OpenVPN Disconnected", Logging.Colors.Red);
         }
 
         private void timerSpeed_Tick(object sender, EventArgs e)
         {
 
-            _network.ScanNetworkInterfaces();
+            Network.ScanNetworkInterfaces();
             PopulateControls();
         }
 
@@ -215,7 +231,7 @@ namespace P2PVpn
         {
             //FileIO.StopQueue = true;
             tabs.SelectedTab = tabVPNTraffic;
-            Disconnect().Wait();
+            Disconnect();
             try
             {
                 Utilities.MediaServer.TakeShareOffline(true);
@@ -350,7 +366,7 @@ namespace P2PVpn
         {
             try
             {
-                //todo: fix this
+                Settings settings = Settings.Get();
                 FileIO.FinshedFileTransfer += (sender, info) =>
                 {
                     lblMediaCopyProgress.SetLabelText("Finished Copying " + info.SourceFile);
@@ -360,10 +376,18 @@ namespace P2PVpn
                 {
                     string transfer = string.Format("Copying: {0}   {1}%", info.SourceFile, info.PercentComplete);
                     lblMediaCopyProgress.SetLabelText(transfer);
+
+                    var fileTransfer = settings.MediaFileTransferQue.FirstOrDefault(x => x.SourceDirectory == sender.SourceDirectory);
+
+                    if (fileTransfer != null && !fileTransfer.IsTransfering)
+                    {
+                        fileTransfer.IsTransfering = true;
+                        Settings.Save(settings);
+                    }
                     //Logging.Log("File Transfer Percent: " + percentComplete.ToString());
                 };
 
-                Settings settings = Settings.Get();
+                
 
                 if (string.IsNullOrWhiteSpace(settings.MediaFileTransfer.SourceDirectory) ||
                 string.IsNullOrWhiteSpace(settings.MediaFileTransfer.TargetDirectory))
@@ -928,6 +952,11 @@ namespace P2PVpn
                 lblVPNGateServerInfo.Text = server.ToString();
 
                 cbVPNGateServer.SelectedIndexChanged += cbVPNGateServer_SelectedIndexChanged;
+
+                cbVPNGateConnectRetry.CheckedChanged-=cbVPNGateConnectRetry_CheckedChanged;
+                cbVPNGateConnectRetry.Checked = settings.RetryVPNGateConnect;
+                cbVPNGateConnectRetry.CheckedChanged += cbVPNGateConnectRetry_CheckedChanged;
+
                 this.EnableForm();
             }
             if (e.TabPage == tabVPNBook)
@@ -955,6 +984,12 @@ namespace P2PVpn
             VPNGate.SelectServer(server);
             SetRadioButtons();
         }
+        private void cbVPNGateConnectRetry_CheckedChanged(object sender, EventArgs e)
+        {
+            Settings settings = Settings.Get();
+            settings.RetryVPNGateConnect = cbVPNGateConnectRetry.Checked;
+            Settings.Save(settings);
+        }
 
         private void P2PVPNForm_Leave(object sender, EventArgs e)
         {
@@ -970,6 +1005,8 @@ namespace P2PVpn
         {
             
         }
+
+        
 
         
 

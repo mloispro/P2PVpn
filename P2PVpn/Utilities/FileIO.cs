@@ -33,7 +33,7 @@ namespace P2PVpn.Utilities
         public static FinshedFileTransferHandler FinshedFileTransfer;
 
         // the delegate the subscribers must implement
-        public delegate void FileTransferProgressHandler(object sender,
+        public delegate void FileTransferProgressHandler(FileTransfer fileTransfer,
                              FileTransferProgressEventArgs fileTransferProgressInfo);
 
         // an instance of the delegate
@@ -138,12 +138,16 @@ namespace P2PVpn.Utilities
             Settings settings = Settings.Get();
             MediaServer.LoginToMediaShare(settings.MediaServer);
 
-            //Transfer File
-            while (!IsFileClosed(fileTransfer.SourceDirectory))
+            Task.Run(() =>
             {
-                //Thread.Sleep(500);
-                ControlHelpers.Sleep(500).Wait();
-            }
+                //Transfer File
+                while (!IsFileClosed(fileTransfer.SourceDirectory))
+                {
+                    if (IsFileTransferInProgress()) return;
+                    ControlHelpers.Sleep(500).Wait();
+                }
+            }).Wait();
+
             fileTransfer.IsTransfering = true;
             Settings.Save(settings);
 
@@ -153,7 +157,7 @@ namespace P2PVpn.Utilities
             {
 
                 FileCopyLib.FileCopier.CopyWithProgress(fileTransfer.SourceDirectory, fileTransfer.TargetDirectory,
-                    (x) => FileTransferProgress(null, new FileTransferProgressEventArgs(x.Percentage, fileTransfer)));
+                    (x) => FileTransferProgress(fileTransfer, new FileTransferProgressEventArgs(x.Percentage, fileTransfer)));
 
 
             }).ContinueWith((t) =>

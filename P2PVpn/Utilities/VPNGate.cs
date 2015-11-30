@@ -67,10 +67,14 @@ namespace P2PVpn.Utilities
             settings.VPNServer.LastVPNGateServerListDownload = DateTime.Now;
             Settings.Save(settings);
         }
-        private static void LoadServers()
+        private static void LoadServers(bool force=false)
         {
             Settings settings = Settings.Get();
-            if (settings.VPNServer.LastVPNGateServerListDownload == null ||
+            if (force)
+            {
+                DownloadServerList();
+            }
+            else if (settings.VPNServer.LastVPNGateServerListDownload == null ||
                 !File.Exists(ServersCSV) ||
                 settings.VPNServer.LastVPNGateServerListDownload < DateTime.Now.AddMinutes(-30))
             {
@@ -103,6 +107,21 @@ namespace P2PVpn.Utilities
             fastestServers = fastestServers.Take(10);
             return fastestServers.ToList();
         }
+        public static List<VPNGateServer> GetFastestServersForCountry(string countryLong, bool forceCSVDownload = false)
+        {
+
+            LoadServers(forceCSVDownload);
+
+            var fastestServers = _servers.OrderByDescending(x => x.Speed)
+                .Where(x => x.CountryShort != "US" &&
+                    x.CountryLong == countryLong &&
+                    x.Uptime > 5401134 &&
+                    x.TotalUsers > 20 &&
+                    x.Score > 41772);
+
+            fastestServers = fastestServers.Take(10);
+            return fastestServers.ToList();
+        }
         public static void SelectServer(VPNGateServer server)
         {
 
@@ -129,8 +148,43 @@ namespace P2PVpn.Utilities
             }
             OpenVPN.SecureConfigs();
 
+            Settings settings = Settings.Get();
+            settings.SelectedVPNGateServer = server;
+            Settings.Save(settings);
 
         }
+        private static int? _currentRetryAttempt;
+        public static async void TryReconnect(int attempt = 0)
+        {
+            await Task.Delay(15000).ContinueWith((t) => { _currentRetryAttempt = null; });
+
+            if (_currentRetryAttempt != null && _currentRetryAttempt == attempt) return;
+            _currentRetryAttempt = attempt;
+
+            Settings settings = Settings.Get();
+
+            if (!settings.VPNServer.VPNGate) return;
+            if (!settings.RetryVPNGateConnect) return;
+
+            var selectedServer = settings.SelectedVPNGateServer;
+            if (selectedServer == null) return;
+
+            bool forceCsvDownload = (attempt == 0);
+            var fastestServers = GetFastestServersForCountry(selectedServer.CountryLong, forceCsvDownload);
+
+            SelectServer(fastestServers[attempt]);
+
+            //wait for interfaces to reset
+            if (attempt == 0) await ControlHelpers.Sleep(2000);
+            ControlHelpers.P2PVPNForm.Connect();
+
+            if (!ControlHelpers.P2PVPNForm.Network.IsOpenVPNConnected())
+            {
+                TryReconnect(attempt++);
+            }
+            _currentRetryAttempt = null;
+        }
+
         private static VPNGateServer FromCsv(string csvLine)
         {
             string[] values = csvLine.Split(',');

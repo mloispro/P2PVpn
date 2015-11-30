@@ -132,6 +132,7 @@
   <ItemGroup>
     <Compile Include="Models\Apps.cs" />
     <Compile Include="Models\FileTransfer.cs" />
+    <Compile Include="Models\KeyValue.cs" />
     <Compile Include="Models\MediaServer.cs" />
     <Compile Include="Models\NetworkAdapter.cs" />
     <Compile Include="Models\VPNGateServer.cs" />

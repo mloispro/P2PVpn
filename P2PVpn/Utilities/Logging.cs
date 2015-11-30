@@ -30,7 +30,7 @@ namespace P2PVpn.Utilities
                 text = DateTime.Now + " - " + text;
                 if (log.InvokeRequired)
                 {
-                    log.Invoke(new Action(() => log.Items.Add(text)));
+                    log.BeginInvoke(new Action(() => log.Items.Add(text)));
                 }
                 else
                 {

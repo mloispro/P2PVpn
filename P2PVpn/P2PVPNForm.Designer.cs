@@ -50,6 +50,8 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.tabSettings = new System.Windows.Forms.TabPage();
+            this.cbDisableSystemSleep = new System.Windows.Forms.CheckBox();
+            this.label4 = new System.Windows.Forms.Label();
             this.pnlRoutes = new System.Windows.Forms.Panel();
             this.pnlDns = new System.Windows.Forms.Panel();
             this.tbPrimaryDNS = new IPAddressControlLib.IPAddressControl();
@@ -78,6 +80,10 @@
             this.btnMoveAppUp = new System.Windows.Forms.Button();
             this.btnSaveApps = new System.Windows.Forms.Button();
             this.dgOpenApps = new System.Windows.Forms.DataGridView();
+            this.launchDataGridViewCheckBoxColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.closeDataGridViewCheckBoxColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.programDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.appsBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.tabConnection = new System.Windows.Forms.TabPage();
             this.lblConnectionStatus = new System.Windows.Forms.Label();
             this.lblConnectionStatuslbl = new System.Windows.Forms.Label();
@@ -126,12 +132,7 @@
             this.openMediaDestFolderBrowser = new System.Windows.Forms.FolderBrowserDialog();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.timerMediaServerOffline = new System.Windows.Forms.Timer(this.components);
-            this.launchDataGridViewCheckBoxColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.closeDataGridViewCheckBoxColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.programDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.appsBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.label4 = new System.Windows.Forms.Label();
-            this.cbDisableSystemSleep = new System.Windows.Forms.CheckBox();
+            this.cbVPNGateConnectRetry = new System.Windows.Forms.CheckBox();
             this.statusStrip.SuspendLayout();
             this.tabVPNTraffic.SuspendLayout();
             this.tabVPNBook.SuspendLayout();
@@ -142,6 +143,7 @@
             this.pnlOpenVPNServer.SuspendLayout();
             this.tabOpenApps.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgOpenApps)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.appsBindingSource)).BeginInit();
             this.tabConnection.SuspendLayout();
             this.tabs.SuspendLayout();
             this.tabVPNGate.SuspendLayout();
@@ -150,7 +152,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.picParentalControls)).BeginInit();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.appsBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // timerSpeed
@@ -359,6 +360,26 @@
             this.tabSettings.TabIndex = 3;
             this.tabSettings.Text = "Settings";
             this.tabSettings.UseVisualStyleBackColor = true;
+            // 
+            // cbDisableSystemSleep
+            // 
+            this.cbDisableSystemSleep.AutoSize = true;
+            this.cbDisableSystemSleep.Location = new System.Drawing.Point(249, 118);
+            this.cbDisableSystemSleep.Name = "cbDisableSystemSleep";
+            this.cbDisableSystemSleep.Size = new System.Drawing.Size(97, 17);
+            this.cbDisableSystemSleep.TabIndex = 10;
+            this.cbDisableSystemSleep.Text = "Sleep Disabled";
+            this.cbDisableSystemSleep.UseVisualStyleBackColor = true;
+            this.cbDisableSystemSleep.CheckedChanged += new System.EventHandler(this.cbDisableSystemSleep_CheckedChanged);
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(9, 119);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(234, 13);
+            this.label4.TabIndex = 9;
+            this.label4.Text = "Prevent System Sleep when connected to VPN:";
             // 
             // pnlRoutes
             // 
@@ -672,6 +693,33 @@
             this.dgOpenApps.Size = new System.Drawing.Size(477, 195);
             this.dgOpenApps.TabIndex = 0;
             // 
+            // launchDataGridViewCheckBoxColumn
+            // 
+            this.launchDataGridViewCheckBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
+            this.launchDataGridViewCheckBoxColumn.DataPropertyName = "Launch";
+            this.launchDataGridViewCheckBoxColumn.HeaderText = "Launch";
+            this.launchDataGridViewCheckBoxColumn.Name = "launchDataGridViewCheckBoxColumn";
+            this.launchDataGridViewCheckBoxColumn.Width = 49;
+            // 
+            // closeDataGridViewCheckBoxColumn
+            // 
+            this.closeDataGridViewCheckBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
+            this.closeDataGridViewCheckBoxColumn.DataPropertyName = "Close";
+            this.closeDataGridViewCheckBoxColumn.HeaderText = "Close";
+            this.closeDataGridViewCheckBoxColumn.Name = "closeDataGridViewCheckBoxColumn";
+            this.closeDataGridViewCheckBoxColumn.Width = 39;
+            // 
+            // programDataGridViewTextBoxColumn
+            // 
+            this.programDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.programDataGridViewTextBoxColumn.DataPropertyName = "Program";
+            this.programDataGridViewTextBoxColumn.HeaderText = "Program";
+            this.programDataGridViewTextBoxColumn.Name = "programDataGridViewTextBoxColumn";
+            // 
+            // appsBindingSource
+            // 
+            this.appsBindingSource.DataSource = typeof(P2PVpn.Models.Apps);
+            // 
             // tabConnection
             // 
             this.tabConnection.AutoScroll = true;
@@ -776,6 +824,7 @@
             // 
             // tabVPNGate
             // 
+            this.tabVPNGate.Controls.Add(this.cbVPNGateConnectRetry);
             this.tabVPNGate.Controls.Add(this.lblVPNGateServerInfo);
             this.tabVPNGate.Controls.Add(this.label7);
             this.tabVPNGate.Controls.Add(this.cbVPNGateServer);
@@ -1172,52 +1221,16 @@
             this.timerMediaServerOffline.Interval = 10000;
             this.timerMediaServerOffline.Tick += new System.EventHandler(this.timerMediaServerOffline_Tick);
             // 
-            // launchDataGridViewCheckBoxColumn
+            // cbVPNGateConnectRetry
             // 
-            this.launchDataGridViewCheckBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
-            this.launchDataGridViewCheckBoxColumn.DataPropertyName = "Launch";
-            this.launchDataGridViewCheckBoxColumn.HeaderText = "Launch";
-            this.launchDataGridViewCheckBoxColumn.Name = "launchDataGridViewCheckBoxColumn";
-            this.launchDataGridViewCheckBoxColumn.Width = 49;
-            // 
-            // closeDataGridViewCheckBoxColumn
-            // 
-            this.closeDataGridViewCheckBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
-            this.closeDataGridViewCheckBoxColumn.DataPropertyName = "Close";
-            this.closeDataGridViewCheckBoxColumn.HeaderText = "Close";
-            this.closeDataGridViewCheckBoxColumn.Name = "closeDataGridViewCheckBoxColumn";
-            this.closeDataGridViewCheckBoxColumn.Width = 39;
-            // 
-            // programDataGridViewTextBoxColumn
-            // 
-            this.programDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.programDataGridViewTextBoxColumn.DataPropertyName = "Program";
-            this.programDataGridViewTextBoxColumn.HeaderText = "Program";
-            this.programDataGridViewTextBoxColumn.Name = "programDataGridViewTextBoxColumn";
-            // 
-            // appsBindingSource
-            // 
-            this.appsBindingSource.DataSource = typeof(P2PVpn.Models.Apps);
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(9, 119);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(234, 13);
-            this.label4.TabIndex = 9;
-            this.label4.Text = "Prevent System Sleep when connected to VPN:";
-            // 
-            // cbDisableSystemSleep
-            // 
-            this.cbDisableSystemSleep.AutoSize = true;
-            this.cbDisableSystemSleep.Location = new System.Drawing.Point(249, 118);
-            this.cbDisableSystemSleep.Name = "cbDisableSystemSleep";
-            this.cbDisableSystemSleep.Size = new System.Drawing.Size(97, 17);
-            this.cbDisableSystemSleep.TabIndex = 10;
-            this.cbDisableSystemSleep.Text = "Sleep Disabled";
-            this.cbDisableSystemSleep.UseVisualStyleBackColor = true;
-            this.cbDisableSystemSleep.CheckedChanged += new System.EventHandler(this.cbDisableSystemSleep_CheckedChanged);
+            this.cbVPNGateConnectRetry.AutoSize = true;
+            this.cbVPNGateConnectRetry.Location = new System.Drawing.Point(392, 17);
+            this.cbVPNGateConnectRetry.Name = "cbVPNGateConnectRetry";
+            this.cbVPNGateConnectRetry.Size = new System.Drawing.Size(185, 17);
+            this.cbVPNGateConnectRetry.TabIndex = 3;
+            this.cbVPNGateConnectRetry.Text = "Retry Connection if Disconnected";
+            this.cbVPNGateConnectRetry.UseVisualStyleBackColor = true;
+            this.cbVPNGateConnectRetry.CheckedChanged += new System.EventHandler(this.cbVPNGateConnectRetry_CheckedChanged);
             // 
             // P2PVPNForm
             // 
@@ -1250,6 +1263,7 @@
             this.pnlOpenVPNServer.PerformLayout();
             this.tabOpenApps.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgOpenApps)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.appsBindingSource)).EndInit();
             this.tabConnection.ResumeLayout(false);
             this.tabConnection.PerformLayout();
             this.tabs.ResumeLayout(false);
@@ -1264,7 +1278,6 @@
             this.groupBox2.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.appsBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1376,6 +1389,7 @@
         private System.Windows.Forms.Label lblMediaTimeRemaining;
         private System.Windows.Forms.CheckBox cbDisableSystemSleep;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.CheckBox cbVPNGateConnectRetry;
     }
 }
 

@@ -27,6 +27,7 @@ namespace P2PVpn.Utilities
         public static List<NetworkAdapter> ActiveNetworkAdapters = new List<NetworkAdapter>();
         public NetworkListManager NetworkListManager;
         public static bool DisableDisconnect = false;
+        public static bool DisableRetryConnect = false;
 
         public Networking(System.Windows.Forms.Timer timerMediaShare, ListBox listBox)
         {
@@ -45,29 +46,48 @@ namespace P2PVpn.Utilities
             NetworkListManager.NetworkConnectivityChanged += NetworkListManager_NetworkConnectivityChanged;
 
         }
-
+        private static Task _disconnectTask;
+        //private static bool _isNetworkChangeInProgress = false;
         private async void NetworkListManager_NetworkConnectivityChanged(Guid networkId, NLM_CONNECTIVITY newConnectivity)
         {
+            //if (_isNetworkChangeInProgress) return;
+            //_isNetworkChangeInProgress = true;
 
             _log.Log("**Network Connectivity Changed**");
 
-            if (!DisableDisconnect && 
+            if (!DisableDisconnect &&
                 newConnectivity == NLM_CONNECTIVITY.NLM_CONNECTIVITY_DISCONNECTED)
             {
-                DisableDisconnect = true;
-                //NetworkListManager.NetworkConnectivityChanged -= NetworkListManager_NetworkConnectivityChanged;
-                var adapters = GetActiveNetworkInterfaces();
-                EnableAllNeworkInterfaces(false);
+                if (_disconnectTask != null) return;
+
                 _log.Log("**Disconnect Triggered**");
-                await ClosePrograms();
-                EnableAllNeworkInterfaces();
-                ResetNetworkInterfaces();
-                FileIO.ResetTransfers();
-                SystemUtils.AllowSleep();
-                if (this.IsOpenVPNConnected())
+                //Task.Factory.
+
+                _disconnectTask = Task.Run(() =>
                 {
                     DisableDisconnect = true;
-                }
+                    //NetworkListManager.NetworkConnectivityChanged -= NetworkListManager_NetworkConnectivityChanged;
+                    var adapters = GetActiveNetworkInterfaces();
+                    EnableAllNeworkInterfaces(false);
+
+                    ClosePrograms();
+                    EnableAllNeworkInterfaces();
+                    ResetNetworkInterfaces();
+                    FileIO.ResetTransfers();
+                    SystemUtils.AllowSleep();
+                    if (this.IsOpenVPNConnected())
+                    {
+                        DisableDisconnect = true;
+                    }
+                    if (!DisableRetryConnect)
+                    {
+                        VPNGate.TryReconnect();
+                    }
+                }).ContinueWith((t) =>
+                {
+                    _disconnectTask = null;
+                });
+
             }
             //else if (newConnectivity == NLM_CONNECTIVITY.NLM_CONNECTIVITY_IPV4_INTERNET)
             //{
@@ -81,17 +101,21 @@ namespace P2PVpn.Utilities
             {
                 //ResetNetworkInterfaces();
             }
-            ScanNetworkInterfaces();
-            LogNetworkInfo();
-            if (IsLocalNetworkConnected())
+            await Task.Delay(20000).ContinueWith((t) =>
             {
-                _timerMediaShare.Enabled = true;
-                FileIO.ProcessFileTransferQueue();
-            }
-            else
-            {
-                FileIO.ResetTransfers();
-            }
+                ScanNetworkInterfaces();
+                LogNetworkInfo();
+                if (IsLocalNetworkConnected())
+                {
+                    _timerMediaShare.Enabled = true;
+                    FileIO.ProcessFileTransferQueue();
+                }
+                else
+                {
+                    FileIO.ResetTransfers();
+                }
+               // _isNetworkChangeInProgress = false;
+            });
 
         }
 
@@ -292,7 +316,7 @@ namespace P2PVpn.Utilities
 
             return wc;
         }
-        public async Task ClosePrograms()
+        public void ClosePrograms()
         {
             var closePrograms = Apps.Get().FindAll(x => x.Close);
             foreach (var program in closePrograms)
@@ -301,7 +325,7 @@ namespace P2PVpn.Utilities
                 ControlHelpers.StartProcess("taskkill", "/F /IM " + name);
             }
             
-            await ControlHelpers.Sleep(10000);
+            //await ControlHelpers.Sleep(10000);
         }
         public void OpenPrograms()
         {
@@ -372,22 +396,28 @@ namespace P2PVpn.Utilities
 
             //List the connected networks. There are many other APIs 
             //can be called to get network information.
-
-            IEnumNetworkConnections connections = NetworkListManager.GetNetworkConnections();
-            foreach (INetworkConnection con in connections)
+            try
             {
-                var adapterId = con.GetAdapterId();
-                if (adapter.Id != adapterId) continue;
+                IEnumNetworkConnections connections = NetworkListManager.GetNetworkConnections();
+                foreach (INetworkConnection con in connections)
+                {
+                    var adapterId = con.GetAdapterId();
+                    if (adapter.Id != adapterId) continue;
 
-                //var connectionId = con.GetConnectionId();
-                adapter.ConnectivityString = GetConnectivity(con.GetConnectivity());
-                adapter.IsConnected = con.IsConnected;
-                adapter.IsConnectedToInternet = con.IsConnectedToInternet;
-                INetwork network = con.GetNetwork();
-                adapter.NetworkName = network.GetName();
-               // var networkCategory = network.GetCategory();
-                //var adapter = _networkAdapters.FirstOrDefault(x => x.Id == adapterId);
+                    //var connectionId = con.GetConnectionId();
+                    adapter.ConnectivityString = GetConnectivity(con.GetConnectivity());
+                    adapter.IsConnected = con.IsConnected;
+                    adapter.IsConnectedToInternet = con.IsConnectedToInternet;
+                    INetwork network = con.GetNetwork();
+                    adapter.NetworkName = network.GetName();
+                    // var networkCategory = network.GetCategory();
+                    //var adapter = _networkAdapters.FirstOrDefault(x => x.Id == adapterId);
 
+                }
+            }
+            catch (Exception ex)
+            {
+                Logging.Log("Error: " + ex.ToString());
             }
 
             //AdviseforNetworklistManager();
@@ -548,12 +578,12 @@ namespace P2PVpn.Utilities
             Dispose(true);
         }
 
-        public async void Dispose()
+        public void Dispose()
         {
-            await Dispose(true);
+            Dispose(true);
             GC.SuppressFinalize(this);
         }
-        public async Task Dispose(bool disposing)
+        public void Dispose(bool disposing)
         {
             if (!_disposed)
             {
@@ -561,7 +591,7 @@ namespace P2PVpn.Utilities
                 {
                     //_networkListManager.NetworkConnectivityChanged -= _networkListManager_NetworkConnectivityChanged;
                 }
-                await ClosePrograms();
+                ClosePrograms();
                 if (NetworkListManager != null)
                 {
                     NetworkListManager = null;

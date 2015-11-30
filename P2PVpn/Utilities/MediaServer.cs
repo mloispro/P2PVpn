@@ -45,7 +45,7 @@ namespace P2PVpn.Utilities
                 Logging.Log("Media Share Offline");
                 return true;
             }
-            if (IsShareOffline(mediaServer))
+            else if (IsShareOffline(mediaServer))
             {
                 FileIO.ChangeFolderName(mediaServer.ShareName + _offlinePostfix, mediaServer.ShareName);
                 Logging.Log("Media Share Online");

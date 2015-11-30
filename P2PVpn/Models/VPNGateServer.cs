@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace P2PVpn.Models
 {
@@ -23,6 +24,7 @@ namespace P2PVpn.Models
         public string LogType { get; set; }
         public string Operator { get; set; }
         public string Message { get; set; }
+        [JsonIgnore]
         public string OpenVPNConfigData { get; set; }
 
         public string CountryAndHost
