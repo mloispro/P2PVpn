@@ -197,16 +197,18 @@ namespace P2PVpn.Utilities
 
             Task.Factory.StartNew(() =>
             {
-                if (!File.Exists(file))
+                while (!FileIO.IsFileClosed(file))
                 {
-                    File.Create(file).Close();
+                    Task.Delay(300).Wait();
                 }
-                //clear file
-                //File.WriteAllText(file, String.Empty);
+
+                //create bakup
+                if (File.Exists(file)) File.Copy(file, file + "_bak", true);
+
                 File.Delete(file);
 
                 var json = JsonConvert.SerializeObject(obj);
-                //var json = JsonConvert.SerializeObjectAsync(obj).Result;
+                
                 File.WriteAllText(file, json);
             });
 

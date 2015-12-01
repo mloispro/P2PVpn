@@ -185,6 +185,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Assets\OpenVPN\P2PVpnUp.cmd" />
+    <None Include="Assets\RetartMediaServer.ps1" />
     <None Include="Assets\VPNGateServers.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

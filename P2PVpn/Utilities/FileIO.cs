@@ -176,6 +176,11 @@ namespace P2PVpn.Utilities
                     {
                         FinshedFileTransfer(fileTransfer, FinshedFileTransferInfo);
                     }
+
+                    Task.Delay(1000).ContinueWith((t2) =>
+                    {
+                        ProcessFileTransferQueue();
+                    });
                 }
                 else if (t.IsFaulted)
                 {
