@@ -35,15 +35,15 @@ namespace P2PVpn
 
             ControlHelpers.P2PVPNForm = this;
 
-            if (Debugger.IsAttached)
-            {
-                FileIO.ResetTransfers();
-            }
+            //if (Debugger.IsAttached)
+            //{
+            //    FileIO.ResetTransfers();
+            //}
 
             PopulateSettings();
             PopulateLaunchAppsGrid();
             PopulateControls();
-            
+            bwFileTransfer.RunWorkerAsync();
         }
 
         private void NetworkListManager_NetworkConnectivityChanged(Guid networkId, NETWORKLIST.NLM_CONNECTIVITY newConnectivity)
@@ -240,7 +240,7 @@ namespace P2PVpn
             {
             }
             
-            FileIO.ResetTransfers();
+            //FileIO.ResetTransfers();
         }
         private void CopyOpenVPNAssets()
         {
@@ -324,7 +324,7 @@ namespace P2PVpn
             cbMediaParentalTime.Text = Utilities.MediaServer.GetSelectedOfflineValue(settings.MediaServer);
             cbMediaParentalTime.SelectedIndexChanged += cbMediaParentalTime_SelectedIndexChanged;
             //timerMediaServerOffline_Tick(null, null);
-            WatchFileSystem();
+            //WatchFileSystem();
         }
 
         private void btnMediaFolderOffline_Click(object sender, EventArgs e)
@@ -377,13 +377,13 @@ namespace P2PVpn
                     string transfer = string.Format("Copying: {0}   {1}%", info.SourceFile, info.PercentComplete);
                     lblMediaCopyProgress.SetLabelText(transfer);
 
-                    var fileTransfer = settings.MediaFileTransferQue.FirstOrDefault(x => x.SourceDirectory == sender.SourceDirectory);
+                    //var fileTransfer = settings.MediaFileTransferQue.FirstOrDefault(x => x.SourceDirectory == sender.SourceDirectory);
 
-                    if (fileTransfer != null && !fileTransfer.IsTransfering)
-                    {
-                        fileTransfer.IsTransfering = true;
-                        Settings.Save(settings);
-                    }
+                    //if (fileTransfer != null && !fileTransfer.IsTransfering)
+                    //{
+                    //    fileTransfer.IsTransfering = true;
+                    //    Settings.Save(settings);
+                    //}
                     //Logging.Log("File Transfer Percent: " + percentComplete.ToString());
                 };
 
@@ -394,9 +394,9 @@ namespace P2PVpn
                 {
                     return;
                 }
-
-                FileIO.WatchFileSystem();
-                FileIO.ProcessFileTransferQueue();
+                FileSync.WatchFileSystem(settings.MediaFileTransfer.SourceDirectory, settings.MediaFileTransfer.TargetDirectory);
+                //FileIO.WatchFileSystem();
+                //FileIO.ProcessFileTransferQueue();
             }
             catch (Exception ex)
             {
@@ -420,7 +420,8 @@ namespace P2PVpn
                 //PopulateMediaServerControls();
                 lblMediaDestination.Text = settings.MediaFileTransfer.TargetDirectory;
                 //timerMediaServerOffline.Enabled = true;
-                WatchFileSystem();
+                //WatchFileSystem();
+                bwFileTransfer.RunWorkerAsync();
             }
         }
         private void btnMediaSource_Click(object sender, EventArgs e)
@@ -435,7 +436,8 @@ namespace P2PVpn
                 Settings.Save(settings);
                 //PopulateMediaServerControls();
                 lblMediaSource.Text = settings.MediaFileTransfer.SourceDirectory;
-                WatchFileSystem();
+                //WatchFileSystem();
+                bwFileTransfer.RunWorkerAsync();
             }
         }
         private void tbMediaUsername_Leave(object sender, EventArgs e)
@@ -1006,31 +1008,17 @@ namespace P2PVpn
             
         }
 
-        
+        private void bwFileTransfer_DoWork(object sender, DoWorkEventArgs e)
+        {
+            Logging.Log("?Background worker complete");
+            WatchFileSystem();
+        }
 
-        
+        private void bwFileTransfer_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            Logging.Log("?Background worker complete");
+        }
 
-      
-
-       
-
-      
-
-        //private void linkDownloadChromeKProxy_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        //{
-        //    //chrome.exe C:\extensions\example.crx –enable-easy-off-store-extension-install
-        //    //or -–enable-easy-off-store-extension-install
-        //    //chrome.exe google.com -incognito
-        //    string args = Settings.ChromeKProxyExtensionUrl; //+ " -incognito";
-        //    ControlHelpers.StartProcess(Settings.ChromeExe, args, false);
-        //}
-
-        //private void linkDownloadKProxyforFirefox_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        //{
-        //    //firefox.exe -private-window URL
-        //    string args = "-private-window " + Settings.FirefoxKProxyExtensionUrl;
-        //    ControlHelpers.StartProcess(Settings.FirefoxExe, args, false);
-        //}
         #endregion Links
     }
 }

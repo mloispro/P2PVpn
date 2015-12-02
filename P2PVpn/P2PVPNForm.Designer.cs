@@ -94,6 +94,7 @@
             this.btnConnect = new System.Windows.Forms.Button();
             this.tabs = new System.Windows.Forms.TabControl();
             this.tabVPNGate = new System.Windows.Forms.TabPage();
+            this.cbVPNGateConnectRetry = new System.Windows.Forms.CheckBox();
             this.lblVPNGateServerInfo = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.cbVPNGateServer = new System.Windows.Forms.ComboBox();
@@ -132,7 +133,7 @@
             this.openMediaDestFolderBrowser = new System.Windows.Forms.FolderBrowserDialog();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.timerMediaServerOffline = new System.Windows.Forms.Timer(this.components);
-            this.cbVPNGateConnectRetry = new System.Windows.Forms.CheckBox();
+            this.bwFileTransfer = new System.ComponentModel.BackgroundWorker();
             this.statusStrip.SuspendLayout();
             this.tabVPNTraffic.SuspendLayout();
             this.tabVPNBook.SuspendLayout();
@@ -835,6 +836,17 @@
             this.tabVPNGate.Text = "VPN Gate";
             this.tabVPNGate.UseVisualStyleBackColor = true;
             // 
+            // cbVPNGateConnectRetry
+            // 
+            this.cbVPNGateConnectRetry.AutoSize = true;
+            this.cbVPNGateConnectRetry.Location = new System.Drawing.Point(392, 17);
+            this.cbVPNGateConnectRetry.Name = "cbVPNGateConnectRetry";
+            this.cbVPNGateConnectRetry.Size = new System.Drawing.Size(185, 17);
+            this.cbVPNGateConnectRetry.TabIndex = 3;
+            this.cbVPNGateConnectRetry.Text = "Retry Connection if Disconnected";
+            this.cbVPNGateConnectRetry.UseVisualStyleBackColor = true;
+            this.cbVPNGateConnectRetry.CheckedChanged += new System.EventHandler(this.cbVPNGateConnectRetry_CheckedChanged);
+            // 
             // lblVPNGateServerInfo
             // 
             this.lblVPNGateServerInfo.AutoSize = true;
@@ -1221,16 +1233,12 @@
             this.timerMediaServerOffline.Interval = 10000;
             this.timerMediaServerOffline.Tick += new System.EventHandler(this.timerMediaServerOffline_Tick);
             // 
-            // cbVPNGateConnectRetry
+            // bwFileTransfer
             // 
-            this.cbVPNGateConnectRetry.AutoSize = true;
-            this.cbVPNGateConnectRetry.Location = new System.Drawing.Point(392, 17);
-            this.cbVPNGateConnectRetry.Name = "cbVPNGateConnectRetry";
-            this.cbVPNGateConnectRetry.Size = new System.Drawing.Size(185, 17);
-            this.cbVPNGateConnectRetry.TabIndex = 3;
-            this.cbVPNGateConnectRetry.Text = "Retry Connection if Disconnected";
-            this.cbVPNGateConnectRetry.UseVisualStyleBackColor = true;
-            this.cbVPNGateConnectRetry.CheckedChanged += new System.EventHandler(this.cbVPNGateConnectRetry_CheckedChanged);
+            this.bwFileTransfer.WorkerReportsProgress = true;
+            this.bwFileTransfer.WorkerSupportsCancellation = true;
+            this.bwFileTransfer.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bwFileTransfer_DoWork);
+            this.bwFileTransfer.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bwFileTransfer_RunWorkerCompleted);
             // 
             // P2PVPNForm
             // 
@@ -1390,6 +1398,7 @@
         private System.Windows.Forms.CheckBox cbDisableSystemSleep;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.CheckBox cbVPNGateConnectRetry;
+        private System.ComponentModel.BackgroundWorker bwFileTransfer;
     }
 }
 

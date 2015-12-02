@@ -30,7 +30,7 @@
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x64</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -88,6 +88,14 @@
     <Reference Include="IPAddressControlLib, Version=1.2.5786.10233, Culture=neutral, PublicKeyToken=7052a5c2c6d6e1fc, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Assets\IPAddressControlLib.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Synchronization, Version=2.1.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Assets\Sync Framework\Microsoft.Synchronization.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Synchronization.Files, Version=2.1.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Assets\Sync Framework\Microsoft.Synchronization.Files.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -155,6 +163,7 @@
     <Compile Include="Utilities\ControlHelpers.cs" />
     <Compile Include="Utilities\DataPropertyName.cs" />
     <Compile Include="Utilities\FileIO.cs" />
+    <Compile Include="Utilities\FileSync.cs" />
     <Compile Include="Utilities\Logging.cs" />
     <Compile Include="Utilities\MediaServer.cs" />
     <Compile Include="Utilities\Networking.cs" />
@@ -187,6 +196,7 @@
     </None>
     <None Include="Assets\OpenVPN\P2PVpnUp.cmd" />
     <None Include="Assets\RetartMediaServer.ps1" />
+    <None Include="Assets\Sync Framework\resources\1033\Synchronization21.rll" />
     <None Include="Assets\VPNGateServers.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -462,6 +472,9 @@
     <Content Include="Assets\IPAddressControlLib.dll" />
     <Content Include="Assets\Org.Mentalis.dll" />
     <Content Include="Assets\SocksWebProxy.dll" />
+    <Content Include="Assets\Sync Framework\FeedSync21.dll" />
+    <Content Include="Assets\Sync Framework\Microsoft.Synchronization.dll" />
+    <Content Include="Assets\Sync Framework\Synchronization21.dll" />
     <Content Include="icon.ico" />
   </ItemGroup>
   <ItemGroup>
