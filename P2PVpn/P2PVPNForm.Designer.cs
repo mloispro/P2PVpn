@@ -130,7 +130,7 @@
             this.openMediaDestFolderBrowser = new System.Windows.Forms.FolderBrowserDialog();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.timerMediaServerOffline = new System.Windows.Forms.Timer(this.components);
-            this.bwFileSync = new System.ComponentModel.BackgroundWorker();
+            this.bwFileTransfer = new System.ComponentModel.BackgroundWorker();
             this.statusStrip.SuspendLayout();
             this.tabVPNTraffic.SuspendLayout();
             this.tabVPNBook.SuspendLayout();
@@ -1199,10 +1199,12 @@
             this.timerMediaServerOffline.Interval = 10000;
             this.timerMediaServerOffline.Tick += new System.EventHandler(this.timerMediaServerOffline_Tick);
             // 
-            // bwFileSync
+            // bwFileTransfer
             // 
-            this.bwFileSync.WorkerReportsProgress = true;
-            this.bwFileSync.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bwFileSync_DoWork);
+            this.bwFileTransfer.WorkerReportsProgress = true;
+            this.bwFileTransfer.WorkerSupportsCancellation = true;
+            this.bwFileTransfer.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bwFileTransfer_DoWork);
+            this.bwFileTransfer.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bwFileTransfer_RunWorkerCompleted);
             // 
             // P2PVPNForm
             // 
@@ -1362,7 +1364,7 @@
         private System.Windows.Forms.CheckBox cbDisableSystemSleep;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.CheckBox cbVPNGateConnectRetry;
-        private System.ComponentModel.BackgroundWorker bwFileSync;
+        private System.ComponentModel.BackgroundWorker bwFileTransfer;
     }
 }
 

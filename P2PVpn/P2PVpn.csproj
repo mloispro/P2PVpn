@@ -97,14 +97,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Assets\Sync Framework\Microsoft.Synchronization.Files.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Synchronization.MetadataStorage, Version=2.1.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Assets\Sync Framework\Microsoft.Synchronization.MetadataStorage.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Synchronization.SimpleProviders, Version=2.1.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Assets\Sync Framework\Microsoft.Synchronization.SimpleProviders.dll</HintPath>
-    </Reference>
     <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -170,8 +162,8 @@
     <Compile Include="Settings.cs" />
     <Compile Include="Utilities\ControlHelpers.cs" />
     <Compile Include="Utilities\DataPropertyName.cs" />
-    <Compile Include="Utilities\FileFolderSync.cs" />
     <Compile Include="Utilities\FileIO.cs" />
+    <Compile Include="Utilities\FileSync.cs" />
     <Compile Include="Utilities\Logging.cs" />
     <Compile Include="Utilities\MediaServer.cs" />
     <Compile Include="Utilities\Networking.cs" />

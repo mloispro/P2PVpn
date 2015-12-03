@@ -57,7 +57,7 @@ namespace P2PVpn.Utilities
         public string VPNGateServerHost { get; set; }
         public FileTransfer MediaFileTransfer { get; set; }
         public Models.MediaServer MediaServer { get; set; }
-        public List<FileTransfer> MediaFileTransferQue { get; set; }
+        //public List<FileTransfer> MediaFileTransferQue { get; set; }
         public bool PreventSystemSleep { get; set; }
         public VPNGateServer SelectedVPNGateServer { get; set; }
         public bool RetryVPNGateConnect { get; set; }
@@ -93,10 +93,10 @@ namespace P2PVpn.Utilities
             {
                 _settings.MediaServer = new Models.MediaServer();
             }
-            if (_settings.MediaFileTransferQue == null)
-            {
-                _settings.MediaFileTransferQue = new List<FileTransfer>();
-            }
+            //if (_settings.MediaFileTransferQue == null)
+            //{
+            //    _settings.MediaFileTransferQue = new List<FileTransfer>();
+            //}
             return _settings;
         }
         private static void FillOPNVPNConfigs()
@@ -184,8 +184,14 @@ namespace P2PVpn.Utilities
                     return obj;
                 }
             }
-
-            obj = JsonConvert.DeserializeObject<T>(File.ReadAllText(file));
+            try
+            {
+                obj = JsonConvert.DeserializeObject<T>(File.ReadAllText(file));
+            }
+            catch
+            {
+                File.WriteAllText(file, "");
+            }
             if (obj == null) obj = new T();
             return obj;
         }
@@ -207,7 +213,22 @@ namespace P2PVpn.Utilities
 
                 File.Delete(file);
 
-                var json = JsonConvert.SerializeObject(obj);
+                bool isSerialized = false;
+                string json = "";
+                while (!isSerialized)
+                {
+                    try
+                    {
+
+                        json = JsonConvert.SerializeObject(obj);
+                        isSerialized = true;
+                    }
+                    catch
+                    {
+                        isSerialized = false; 
+                        Task.Delay(100).Wait();
+                    }
+                }
                 
                 File.WriteAllText(file, json);
             });
