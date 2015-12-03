@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Management.Automation;
+using System.Management.Automation.Runspaces;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -9,6 +11,7 @@ namespace P2PVpn.Utilities
 {
     public class MediaServer
     {
+        private static string _scriptPath = Path.GetFullPath(Settings.AppDir + @"\Assets\RetartMediaServer.ps1");
         private static string _offlinePostfix = "_p2pvOffline";
 
         public static bool IsShareOffline(Models.MediaServer mediaServer)
@@ -42,12 +45,14 @@ namespace P2PVpn.Utilities
             {
                 
                 FileIO.ChangeFolderName(mediaServer.ShareName, mediaServer.ShareName + _offlinePostfix);
+                RestartMediaServer(); 
                 Logging.Log("Media Share Offline");
                 return true;
             }
             else if (IsShareOffline(mediaServer))
             {
                 FileIO.ChangeFolderName(mediaServer.ShareName + _offlinePostfix, mediaServer.ShareName);
+                RestartMediaServer();
                 Logging.Log("Media Share Online");
                 mediaServer.ParentalControlsLastEnabled = DateTime.Now;
                 return false;
@@ -55,10 +60,36 @@ namespace P2PVpn.Utilities
             else
             {
                 FileIO.ChangeFolderName(mediaServer.ShareName, mediaServer.ShareName + _offlinePostfix);
+                RestartMediaServer();
                 Logging.Log("Media Share Offline");
                 return true;
             }
+            
         }
+        private static void RestartMediaServer()
+        {
+
+            // create Powershell runspace
+            Runspace runspace = RunspaceFactory.CreateRunspace();
+            runspace.Open();
+
+            RunspaceInvoke runSpaceInvoker = new RunspaceInvoke(runspace);
+            runSpaceInvoker.Invoke("Set-ExecutionPolicy Unrestricted");
+
+            // create a pipeline and feed it the script text
+            Pipeline pipeline = runspace.CreatePipeline();
+            Command command = new Command(_scriptPath);
+            //foreach (var file in filesToMerge)
+            //{
+            //    command.Parameters.Add(null, file);
+            //}
+            //command.Parameters.Add(null, outputFilename);
+            pipeline.Commands.Add(command);
+
+            pipeline.Invoke();
+            runspace.Close();
+        }
+        
         public static bool LoginToMediaShare(Models.MediaServer mediaServer)
         {
             if (!string.IsNullOrWhiteSpace(mediaServer.ShareName) && !mediaServer.ShareName.StartsWith("\\\\"))

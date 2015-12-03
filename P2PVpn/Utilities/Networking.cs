@@ -496,6 +496,7 @@ namespace P2PVpn.Utilities
 
         public void EnableAllNeworkInterfaces(bool enable = true)
         {
+           // NetworkListManager.NetworkConnectivityChanged -= NetworkListManager_NetworkConnectivityChanged;
             string verb = "Enable";
             if (!enable) verb = "Disable";
 
@@ -517,6 +518,11 @@ namespace P2PVpn.Utilities
                     
                 }
             }
+            //Task.Delay(10000).ContinueWith((t) =>
+            //{
+            //    NetworkListManager.NetworkConnectivityChanged += NetworkListManager_NetworkConnectivityChanged;
+            //});
+           
             _log.Log(verb + " All Network Interfaces");
         }
         public static bool IsVPNAdapter(NetworkAdapter adapter)

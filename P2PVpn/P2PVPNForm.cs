@@ -43,7 +43,8 @@ namespace P2PVpn
             PopulateSettings();
             PopulateLaunchAppsGrid();
             PopulateControls();
-            
+            //WatchFileSystem();
+            bwFileSync.RunWorkerAsync();
         }
 
         private void NetworkListManager_NetworkConnectivityChanged(Guid networkId, NETWORKLIST.NLM_CONNECTIVITY newConnectivity)
@@ -324,7 +325,7 @@ namespace P2PVpn
             cbMediaParentalTime.Text = Utilities.MediaServer.GetSelectedOfflineValue(settings.MediaServer);
             cbMediaParentalTime.SelectedIndexChanged += cbMediaParentalTime_SelectedIndexChanged;
             //timerMediaServerOffline_Tick(null, null);
-            WatchFileSystem();
+            //WatchFileSystem();
         }
 
         private void btnMediaFolderOffline_Click(object sender, EventArgs e)
@@ -395,8 +396,10 @@ namespace P2PVpn
                     return;
                 }
 
-                FileIO.WatchFileSystem();
-                FileIO.ProcessFileTransferQueue();
+                //todo: fix this
+                FileFolderSync.WatchFileSystem(settings.MediaFileTransfer.SourceDirectory, settings.MediaFileTransfer.TargetDirectory);
+                //FileIO.WatchFileSystem();
+                //FileIO.ProcessFileTransferQueue();
             }
             catch (Exception ex)
             {
@@ -1004,6 +1007,11 @@ namespace P2PVpn
         private void P2PVPNForm_Shown(object sender, EventArgs e)
         {
             
+        }
+
+        private void bwFileSync_DoWork(object sender, DoWorkEventArgs e)
+        {
+            WatchFileSystem();
         }
 
         
