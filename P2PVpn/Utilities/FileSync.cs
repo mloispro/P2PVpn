@@ -146,6 +146,12 @@ namespace P2PVpn.Utilities
                     string file = a.NewFilePath;
                     var change = a.ChangeType;
                     FileIO.FinshedFileTransfer(null, new FinshedFileTransferEventArgs(file));
+                    string path = FileIO.GetPath(sourceReplicaRootPath);
+                    try
+                    {
+                        File.Delete(path + file);
+                    }
+                    catch (Exception ex) { Logging.Log(ex.Message); }
                 };
 
                 //SyncOrchestrator agent = new SyncOrchestrator();
@@ -232,6 +238,7 @@ namespace P2PVpn.Utilities
                 if (_agent.State != SyncOrchestratorState.Ready)
                 {
                     _agent.Cancel();
+                    _agent = null;
                 }
                 _disposed = true;
             }

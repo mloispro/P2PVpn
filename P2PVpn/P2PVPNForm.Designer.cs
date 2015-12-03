@@ -115,7 +115,6 @@
             this.btnMediaNetworkShare = new System.Windows.Forms.Button();
             this.btnMediaFolderOffline = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.lblMediaCopyProgress = new System.Windows.Forms.Label();
             this.lblMediaDestination = new System.Windows.Forms.Label();
             this.lblMediaSource = new System.Windows.Forms.Label();
             this.btnMediaSource = new System.Windows.Forms.Button();
@@ -131,6 +130,7 @@
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.timerMediaServerOffline = new System.Windows.Forms.Timer(this.components);
             this.bwFileTransfer = new System.ComponentModel.BackgroundWorker();
+            this.lblMediaCopyProgress = new System.Windows.Forms.TextBox();
             this.statusStrip.SuspendLayout();
             this.tabVPNTraffic.SuspendLayout();
             this.tabVPNBook.SuspendLayout();
@@ -165,7 +165,7 @@
             this.lblOpenVPNConifg,
             this.toolStripStatusLabel1,
             this.lblStatusMediaShare});
-            this.statusStrip.Location = new System.Drawing.Point(0, 292);
+            this.statusStrip.Location = new System.Drawing.Point(0, 318);
             this.statusStrip.Name = "statusStrip";
             this.statusStrip.Size = new System.Drawing.Size(676, 24);
             this.statusStrip.TabIndex = 1;
@@ -215,7 +215,7 @@
             this.tabVPNTraffic.Location = new System.Drawing.Point(4, 22);
             this.tabVPNTraffic.Name = "tabVPNTraffic";
             this.tabVPNTraffic.Padding = new System.Windows.Forms.Padding(3);
-            this.tabVPNTraffic.Size = new System.Drawing.Size(644, 266);
+            this.tabVPNTraffic.Size = new System.Drawing.Size(644, 292);
             this.tabVPNTraffic.TabIndex = 4;
             this.tabVPNTraffic.Text = "Log";
             this.tabVPNTraffic.UseVisualStyleBackColor = true;
@@ -231,7 +231,7 @@
             this.lbLog.Location = new System.Drawing.Point(3, 3);
             this.lbLog.Name = "lbLog";
             this.lbLog.ScrollAlwaysVisible = true;
-            this.lbLog.Size = new System.Drawing.Size(638, 260);
+            this.lbLog.Size = new System.Drawing.Size(638, 286);
             this.lbLog.TabIndex = 0;
             // 
             // tabVPNBook
@@ -248,7 +248,7 @@
             this.tabVPNBook.Location = new System.Drawing.Point(4, 22);
             this.tabVPNBook.Name = "tabVPNBook";
             this.tabVPNBook.Padding = new System.Windows.Forms.Padding(3);
-            this.tabVPNBook.Size = new System.Drawing.Size(644, 266);
+            this.tabVPNBook.Size = new System.Drawing.Size(644, 292);
             this.tabVPNBook.TabIndex = 5;
             this.tabVPNBook.Text = "VPN Book";
             this.tabVPNBook.UseVisualStyleBackColor = true;
@@ -354,7 +354,7 @@
             this.tabSettings.Location = new System.Drawing.Point(4, 22);
             this.tabSettings.Name = "tabSettings";
             this.tabSettings.Padding = new System.Windows.Forms.Padding(3);
-            this.tabSettings.Size = new System.Drawing.Size(644, 266);
+            this.tabSettings.Size = new System.Drawing.Size(644, 292);
             this.tabSettings.TabIndex = 3;
             this.tabSettings.Text = "Settings";
             this.tabSettings.UseVisualStyleBackColor = true;
@@ -636,7 +636,7 @@
             this.tabOpenApps.Location = new System.Drawing.Point(4, 22);
             this.tabOpenApps.Name = "tabOpenApps";
             this.tabOpenApps.Padding = new System.Windows.Forms.Padding(3, 3, 3, 40);
-            this.tabOpenApps.Size = new System.Drawing.Size(644, 266);
+            this.tabOpenApps.Size = new System.Drawing.Size(644, 292);
             this.tabOpenApps.TabIndex = 1;
             this.tabOpenApps.Text = "Open Apps";
             this.tabOpenApps.UseVisualStyleBackColor = true;
@@ -664,7 +664,7 @@
             // btnSaveApps
             // 
             this.btnSaveApps.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnSaveApps.Location = new System.Drawing.Point(235, 205);
+            this.btnSaveApps.Location = new System.Drawing.Point(281, 244);
             this.btnSaveApps.Name = "btnSaveApps";
             this.btnSaveApps.Size = new System.Drawing.Size(75, 23);
             this.btnSaveApps.TabIndex = 1;
@@ -684,7 +684,7 @@
             this.dgOpenApps.Location = new System.Drawing.Point(63, 3);
             this.dgOpenApps.Name = "dgOpenApps";
             this.dgOpenApps.RowHeadersVisible = false;
-            this.dgOpenApps.Size = new System.Drawing.Size(477, 195);
+            this.dgOpenApps.Size = new System.Drawing.Size(575, 223);
             this.dgOpenApps.TabIndex = 0;
             // 
             // tabConnection
@@ -700,7 +700,7 @@
             this.tabConnection.Location = new System.Drawing.Point(4, 22);
             this.tabConnection.Name = "tabConnection";
             this.tabConnection.Padding = new System.Windows.Forms.Padding(3);
-            this.tabConnection.Size = new System.Drawing.Size(644, 266);
+            this.tabConnection.Size = new System.Drawing.Size(644, 292);
             this.tabConnection.TabIndex = 0;
             this.tabConnection.Text = "Connection Info";
             this.tabConnection.UseVisualStyleBackColor = true;
@@ -785,7 +785,7 @@
             this.tabs.Location = new System.Drawing.Point(12, 12);
             this.tabs.Name = "tabs";
             this.tabs.SelectedIndex = 0;
-            this.tabs.Size = new System.Drawing.Size(652, 292);
+            this.tabs.Size = new System.Drawing.Size(652, 318);
             this.tabs.TabIndex = 0;
             this.tabs.Selected += new System.Windows.Forms.TabControlEventHandler(this.tabs_Selected);
             // 
@@ -797,7 +797,7 @@
             this.tabVPNGate.Controls.Add(this.cbVPNGateServer);
             this.tabVPNGate.Location = new System.Drawing.Point(4, 22);
             this.tabVPNGate.Name = "tabVPNGate";
-            this.tabVPNGate.Size = new System.Drawing.Size(644, 266);
+            this.tabVPNGate.Size = new System.Drawing.Size(644, 292);
             this.tabVPNGate.TabIndex = 7;
             this.tabVPNGate.Text = "VPN Gate";
             this.tabVPNGate.UseVisualStyleBackColor = true;
@@ -854,7 +854,7 @@
             this.tabSecurity.Location = new System.Drawing.Point(4, 22);
             this.tabSecurity.Name = "tabSecurity";
             this.tabSecurity.Padding = new System.Windows.Forms.Padding(3);
-            this.tabSecurity.Size = new System.Drawing.Size(644, 266);
+            this.tabSecurity.Size = new System.Drawing.Size(644, 292);
             this.tabSecurity.TabIndex = 6;
             this.tabSecurity.Text = "Privacy";
             this.tabSecurity.UseVisualStyleBackColor = true;
@@ -968,7 +968,7 @@
             this.tabMediaServer.Location = new System.Drawing.Point(4, 22);
             this.tabMediaServer.Name = "tabMediaServer";
             this.tabMediaServer.Padding = new System.Windows.Forms.Padding(3);
-            this.tabMediaServer.Size = new System.Drawing.Size(644, 266);
+            this.tabMediaServer.Size = new System.Drawing.Size(644, 292);
             this.tabMediaServer.TabIndex = 8;
             this.tabMediaServer.Text = "Media Server";
             this.tabMediaServer.UseVisualStyleBackColor = true;
@@ -976,7 +976,7 @@
             // picParentalControls
             // 
             this.picParentalControls.Image = global::P2PVpn.Properties.Resources.Stop_red1;
-            this.picParentalControls.Location = new System.Drawing.Point(437, 17);
+            this.picParentalControls.Location = new System.Drawing.Point(460, 17);
             this.picParentalControls.Name = "picParentalControls";
             this.picParentalControls.Size = new System.Drawing.Size(79, 72);
             this.picParentalControls.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -994,7 +994,7 @@
             this.groupBox2.Controls.Add(this.btnMediaFolderOffline);
             this.groupBox2.Location = new System.Drawing.Point(6, 101);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(560, 75);
+            this.groupBox2.Size = new System.Drawing.Size(632, 75);
             this.groupBox2.TabIndex = 12;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Parental Controls";
@@ -1059,7 +1059,7 @@
             // 
             this.btnMediaFolderOffline.Image = ((System.Drawing.Image)(resources.GetObject("btnMediaFolderOffline.Image")));
             this.btnMediaFolderOffline.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnMediaFolderOffline.Location = new System.Drawing.Point(402, 13);
+            this.btnMediaFolderOffline.Location = new System.Drawing.Point(418, 24);
             this.btnMediaFolderOffline.Name = "btnMediaFolderOffline";
             this.btnMediaFolderOffline.Size = new System.Drawing.Size(152, 29);
             this.btnMediaFolderOffline.TabIndex = 0;
@@ -1079,19 +1079,10 @@
             this.groupBox1.Controls.Add(this.btnMediaTarget);
             this.groupBox1.Location = new System.Drawing.Point(6, 182);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(632, 71);
+            this.groupBox1.Size = new System.Drawing.Size(632, 99);
             this.groupBox1.TabIndex = 11;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Copy Files";
-            // 
-            // lblMediaCopyProgress
-            // 
-            this.lblMediaCopyProgress.AutoSize = true;
-            this.lblMediaCopyProgress.Location = new System.Drawing.Point(7, 49);
-            this.lblMediaCopyProgress.Name = "lblMediaCopyProgress";
-            this.lblMediaCopyProgress.Size = new System.Drawing.Size(111, 13);
-            this.lblMediaCopyProgress.TabIndex = 14;
-            this.lblMediaCopyProgress.Text = "lblMediaCopyProgress";
             // 
             // lblMediaDestination
             // 
@@ -1206,11 +1197,20 @@
             this.bwFileTransfer.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bwFileTransfer_DoWork);
             this.bwFileTransfer.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bwFileTransfer_RunWorkerCompleted);
             // 
+            // lblMediaCopyProgress
+            // 
+            this.lblMediaCopyProgress.Enabled = false;
+            this.lblMediaCopyProgress.Location = new System.Drawing.Point(6, 49);
+            this.lblMediaCopyProgress.Multiline = true;
+            this.lblMediaCopyProgress.Name = "lblMediaCopyProgress";
+            this.lblMediaCopyProgress.Size = new System.Drawing.Size(620, 44);
+            this.lblMediaCopyProgress.TabIndex = 14;
+            // 
             // P2PVPNForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(676, 316);
+            this.ClientSize = new System.Drawing.Size(676, 342);
             this.Controls.Add(this.statusStrip);
             this.Controls.Add(this.tabs);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -1354,7 +1354,6 @@
         private System.Windows.Forms.Label lblMediaSource;
         private System.Windows.Forms.Button btnMediaSource;
         private System.Windows.Forms.ToolTip toolTip;
-        private System.Windows.Forms.Label lblMediaCopyProgress;
         private System.Windows.Forms.ComboBox cbMediaParentalTime;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Timer timerMediaServerOffline;
@@ -1365,6 +1364,7 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.CheckBox cbVPNGateConnectRetry;
         private System.ComponentModel.BackgroundWorker bwFileTransfer;
+        private System.Windows.Forms.TextBox lblMediaCopyProgress;
     }
 }
 

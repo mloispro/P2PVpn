@@ -177,6 +177,7 @@ namespace P2PVpn
                 }
                 //Thread.Sleep(60000);
                 //Networking.DisableDisconnect = false;
+                bwFileTransfer.RunWorkerAsync();
             }
             this.EnableForm();
 
@@ -185,6 +186,7 @@ namespace P2PVpn
             Task.Delay(5000).Wait();
             //Thread.Sleep(20000);
             Networking.DisableDisconnect = false;
+            
         }
         private void Disconnect()
         {
@@ -339,6 +341,7 @@ namespace P2PVpn
             //    Domain = "olsonhome",
             //    ShareName = shareName
             //};
+            this.EnableForm(false);
             Settings settings = Settings.Get();
             if (string.IsNullOrWhiteSpace(settings.MediaServer.ShareName))
             {
@@ -359,7 +362,7 @@ namespace P2PVpn
             }
 
             PopulateMediaServerControls();
-           
+            this.EnableForm();
 
         }
 
@@ -370,13 +373,15 @@ namespace P2PVpn
                 Settings settings = Settings.Get();
                 FileIO.FinshedFileTransfer += (sender, info) =>
                 {
-                    lblMediaCopyProgress.SetLabelText("Finished Copying " + info.SourceFile);
+                    lblMediaCopyProgress.SetControlText("Finished Copying " + info.SourceFile);
+                   //ControlHelpers.s
+                    Logging.Log("Finished Copying " + info.SourceFile);
                 };
 
                 FileIO.FileTransferProgress += (sender, info) =>
                 {
                     string transfer = string.Format("Copying: {0}   {1}%", info.SourceFile, info.PercentComplete);
-                    lblMediaCopyProgress.SetLabelText(transfer);
+                    lblMediaCopyProgress.SetControlText(transfer);
 
                     //var fileTransfer = settings.MediaFileTransferQue.FirstOrDefault(x => x.SourceDirectory == sender.SourceDirectory);
 

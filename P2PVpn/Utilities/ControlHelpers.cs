@@ -17,11 +17,22 @@ namespace P2PVpn.Utilities
         {
             if (lbl.InvokeRequired)
             {
-                lbl.Invoke(new Action(() => lbl.Text = text));
+                lbl.BeginInvoke(new Action(() => lbl.Text = text));
             }
             else
             {
                 lbl.Text = text;
+            }
+        }
+        public static void SetControlText(this Control ctrl, string text)
+        {
+            if (ctrl.InvokeRequired)
+            {
+                ctrl.BeginInvoke(new Action(() => ctrl.Text = text));
+            }
+            else
+            {
+                ctrl.Text = text;
             }
         }
         public static void SetButtonText(this Button btn, string text)
