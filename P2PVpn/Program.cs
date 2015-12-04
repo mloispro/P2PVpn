@@ -4,49 +4,71 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Microsoft.VisualBasic.ApplicationServices;
+using P2PVpn.Utilities;
 
 namespace P2PVpn
 {
     static class Program
     {
-        static Mutex mutex = new Mutex(false, "E8BC201C-0C55-4768-999B-6E5D2B40FE00");
+        //static Mutex mutex = new Mutex(false, "E8BC201C-0C55-4768-999B-6E5D2B40FE00");
 
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
-        static int Main(string[] args)
+        static void Main()
         {
             //Application.EnableVisualStyles();
             //Application.SetCompatibleTextRenderingDefault(false);
             //Application.Run(new P2PVPNForm());
 
-            // if you like to wait a few seconds in case that the instance is just 
-            // shutting down
-            if (!mutex.WaitOne(TimeSpan.FromSeconds(2), false) && !System.Diagnostics.Debugger.IsAttached)
-            {
-              MessageBox.Show("P2PVpn Monitor is already running", "", MessageBoxButtons.OK);
-               return 0;
-            }
-
-            try
-            {
-
-                Application.EnableVisualStyles();
-                Application.SetCompatibleTextRenderingDefault(false);
-                Application.Run(new P2PVPNForm());
-
-            }
-            catch { }
-            finally
-            {
-                try
-                {
-                    mutex.ReleaseMutex();
-                }
-                catch { }
-            }
-            return 0;
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            string[] args = Environment.GetCommandLineArgs();
+            SingleInstanceController controller = new SingleInstanceController();
+            controller.Run(args);
         }
+        
+    }
+    public class SingleInstanceController : WindowsFormsApplicationBase
+    {
+        public SingleInstanceController()
+        {
+            IsSingleInstance = true;
+
+            StartupNextInstance += this_StartupNextInstance;
+        }
+
+        void this_StartupNextInstance(object sender, StartupNextInstanceEventArgs e)
+        {
+            P2PVPNForm form = MainForm as P2PVPNForm; //My derived form type
+            //form.LoadFile(e.CommandLine[1]);
+            if (e.CommandLine.Count() == 2)
+            {
+                string sourceDir = e.CommandLine[1];
+                form.bwTorrentDownloadComplete.RunWorkerAsync(sourceDir);
+            }
+            e.BringToForeground = true;
+           
+        }
+
+        protected override void OnCreateMainForm()
+        {
+            MainForm = new P2PVPNForm();
+        }
+    }
+
+    public partial class P2PVPNForm : Form
+    {
+
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+            string[] args = Environment.GetCommandLineArgs();
+
+            //LoadFile(args[1]);
+        }
+     
     }
 }

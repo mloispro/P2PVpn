@@ -47,10 +47,10 @@ namespace P2PVpn.Utilities
             try
             {
                 // Set options for the synchronization operation
-                FileSyncOptions options = FileSyncOptions.ExplicitDetectChanges |
-                        FileSyncOptions.RecycleDeletedFiles |
-                        FileSyncOptions.RecyclePreviousFileOnUpdates |
-                        FileSyncOptions.RecycleConflictLoserFiles;
+                //FileSyncOptions options = FileSyncOptions.ExplicitDetectChanges |
+                //        FileSyncOptions.RecycleDeletedFiles |
+                //        FileSyncOptions.RecyclePreviousFileOnUpdates |
+                //        FileSyncOptions.RecycleConflictLoserFiles;
 
                 FileSyncScopeFilter filter = new FileSyncScopeFilter();
                 //filter.FileNameExcludes.Add("*.lnk"); // Exclude all *.lnk files
@@ -67,13 +67,13 @@ namespace P2PVpn.Utilities
                 // Explicitly detect changes on both replicas upfront, to avoid two change
                 // detection passes for the two-way synchronization
 
-                DetectChangesOnFileSystemReplica(
-                        sourceDirectory, filter, options);
+                //DetectChangesOnFileSystemReplica(
+                //        sourceDirectory, filter, null);
                 //DetectChangesOnFileSystemReplica(
                 //    targetDirectory, filter, options);
 
                 // Synchronization in both directions
-                SyncFileSystemReplicasOneWay(sourceDirectory, targetDirectory, filter, options);
+                SyncFileSystemReplicasOneWay(sourceDirectory, targetDirectory, filter, FileSyncOptions.None);
                 //SyncFileSystemReplicasOneWay(sourceDirectory, targetDirectory, null, options);
             }
             catch (Exception e)
@@ -82,25 +82,25 @@ namespace P2PVpn.Utilities
             }
         }
 
-        public static void DetectChangesOnFileSystemReplica(
-        string replicaRootPath,
-        FileSyncScopeFilter filter, FileSyncOptions options)
-        {
-            FileSyncProvider provider = null;
+        //public static void DetectChangesOnFileSystemReplica(
+        //string replicaRootPath,
+        //FileSyncScopeFilter filter, FileSyncOptions options)
+        //{
+        //    FileSyncProvider provider = null;
 
-            try
-            {
-                provider = new FileSyncProvider(replicaRootPath, filter, options);
-                provider.DetectChanges();
+        //    try
+        //    {
+        //        provider = new FileSyncProvider(replicaRootPath, filter, options);
+        //        provider.DetectChanges();
 
-            }
-            finally
-            {
-                // Release resources
-                if (provider != null)
-                    provider.Dispose();
-            }
-        }
+        //    }
+        //    finally
+        //    {
+        //        // Release resources
+        //        if (provider != null)
+        //            provider.Dispose();
+        //    }
+        //}
 
         public static void SyncFileSystemReplicasOneWay(
                 string sourceReplicaRootPath, string destinationReplicaRootPath,
@@ -113,7 +113,7 @@ namespace P2PVpn.Utilities
             {
                 sourceProvider = new FileSyncProvider(
                     sourceReplicaRootPath, filter, options);
-
+                
                 //filter.SubdirectoryExcludes.Add(@".\");
 
                 destinationProvider = new FileSyncProvider(
@@ -124,6 +124,9 @@ namespace P2PVpn.Utilities
                 sourceProvider.SkippedChange +=
                     new EventHandler<SkippedChangeEventArgs>(OnSkippedChange);
 
+                
+                sourceProvider.DetectChanges();
+              
                 sourceProvider.CopyingFile += (s, a) =>
                 {
                     string file = a.FilePath;
@@ -134,22 +137,50 @@ namespace P2PVpn.Utilities
                     string file = a.NewFilePath;
                     var change = a.ChangeType;
                 };
-
+                sourceProvider.DetectedChanges += (s, a) =>
+                {
+                    //a.TotalDirectoriesFound
+                };
+                
                 destinationProvider.CopyingFile += (s, a) =>
                 {
                     string file = a.FilePath;
                     int percent = a.PercentCopied;
-                    FileIO.FileTransferProgress(null, new FileTransferProgressEventArgs(percent, file));
+                    FileIO.FileTransferProgress(null, new FileTransferProgressEventArgs(percent, Path.GetFileName(file)));
                 };
                 destinationProvider.AppliedChange += (s, a) =>
                 {
                     string file = a.NewFilePath;
-                    var change = a.ChangeType;
-                    FileIO.FinshedFileTransfer(null, new FinshedFileTransferEventArgs(file));
-                    string path = FileIO.GetPath(sourceReplicaRootPath);
+                };
+                destinationProvider.AppliedChange += (s, a) =>
+                {
+                    if (a.ChangeType == ChangeType.Delete) return;
+                   
+                    string file = a.NewFilePath;
+                    string serverPath = FileIO.GetPath(destinationReplicaRootPath) + file;
+                    if (FileIO.IsDirectory(serverPath)) return;
+                    FileIO.FinshedFileTransfer(null, new FinshedFileTransferEventArgs(Path.GetFileName(serverPath)));
+                    string localDirectory = FileIO.GetPath(FileIO.GetPath(sourceReplicaRootPath) + file);
+                    string localFile = localDirectory + Path.GetFileName(file);
+                    string topLevelDir = FileIO.GetPath(sourceReplicaRootPath) + FileIO.GetTopLevelFolder(file);
                     try
                     {
-                        File.Delete(path + file);
+                        File.Delete(localFile);
+                    }
+                    catch (Exception ex) { Logging.Log(ex.Message); }
+
+                    if (topLevelDir == FileIO.GetPath(sourceReplicaRootPath)) return;
+                   //bool isMoreTransfers = filter.FileNameIncludes.Any(x => Directory.GetFiles(localDirectory, x) != null);
+                    foreach(string filterVal in filter.FileNameIncludes)
+                    {
+                        if (Directory.EnumerateFiles(topLevelDir, filterVal, SearchOption.AllDirectories).Count() > 0) return;
+                    }
+
+                    //if (isMoreTransfers) return;
+
+                    try
+                    {
+                        FileIO.ForceDeleteDirectory(topLevelDir);
                     }
                     catch (Exception ex) { Logging.Log(ex.Message); }
                 };
@@ -168,8 +199,27 @@ namespace P2PVpn.Utilities
                     {
                         string path = FileIO.GetPath(destinationReplicaRootPath);
                         string metadataFile = path + _metadataFile;
-                        File.Delete(metadataFile);
+
+                        try
+                        {
+                            Logging.Log("Syncronization complete, cleanning up...");
+                            File.Delete(metadataFile);
+                            foreach (string tmpFile in Directory.EnumerateFiles(path, "*.tmp"))
+                            {
+                                File.Delete(tmpFile);
+                            }
+                            //FileSync.WatchFileSystem(sourceReplicaRootPath, destinationReplicaRootPath);
+                        }
+                        catch (Exception ex)
+                        {
+                            Logging.LogError(ex.Message);
+                        }
+
                     }
+                };
+                _agent.SessionProgress += (s, a) =>
+                {
+                    uint p = a.CompletedWork;
                 };
                 _agent.Synchronize();
                 //keep background worker alive
@@ -180,6 +230,7 @@ namespace P2PVpn.Utilities
                 // Release resources
                 if (sourceProvider != null) sourceProvider.Dispose();
                 if (destinationProvider != null) destinationProvider.Dispose();
+                //if (_agent != null) _agent.Cancel(); _agent = null;
             }
         }
 

@@ -13,7 +13,7 @@ using P2PVpn.Models;
 
 namespace P2PVpn.Utilities
 {
-    public class FileIO:IDisposable
+    public class FileIO : IDisposable
     {
         //private FileSystemWatcher _fileSystemWatcher = new FileSystemWatcher();
         //private FileSystemWatcher _fileSystemWatcher2 = new FileSystemWatcher();
@@ -114,7 +114,7 @@ namespace P2PVpn.Utilities
         //            string targetFile = Path.Combine(settings.MediaFileTransfer.TargetDirectory, e.Name);
 
         //            var prepedTransfer = new FileTransfer { SourceDirectory = e.FullPath, TargetDirectory = targetFile };
-                    
+
         //            //add to queue
         //            if (!settings.MediaFileTransferQue.Contains(prepedTransfer))
         //            {
@@ -198,7 +198,7 @@ namespace P2PVpn.Utilities
 
         //    //if (fileCopyTask.IsFaulted)
         //    //{
-               
+
         //    //}
 
 
@@ -235,7 +235,7 @@ namespace P2PVpn.Utilities
 
         //    settings.MediaFileTransferQue = settings.MediaFileTransferQue.DistinctBy(x => x.SourceDirectory).ToList();
         //    settings.MediaFileTransferQue.RemoveAll(x => !File.Exists(x.SourceDirectory));
-            
+
         //    Settings.Save(settings);
 
         //}
@@ -251,9 +251,20 @@ namespace P2PVpn.Utilities
         //    settings.MediaFileTransferQue.ForEach(x => x.IsTransfering = false);
         //    Settings.Save(settings);
         //}
+        public static string GetTopLevelFolder(string path)
+        {
+            string folder = "";
+            if (!path.Contains(@"\")) return folder;
+            string[] split = path.Split(@"\".ToCharArray());
+            if (split.Count() > 0) folder = GetPath(split[0]);
+            return folder;
+        }
         public static string GetPath(string fileOrDirPath)
         {
-            bool isDirectory = IsDirectory(fileOrDirPath);
+            bool isDirectory = false;
+            try { isDirectory = IsDirectory(fileOrDirPath); }
+            catch { return fileOrDirPath + @"\"; }
+
             if (!isDirectory)
             {
                 fileOrDirPath = Path.GetDirectoryName(fileOrDirPath) + @"\";
@@ -262,11 +273,11 @@ namespace P2PVpn.Utilities
             {
                 fileOrDirPath = fileOrDirPath.TrimEnd(@"\".ToCharArray());
                 fileOrDirPath += @"\";
-                fileOrDirPath =  Path.GetDirectoryName(fileOrDirPath) + @"\";
+                fileOrDirPath = Path.GetDirectoryName(fileOrDirPath) + @"\";
             }
             return fileOrDirPath;
         }
-        private static bool IsDirectory(string path)
+        public static bool IsDirectory(string path)
         {
             System.IO.FileAttributes fa = System.IO.File.GetAttributes(path);
             bool isDirectory = false;
@@ -276,7 +287,7 @@ namespace P2PVpn.Utilities
             }
             return isDirectory;
         }
-        
+
 
         public static bool IsFileClosed(string filename)
         {
@@ -294,20 +305,121 @@ namespace P2PVpn.Utilities
         }
         public static void ChangeFolderName(string folderName, string newFolderName)
         {
-            
+
             if (folderName.Equals(newFolderName)) return;
             try
             {
                 Directory.Move(folderName, newFolderName);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Logging.Log("Error: Folder not available : " + folderName);
                 throw ex;
             }
         }
+        public static void CopyTorrentDownload(string torrentDownloadFolder)
+        {
+            Settings settings = Settings.Get();
+            string sourceDir = GetPath(torrentDownloadFolder);
+            DirectoryInfo dirInfo = new DirectoryInfo(sourceDir);
+            string targetDir = GetPath(settings.MediaFileTransfer.SourceDirectory);
+            targetDir = Path.Combine(targetDir, dirInfo.Name);
 
-       #region Dispose
+            //TaskScheduler formSync = TaskScheduler.FromCurrentSynchronizationContext();
+
+            CopyDirectory(sourceDir, targetDir);
+            Logging.Log("Torrent Download Directory Copied: " + sourceDir);
+            ForceDeleteDirectory(sourceDir);
+
+            //Task.Factory.StartNew(() =>
+            //{
+            //    CopyDirectory(sourceDir, targetDir);
+
+            //}).ContinueWith((t) =>
+            //{
+            //    if (t.IsFaulted)
+            //    {
+            //        Exception ex = t.Exception;
+            //        while (ex is AggregateException && ex.InnerException != null)
+            //            ex = ex.InnerException;
+            //        Logging.LogError(ex.Message);
+            //    }
+            //    else if (t.IsCompleted)
+            //    {
+            //        Logging.Log("Torrent Download Directory Copied: " + sourceDir);
+            //        ForceDeleteDirectory(sourceDir);
+            //    }
+            //}, ControlHelpers.FormSyncContext);
+        }
+        public static void CopyDirectory(string sourceDir, string targetDir, bool recursive=true)
+        {
+            try
+            {
+                string sourceDirName = sourceDir;
+                string destDirName = targetDir;
+
+                // Get the subdirectories for the specified directory.
+                DirectoryInfo dir = new DirectoryInfo(sourceDirName);
+
+                if (!dir.Exists)
+                {
+                    Logging.LogError(
+                        "Source directory does not exist or could not be found: "
+                        + sourceDirName);
+                }
+
+                DirectoryInfo[] dirs = dir.GetDirectories();
+                // If the destination directory doesn't exist, create it.
+                if (!Directory.Exists(destDirName))
+                {
+                    Directory.CreateDirectory(destDirName);
+                }
+
+                // Get the files in the directory and copy them to the new location.
+                FileInfo[] files = dir.GetFiles();
+                foreach (FileInfo file in files)
+                {
+                    string temppath = Path.Combine(destDirName, file.Name);
+                    file.CopyTo(temppath, false);
+                }
+
+                // If copying subdirectories, copy them and their contents to new location.
+                if (recursive)
+                {
+                    foreach (DirectoryInfo subdir in dirs)
+                    {
+                        string temppath = Path.Combine(destDirName, subdir.Name);
+                        CopyDirectory(subdir.FullName, temppath, recursive);
+                    }
+                }
+            }
+
+            catch (Exception ex)
+            {
+                Logging.LogError(ex.Message);
+            }
+        }
+        public static void ForceDeleteDirectory(string path)
+        {
+            try
+            {
+                var directory = new DirectoryInfo(path) { Attributes = FileAttributes.Normal };
+
+                foreach (var info in directory.GetFileSystemInfos("*", SearchOption.AllDirectories))
+                {
+                    info.Attributes = FileAttributes.Normal;
+                }
+                directory.Attributes = FileAttributes.Normal;
+
+                directory.Delete(true);
+                //Directory.Delete(path, true);
+            }
+            catch (Exception ex)
+            {
+                Logging.LogError(ex.Message);
+            }
+        }
+        #region Dispose
 
         private bool _disposed;
         ~FileIO()
@@ -326,15 +438,17 @@ namespace P2PVpn.Utilities
             {
                 if (disposing)
                 {
-                    
+
                 }
-                
+
                 //ResetTransfers();
                 _disposed = true;
             }
 
         }
         #endregion Dispose
+
+
     }
 
     public class FinshedFileTransferEventArgs : EventArgs

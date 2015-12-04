@@ -12,18 +12,8 @@ namespace P2PVpn.Utilities
     public static class ControlHelpers
     {
         public static P2PVPNForm P2PVPNForm { get; set; }
-
-        public static void SetLabelText(this Label lbl, string text)
-        {
-            if (lbl.InvokeRequired)
-            {
-                lbl.BeginInvoke(new Action(() => lbl.Text = text));
-            }
-            else
-            {
-                lbl.Text = text;
-            }
-        }
+        public static TaskScheduler FormSyncContext = TaskScheduler.FromCurrentSynchronizationContext();
+     
         public static void SetControlText(this Control ctrl, string text)
         {
             if (ctrl.InvokeRequired)
@@ -35,17 +25,7 @@ namespace P2PVpn.Utilities
                 ctrl.Text = text;
             }
         }
-        public static void SetButtonText(this Button btn, string text)
-        {
-            if (btn.InvokeRequired)
-            {
-                btn.Invoke(new Action(() => btn.Text = text));
-            }
-            else
-            {
-                btn.Text = text;
-            }
-        }
+       
         public static void EnableForm(this Form frm, bool enable = true)
         {
             try

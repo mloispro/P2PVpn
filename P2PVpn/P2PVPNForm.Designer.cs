@@ -115,6 +115,7 @@
             this.btnMediaNetworkShare = new System.Windows.Forms.Button();
             this.btnMediaFolderOffline = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.lblMediaCopyProgress = new System.Windows.Forms.TextBox();
             this.lblMediaDestination = new System.Windows.Forms.Label();
             this.lblMediaSource = new System.Windows.Forms.Label();
             this.btnMediaSource = new System.Windows.Forms.Button();
@@ -130,7 +131,7 @@
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.timerMediaServerOffline = new System.Windows.Forms.Timer(this.components);
             this.bwFileTransfer = new System.ComponentModel.BackgroundWorker();
-            this.lblMediaCopyProgress = new System.Windows.Forms.TextBox();
+            this.bwTorrentDownloadComplete = new System.ComponentModel.BackgroundWorker();
             this.statusStrip.SuspendLayout();
             this.tabVPNTraffic.SuspendLayout();
             this.tabVPNBook.SuspendLayout();
@@ -1084,6 +1085,15 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Copy Files";
             // 
+            // lblMediaCopyProgress
+            // 
+            this.lblMediaCopyProgress.Enabled = false;
+            this.lblMediaCopyProgress.Location = new System.Drawing.Point(6, 49);
+            this.lblMediaCopyProgress.Multiline = true;
+            this.lblMediaCopyProgress.Name = "lblMediaCopyProgress";
+            this.lblMediaCopyProgress.Size = new System.Drawing.Size(620, 44);
+            this.lblMediaCopyProgress.TabIndex = 14;
+            // 
             // lblMediaDestination
             // 
             this.lblMediaDestination.AutoSize = true;
@@ -1197,14 +1207,9 @@
             this.bwFileTransfer.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bwFileTransfer_DoWork);
             this.bwFileTransfer.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bwFileTransfer_RunWorkerCompleted);
             // 
-            // lblMediaCopyProgress
+            // bwTorrentDownloadComplete
             // 
-            this.lblMediaCopyProgress.Enabled = false;
-            this.lblMediaCopyProgress.Location = new System.Drawing.Point(6, 49);
-            this.lblMediaCopyProgress.Multiline = true;
-            this.lblMediaCopyProgress.Name = "lblMediaCopyProgress";
-            this.lblMediaCopyProgress.Size = new System.Drawing.Size(620, 44);
-            this.lblMediaCopyProgress.TabIndex = 14;
+            this.bwTorrentDownloadComplete.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bwTorrentDownloadComplete_DoWork);
             // 
             // P2PVPNForm
             // 
@@ -1365,6 +1370,7 @@
         private System.Windows.Forms.CheckBox cbVPNGateConnectRetry;
         private System.ComponentModel.BackgroundWorker bwFileTransfer;
         private System.Windows.Forms.TextBox lblMediaCopyProgress;
+        public System.ComponentModel.BackgroundWorker bwTorrentDownloadComplete;
     }
 }
 

@@ -60,8 +60,8 @@ namespace P2PVpn
             bool vpnFound = false;
             if (Networking.ActiveNetworkAdapters.Count == 0)
             {
-                lblVPNConnectionStatus.SetLabelText("Disconnected");
-                lblConnectionStatus.SetLabelText("Disconnected");
+                lblVPNConnectionStatus.SetControlText("Disconnected");
+                lblConnectionStatus.SetControlText("Disconnected");
                 Logging.SetStatus("OpenVPN Disconnected", Logging.Colors.Red);
             }
             foreach (var adapter in Networking.ActiveNetworkAdapters)
@@ -69,30 +69,30 @@ namespace P2PVpn
                 if (Networking.IsVPNAdapter(adapter))
                 {
                     vpnFound = true;
-                    lblVPNConnectionStatus.SetLabelText(string.Format("{0}    IP: {1} {2}bytes sent: {3}k  bytes received: {4}k  speed: {5}k{2}",
+                    lblVPNConnectionStatus.SetControlText(string.Format("{0}    IP: {1} {2}bytes sent: {3}k  bytes received: {4}k  speed: {5}k{2}",
                         adapter.Name, adapter.IpAddress, Environment.NewLine, adapter.BytesSent, adapter.BytesReceived, adapter.Speed));
                 }
                 else
                 {
                     connections += string.Format("{0}    IP: {1} {2}bytes sent: {3}k  bytes received: {4}k  speed: {5}k{2}",
                         adapter.Name, adapter.IpAddress, Environment.NewLine, adapter.BytesSent, adapter.BytesReceived, adapter.Speed);
-                    lblConnectionStatus.SetLabelText(connections);
+                    lblConnectionStatus.SetControlText(connections);
                 }
                 if (!vpnFound)
                 {
-                    lblVPNConnectionStatus.SetLabelText("Disconnected");
+                    lblVPNConnectionStatus.SetControlText("Disconnected");
                 }
             }
 
 
             if (Network.IsOpenVPNConnected())
             {
-                btnConnect.SetButtonText("Disconnect");
+                btnConnect.SetControlText("Disconnect");
                 Logging.SetStatus("OpenVPN Connected", Logging.Colors.Green);
             }
             else
             {
-                btnConnect.SetButtonText("Connect");
+                btnConnect.SetControlText("Connect");
                 Logging.SetStatus("OpenVPN Disconnected", Logging.Colors.Red);
             }
             var apps = Apps.Get();
@@ -110,7 +110,7 @@ namespace P2PVpn
             {
                 runningApps = "None.";
             }
-            ControlHelpers.SetLabelText(lblRunningApps, runningApps);
+            ControlHelpers.SetControlText(lblRunningApps, runningApps);
             //timerMediaServerOffline.Tick += timerMediaServerOffline_Tick;
 
         }
@@ -517,6 +517,11 @@ namespace P2PVpn
                 }
             }
             catch { } 
+        }
+        private void bwTorrentDownloadComplete_DoWork(object sender, DoWorkEventArgs e)
+        {
+            string sourceDir = e.Argument.ToString();
+            FileIO.CopyTorrentDownload(sourceDir);
         }
         #endregion MediaServer
 
@@ -1031,5 +1036,7 @@ namespace P2PVpn
         }
 
         #endregion Links
+
+        
     }
 }

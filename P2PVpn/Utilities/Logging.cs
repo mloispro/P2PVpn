@@ -51,6 +51,10 @@ namespace P2PVpn.Utilities
         {
             _log.Log(text);
         }
+        public static void LogError(string errorMessage)
+        {
+            Log("Error: " + errorMessage);
+        }
         public static void Log(string text, params object[] args)
         {
             Log(string.Format(text, args));
