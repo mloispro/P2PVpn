@@ -44,11 +44,21 @@ namespace P2PVpn
         {
             P2PVPNForm form = MainForm as P2PVPNForm; //My derived form type
             //form.LoadFile(e.CommandLine[1]);
-            if (e.CommandLine.Count() == 2)
+            if (e.CommandLine.Count() >= 2)
             {
-                string sourceDir = e.CommandLine[1];
+                string sourceDir = "";
+                for (int i = 1; i < e.CommandLine.Count(); i++)
+                {
+                    sourceDir += e.CommandLine[i] + " ";
+                }
+                sourceDir = sourceDir.Trim();
                 form.bwTorrentDownloadComplete.RunWorkerAsync(sourceDir);
             }
+            //else if (e.CommandLine.Count() == 3)
+            //{
+            //    string sourceDir = e.CommandLine[1] +" " + e.CommandLine[2];
+            //    form.bwTorrentDownloadComplete.RunWorkerAsync(sourceDir);
+            //}
             e.BringToForeground = true;
            
         }

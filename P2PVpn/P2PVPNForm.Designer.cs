@@ -80,6 +80,9 @@
             this.btnMoveAppUp = new System.Windows.Forms.Button();
             this.btnSaveApps = new System.Windows.Forms.Button();
             this.dgOpenApps = new System.Windows.Forms.DataGridView();
+            this.launchDataGridViewCheckBoxColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.closeDataGridViewCheckBoxColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.programDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.appsBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.tabConnection = new System.Windows.Forms.TabPage();
             this.lblConnectionStatus = new System.Windows.Forms.Label();
@@ -681,12 +684,43 @@
             this.dgOpenApps.AutoGenerateColumns = false;
             this.dgOpenApps.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.dgOpenApps.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgOpenApps.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.launchDataGridViewCheckBoxColumn,
+            this.closeDataGridViewCheckBoxColumn,
+            this.programDataGridViewTextBoxColumn});
             this.dgOpenApps.DataSource = this.appsBindingSource;
             this.dgOpenApps.Location = new System.Drawing.Point(63, 3);
             this.dgOpenApps.Name = "dgOpenApps";
             this.dgOpenApps.RowHeadersVisible = false;
             this.dgOpenApps.Size = new System.Drawing.Size(575, 223);
             this.dgOpenApps.TabIndex = 0;
+            // 
+            // launchDataGridViewCheckBoxColumn
+            // 
+            this.launchDataGridViewCheckBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
+            this.launchDataGridViewCheckBoxColumn.DataPropertyName = "Launch";
+            this.launchDataGridViewCheckBoxColumn.HeaderText = "Launch";
+            this.launchDataGridViewCheckBoxColumn.Name = "launchDataGridViewCheckBoxColumn";
+            this.launchDataGridViewCheckBoxColumn.Width = 49;
+            // 
+            // closeDataGridViewCheckBoxColumn
+            // 
+            this.closeDataGridViewCheckBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
+            this.closeDataGridViewCheckBoxColumn.DataPropertyName = "Close";
+            this.closeDataGridViewCheckBoxColumn.HeaderText = "Close";
+            this.closeDataGridViewCheckBoxColumn.Name = "closeDataGridViewCheckBoxColumn";
+            this.closeDataGridViewCheckBoxColumn.Width = 39;
+            // 
+            // programDataGridViewTextBoxColumn
+            // 
+            this.programDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.programDataGridViewTextBoxColumn.DataPropertyName = "Program";
+            this.programDataGridViewTextBoxColumn.HeaderText = "Program";
+            this.programDataGridViewTextBoxColumn.Name = "programDataGridViewTextBoxColumn";
+            // 
+            // appsBindingSource
+            // 
+            this.appsBindingSource.DataSource = typeof(P2PVpn.Models.Apps);
             // 
             // tabConnection
             // 

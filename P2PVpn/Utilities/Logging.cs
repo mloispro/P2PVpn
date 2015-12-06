@@ -85,8 +85,8 @@ namespace P2PVpn.Utilities
                 }
                 if (_statusBar.InvokeRequired)
                 {
-                    _statusBar.Invoke(new Action(() => _lblStatusText.Text = text));
-                    _statusBar.Invoke(new Action(() => _lblStatusText.Image = theColor));
+                    _statusBar.BeginInvoke(new Action(() => _lblStatusText.Text = text));
+                    _statusBar.BeginInvoke(new Action(() => _lblStatusText.Image = theColor));
                     
                 }
                 else

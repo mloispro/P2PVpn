@@ -21,6 +21,11 @@ namespace P2PVpn.Utilities
 
             //fileSystemWatcher.Filter = "*.*";
             fileSystemWatcher.IncludeSubdirectories = true;
+            fileSystemWatcher.Created += (s, a) =>
+            {
+                if (a.Name.Contains(_metadataFile)) return;
+                WatchFileSystem(settings.MediaFileTransfer.SourceDirectory, settings.MediaFileTransfer.TargetDirectory);
+            };
             fileSystemWatcher.Changed += (s, a) =>
             {
                 if (a.Name.Contains(_metadataFile)) return;
@@ -47,10 +52,10 @@ namespace P2PVpn.Utilities
             try
             {
                 // Set options for the synchronization operation
-                //FileSyncOptions options = FileSyncOptions.ExplicitDetectChanges |
-                //        FileSyncOptions.RecycleDeletedFiles |
-                //        FileSyncOptions.RecyclePreviousFileOnUpdates |
-                //        FileSyncOptions.RecycleConflictLoserFiles;
+                FileSyncOptions options = FileSyncOptions.ExplicitDetectChanges |
+                        FileSyncOptions.RecycleDeletedFiles |
+                        FileSyncOptions.RecyclePreviousFileOnUpdates |
+                        FileSyncOptions.RecycleConflictLoserFiles;
 
                 FileSyncScopeFilter filter = new FileSyncScopeFilter();
                 //filter.FileNameExcludes.Add("*.lnk"); // Exclude all *.lnk files
@@ -73,7 +78,7 @@ namespace P2PVpn.Utilities
                 //    targetDirectory, filter, options);
 
                 // Synchronization in both directions
-                SyncFileSystemReplicasOneWay(sourceDirectory, targetDirectory, filter, FileSyncOptions.None);
+                SyncFileSystemReplicasOneWay(sourceDirectory, targetDirectory, filter, options);
                 //SyncFileSystemReplicasOneWay(sourceDirectory, targetDirectory, null, options);
             }
             catch (Exception e)
@@ -224,6 +229,10 @@ namespace P2PVpn.Utilities
                 _agent.Synchronize();
                 //keep background worker alive
                 //while (true) { };
+            }
+            catch (Exception ex)
+            {
+                Logging.Log(ex.Message);
             }
             finally
             {

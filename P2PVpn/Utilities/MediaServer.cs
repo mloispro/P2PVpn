@@ -69,25 +69,25 @@ namespace P2PVpn.Utilities
         private static void RestartMediaServer()
         {
 
-            // create Powershell runspace
-            Runspace runspace = RunspaceFactory.CreateRunspace();
-            runspace.Open();
+            //// create Powershell runspace
+            //Runspace runspace = RunspaceFactory.CreateRunspace();
+            //runspace.Open();
 
-            RunspaceInvoke runSpaceInvoker = new RunspaceInvoke(runspace);
-            runSpaceInvoker.Invoke("Set-ExecutionPolicy Unrestricted");
+            //RunspaceInvoke runSpaceInvoker = new RunspaceInvoke(runspace);
+            //runSpaceInvoker.Invoke("Set-ExecutionPolicy Unrestricted");
 
-            // create a pipeline and feed it the script text
-            Pipeline pipeline = runspace.CreatePipeline();
-            Command command = new Command(_scriptPath);
-            //foreach (var file in filesToMerge)
-            //{
-            //    command.Parameters.Add(null, file);
-            //}
-            //command.Parameters.Add(null, outputFilename);
-            pipeline.Commands.Add(command);
+            //// create a pipeline and feed it the script text
+            //Pipeline pipeline = runspace.CreatePipeline();
+            //Command command = new Command(_scriptPath);
+            ////foreach (var file in filesToMerge)
+            ////{
+            ////    command.Parameters.Add(null, file);
+            ////}
+            ////command.Parameters.Add(null, outputFilename);
+            //pipeline.Commands.Add(command);
 
-            pipeline.Invoke();
-            runspace.Close();
+            //pipeline.Invoke();
+            //runspace.Close();
         }
         
         public static bool LoginToMediaShare(Models.MediaServer mediaServer)
