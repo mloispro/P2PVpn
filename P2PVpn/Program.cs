@@ -52,6 +52,11 @@ namespace P2PVpn
                     sourceDir += e.CommandLine[i] + " ";
                 }
                 sourceDir = sourceDir.Trim();
+                Settings settings = Settings.Get();
+                if (!string.IsNullOrWhiteSpace(settings.ExcludedFolderFromMediaTransfer))
+                {
+                    if (sourceDir.Contains(settings.ExcludedFolderFromMediaTransfer)) return;
+                }
                 form.bwTorrentDownloadComplete.RunWorkerAsync(sourceDir);
             }
             //else if (e.CommandLine.Count() == 3)

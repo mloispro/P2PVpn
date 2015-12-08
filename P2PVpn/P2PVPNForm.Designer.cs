@@ -80,9 +80,6 @@
             this.btnMoveAppUp = new System.Windows.Forms.Button();
             this.btnSaveApps = new System.Windows.Forms.Button();
             this.dgOpenApps = new System.Windows.Forms.DataGridView();
-            this.launchDataGridViewCheckBoxColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.closeDataGridViewCheckBoxColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.programDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.appsBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.tabConnection = new System.Windows.Forms.TabPage();
             this.lblConnectionStatus = new System.Windows.Forms.Label();
@@ -135,6 +132,8 @@
             this.timerMediaServerOffline = new System.Windows.Forms.Timer(this.components);
             this.bwFileTransfer = new System.ComponentModel.BackgroundWorker();
             this.bwTorrentDownloadComplete = new System.ComponentModel.BackgroundWorker();
+            this.btnExcludeFolder = new System.Windows.Forms.Button();
+            this.lblExcludeFolder = new System.Windows.Forms.Label();
             this.statusStrip.SuspendLayout();
             this.tabVPNTraffic.SuspendLayout();
             this.tabVPNBook.SuspendLayout();
@@ -169,7 +168,7 @@
             this.lblOpenVPNConifg,
             this.toolStripStatusLabel1,
             this.lblStatusMediaShare});
-            this.statusStrip.Location = new System.Drawing.Point(0, 318);
+            this.statusStrip.Location = new System.Drawing.Point(0, 379);
             this.statusStrip.Name = "statusStrip";
             this.statusStrip.Size = new System.Drawing.Size(676, 24);
             this.statusStrip.TabIndex = 1;
@@ -252,7 +251,7 @@
             this.tabVPNBook.Location = new System.Drawing.Point(4, 22);
             this.tabVPNBook.Name = "tabVPNBook";
             this.tabVPNBook.Padding = new System.Windows.Forms.Padding(3);
-            this.tabVPNBook.Size = new System.Drawing.Size(644, 292);
+            this.tabVPNBook.Size = new System.Drawing.Size(644, 353);
             this.tabVPNBook.TabIndex = 5;
             this.tabVPNBook.Text = "VPN Book";
             this.tabVPNBook.UseVisualStyleBackColor = true;
@@ -358,7 +357,7 @@
             this.tabSettings.Location = new System.Drawing.Point(4, 22);
             this.tabSettings.Name = "tabSettings";
             this.tabSettings.Padding = new System.Windows.Forms.Padding(3);
-            this.tabSettings.Size = new System.Drawing.Size(644, 292);
+            this.tabSettings.Size = new System.Drawing.Size(644, 353);
             this.tabSettings.TabIndex = 3;
             this.tabSettings.Text = "Settings";
             this.tabSettings.UseVisualStyleBackColor = true;
@@ -640,7 +639,7 @@
             this.tabOpenApps.Location = new System.Drawing.Point(4, 22);
             this.tabOpenApps.Name = "tabOpenApps";
             this.tabOpenApps.Padding = new System.Windows.Forms.Padding(3, 3, 3, 40);
-            this.tabOpenApps.Size = new System.Drawing.Size(644, 292);
+            this.tabOpenApps.Size = new System.Drawing.Size(644, 353);
             this.tabOpenApps.TabIndex = 1;
             this.tabOpenApps.Text = "Open Apps";
             this.tabOpenApps.UseVisualStyleBackColor = true;
@@ -668,7 +667,7 @@
             // btnSaveApps
             // 
             this.btnSaveApps.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnSaveApps.Location = new System.Drawing.Point(281, 244);
+            this.btnSaveApps.Location = new System.Drawing.Point(281, 305);
             this.btnSaveApps.Name = "btnSaveApps";
             this.btnSaveApps.Size = new System.Drawing.Size(75, 23);
             this.btnSaveApps.TabIndex = 1;
@@ -684,43 +683,12 @@
             this.dgOpenApps.AutoGenerateColumns = false;
             this.dgOpenApps.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.dgOpenApps.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgOpenApps.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.launchDataGridViewCheckBoxColumn,
-            this.closeDataGridViewCheckBoxColumn,
-            this.programDataGridViewTextBoxColumn});
             this.dgOpenApps.DataSource = this.appsBindingSource;
             this.dgOpenApps.Location = new System.Drawing.Point(63, 3);
             this.dgOpenApps.Name = "dgOpenApps";
             this.dgOpenApps.RowHeadersVisible = false;
-            this.dgOpenApps.Size = new System.Drawing.Size(575, 223);
+            this.dgOpenApps.Size = new System.Drawing.Size(575, 284);
             this.dgOpenApps.TabIndex = 0;
-            // 
-            // launchDataGridViewCheckBoxColumn
-            // 
-            this.launchDataGridViewCheckBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
-            this.launchDataGridViewCheckBoxColumn.DataPropertyName = "Launch";
-            this.launchDataGridViewCheckBoxColumn.HeaderText = "Launch";
-            this.launchDataGridViewCheckBoxColumn.Name = "launchDataGridViewCheckBoxColumn";
-            this.launchDataGridViewCheckBoxColumn.Width = 49;
-            // 
-            // closeDataGridViewCheckBoxColumn
-            // 
-            this.closeDataGridViewCheckBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
-            this.closeDataGridViewCheckBoxColumn.DataPropertyName = "Close";
-            this.closeDataGridViewCheckBoxColumn.HeaderText = "Close";
-            this.closeDataGridViewCheckBoxColumn.Name = "closeDataGridViewCheckBoxColumn";
-            this.closeDataGridViewCheckBoxColumn.Width = 39;
-            // 
-            // programDataGridViewTextBoxColumn
-            // 
-            this.programDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.programDataGridViewTextBoxColumn.DataPropertyName = "Program";
-            this.programDataGridViewTextBoxColumn.HeaderText = "Program";
-            this.programDataGridViewTextBoxColumn.Name = "programDataGridViewTextBoxColumn";
-            // 
-            // appsBindingSource
-            // 
-            this.appsBindingSource.DataSource = typeof(P2PVpn.Models.Apps);
             // 
             // tabConnection
             // 
@@ -735,7 +703,7 @@
             this.tabConnection.Location = new System.Drawing.Point(4, 22);
             this.tabConnection.Name = "tabConnection";
             this.tabConnection.Padding = new System.Windows.Forms.Padding(3);
-            this.tabConnection.Size = new System.Drawing.Size(644, 292);
+            this.tabConnection.Size = new System.Drawing.Size(644, 353);
             this.tabConnection.TabIndex = 0;
             this.tabConnection.Text = "Connection Info";
             this.tabConnection.UseVisualStyleBackColor = true;
@@ -796,9 +764,9 @@
             // 
             // btnConnect
             // 
-            this.btnConnect.Location = new System.Drawing.Point(239, 199);
+            this.btnConnect.Location = new System.Drawing.Point(253, 241);
             this.btnConnect.Name = "btnConnect";
-            this.btnConnect.Size = new System.Drawing.Size(75, 23);
+            this.btnConnect.Size = new System.Drawing.Size(112, 23);
             this.btnConnect.TabIndex = 0;
             this.btnConnect.Text = "Connect";
             this.btnConnect.UseVisualStyleBackColor = true;
@@ -820,7 +788,7 @@
             this.tabs.Location = new System.Drawing.Point(12, 12);
             this.tabs.Name = "tabs";
             this.tabs.SelectedIndex = 0;
-            this.tabs.Size = new System.Drawing.Size(652, 318);
+            this.tabs.Size = new System.Drawing.Size(652, 379);
             this.tabs.TabIndex = 0;
             this.tabs.Selected += new System.Windows.Forms.TabControlEventHandler(this.tabs_Selected);
             // 
@@ -832,7 +800,7 @@
             this.tabVPNGate.Controls.Add(this.cbVPNGateServer);
             this.tabVPNGate.Location = new System.Drawing.Point(4, 22);
             this.tabVPNGate.Name = "tabVPNGate";
-            this.tabVPNGate.Size = new System.Drawing.Size(644, 292);
+            this.tabVPNGate.Size = new System.Drawing.Size(644, 353);
             this.tabVPNGate.TabIndex = 7;
             this.tabVPNGate.Text = "VPN Gate";
             this.tabVPNGate.UseVisualStyleBackColor = true;
@@ -889,7 +857,7 @@
             this.tabSecurity.Location = new System.Drawing.Point(4, 22);
             this.tabSecurity.Name = "tabSecurity";
             this.tabSecurity.Padding = new System.Windows.Forms.Padding(3);
-            this.tabSecurity.Size = new System.Drawing.Size(644, 292);
+            this.tabSecurity.Size = new System.Drawing.Size(644, 353);
             this.tabSecurity.TabIndex = 6;
             this.tabSecurity.Text = "Privacy";
             this.tabSecurity.UseVisualStyleBackColor = true;
@@ -1003,7 +971,7 @@
             this.tabMediaServer.Location = new System.Drawing.Point(4, 22);
             this.tabMediaServer.Name = "tabMediaServer";
             this.tabMediaServer.Padding = new System.Windows.Forms.Padding(3);
-            this.tabMediaServer.Size = new System.Drawing.Size(644, 292);
+            this.tabMediaServer.Size = new System.Drawing.Size(644, 353);
             this.tabMediaServer.TabIndex = 8;
             this.tabMediaServer.Text = "Media Server";
             this.tabMediaServer.UseVisualStyleBackColor = true;
@@ -1011,7 +979,7 @@
             // picParentalControls
             // 
             this.picParentalControls.Image = global::P2PVpn.Properties.Resources.Stop_red1;
-            this.picParentalControls.Location = new System.Drawing.Point(460, 17);
+            this.picParentalControls.Location = new System.Drawing.Point(434, 17);
             this.picParentalControls.Name = "picParentalControls";
             this.picParentalControls.Size = new System.Drawing.Size(79, 72);
             this.picParentalControls.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -1056,7 +1024,7 @@
             "6 hours",
             "7 hours ",
             "8 hours"});
-            this.cbMediaParentalTime.Location = new System.Drawing.Point(172, 49);
+            this.cbMediaParentalTime.Location = new System.Drawing.Point(169, 18);
             this.cbMediaParentalTime.Name = "cbMediaParentalTime";
             this.cbMediaParentalTime.Size = new System.Drawing.Size(82, 21);
             this.cbMediaParentalTime.TabIndex = 14;
@@ -1065,7 +1033,7 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(7, 52);
+            this.label10.Location = new System.Drawing.Point(3, 21);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(160, 13);
             this.label10.TabIndex = 13;
@@ -1074,7 +1042,7 @@
             // lblMediaNetworkShare
             // 
             this.lblMediaNetworkShare.AutoSize = true;
-            this.lblMediaNetworkShare.Location = new System.Drawing.Point(100, 24);
+            this.lblMediaNetworkShare.Location = new System.Drawing.Point(112, 47);
             this.lblMediaNetworkShare.Name = "lblMediaNetworkShare";
             this.lblMediaNetworkShare.Size = new System.Drawing.Size(43, 13);
             this.lblMediaNetworkShare.TabIndex = 12;
@@ -1082,9 +1050,9 @@
             // 
             // btnMediaNetworkShare
             // 
-            this.btnMediaNetworkShare.Location = new System.Drawing.Point(6, 19);
+            this.btnMediaNetworkShare.Location = new System.Drawing.Point(6, 42);
             this.btnMediaNetworkShare.Name = "btnMediaNetworkShare";
-            this.btnMediaNetworkShare.Size = new System.Drawing.Size(88, 23);
+            this.btnMediaNetworkShare.Size = new System.Drawing.Size(100, 23);
             this.btnMediaNetworkShare.TabIndex = 11;
             this.btnMediaNetworkShare.Text = "Network Share";
             this.btnMediaNetworkShare.UseVisualStyleBackColor = true;
@@ -1094,9 +1062,9 @@
             // 
             this.btnMediaFolderOffline.Image = ((System.Drawing.Image)(resources.GetObject("btnMediaFolderOffline.Image")));
             this.btnMediaFolderOffline.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnMediaFolderOffline.Location = new System.Drawing.Point(418, 24);
+            this.btnMediaFolderOffline.Location = new System.Drawing.Point(394, 14);
             this.btnMediaFolderOffline.Name = "btnMediaFolderOffline";
-            this.btnMediaFolderOffline.Size = new System.Drawing.Size(152, 29);
+            this.btnMediaFolderOffline.Size = new System.Drawing.Size(152, 25);
             this.btnMediaFolderOffline.TabIndex = 0;
             this.btnMediaFolderOffline.Text = "Bring Media Share Offline";
             this.btnMediaFolderOffline.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -1107,6 +1075,8 @@
             // 
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox1.Controls.Add(this.lblExcludeFolder);
+            this.groupBox1.Controls.Add(this.btnExcludeFolder);
             this.groupBox1.Controls.Add(this.lblMediaCopyProgress);
             this.groupBox1.Controls.Add(this.lblMediaDestination);
             this.groupBox1.Controls.Add(this.lblMediaSource);
@@ -1114,7 +1084,7 @@
             this.groupBox1.Controls.Add(this.btnMediaTarget);
             this.groupBox1.Location = new System.Drawing.Point(6, 182);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(632, 99);
+            this.groupBox1.Size = new System.Drawing.Size(632, 160);
             this.groupBox1.TabIndex = 11;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Copy Files";
@@ -1122,7 +1092,7 @@
             // lblMediaCopyProgress
             // 
             this.lblMediaCopyProgress.Enabled = false;
-            this.lblMediaCopyProgress.Location = new System.Drawing.Point(6, 49);
+            this.lblMediaCopyProgress.Location = new System.Drawing.Point(6, 106);
             this.lblMediaCopyProgress.Multiline = true;
             this.lblMediaCopyProgress.Name = "lblMediaCopyProgress";
             this.lblMediaCopyProgress.Size = new System.Drawing.Size(620, 44);
@@ -1131,7 +1101,7 @@
             // lblMediaDestination
             // 
             this.lblMediaDestination.AutoSize = true;
-            this.lblMediaDestination.Location = new System.Drawing.Point(388, 24);
+            this.lblMediaDestination.Location = new System.Drawing.Point(112, 53);
             this.lblMediaDestination.Name = "lblMediaDestination";
             this.lblMediaDestination.Size = new System.Drawing.Size(43, 13);
             this.lblMediaDestination.TabIndex = 13;
@@ -1158,7 +1128,7 @@
             // 
             // btnMediaTarget
             // 
-            this.btnMediaTarget.Location = new System.Drawing.Point(282, 19);
+            this.btnMediaTarget.Location = new System.Drawing.Point(6, 48);
             this.btnMediaTarget.Name = "btnMediaTarget";
             this.btnMediaTarget.Size = new System.Drawing.Size(100, 23);
             this.btnMediaTarget.TabIndex = 9;
@@ -1245,11 +1215,30 @@
             // 
             this.bwTorrentDownloadComplete.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bwTorrentDownloadComplete_DoWork);
             // 
+            // btnExcludeFolder
+            // 
+            this.btnExcludeFolder.Location = new System.Drawing.Point(6, 77);
+            this.btnExcludeFolder.Name = "btnExcludeFolder";
+            this.btnExcludeFolder.Size = new System.Drawing.Size(100, 23);
+            this.btnExcludeFolder.TabIndex = 15;
+            this.btnExcludeFolder.Text = "Exclude Folder";
+            this.btnExcludeFolder.UseVisualStyleBackColor = true;
+            this.btnExcludeFolder.Click += new System.EventHandler(this.btnExcludeFolder_Click);
+            // 
+            // lblExcludeFolder
+            // 
+            this.lblExcludeFolder.AutoSize = true;
+            this.lblExcludeFolder.Location = new System.Drawing.Point(112, 82);
+            this.lblExcludeFolder.Name = "lblExcludeFolder";
+            this.lblExcludeFolder.Size = new System.Drawing.Size(43, 13);
+            this.lblExcludeFolder.TabIndex = 16;
+            this.lblExcludeFolder.Text = "Not Set";
+            // 
             // P2PVPNForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(676, 342);
+            this.ClientSize = new System.Drawing.Size(676, 403);
             this.Controls.Add(this.statusStrip);
             this.Controls.Add(this.tabs);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -1405,6 +1394,8 @@
         private System.ComponentModel.BackgroundWorker bwFileTransfer;
         private System.Windows.Forms.TextBox lblMediaCopyProgress;
         public System.ComponentModel.BackgroundWorker bwTorrentDownloadComplete;
+        private System.Windows.Forms.Label lblExcludeFolder;
+        private System.Windows.Forms.Button btnExcludeFolder;
     }
 }
 

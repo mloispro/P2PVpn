@@ -61,10 +61,9 @@ namespace P2PVpn.Utilities
         public bool PreventSystemSleep { get; set; }
         public VPNGateServer SelectedVPNGateServer { get; set; }
         public bool RetryVPNGateConnect { get; set; }
+        public string ExcludedFolderFromMediaTransfer { get; set; }
 
         private static Settings _settings;
-
-        
         
         public static Settings Get()
         {

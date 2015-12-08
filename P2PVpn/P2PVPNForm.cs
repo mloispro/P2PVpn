@@ -177,7 +177,8 @@ namespace P2PVpn
                 }
                 //Thread.Sleep(60000);
                 //Networking.DisableDisconnect = false;
-                bwFileTransfer.RunWorkerAsync();
+                if (!bwFileTransfer.IsBusy)
+                    bwFileTransfer.RunWorkerAsync();
             }
             this.EnableForm();
 
@@ -444,6 +445,22 @@ namespace P2PVpn
                 lblMediaSource.Text = settings.MediaFileTransfer.SourceDirectory;
                 //WatchFileSystem();
                 bwFileTransfer.RunWorkerAsync();
+            }
+        }
+        private void btnExcludeFolder_Click(object sender, EventArgs e)
+        {
+            Settings settings = Settings.Get();
+            this.openMediaDestFolderBrowser.SelectedPath = settings.ExcludedFolderFromMediaTransfer;
+
+            var result = this.openMediaDestFolderBrowser.ShowDialog();
+            if (result == DialogResult.OK)
+            {
+                settings.ExcludedFolderFromMediaTransfer = this.openMediaDestFolderBrowser.SelectedPath;
+                Settings.Save(settings);
+                //PopulateMediaServerControls();
+                lblExcludeFolder.Text = settings.ExcludedFolderFromMediaTransfer;
+                //WatchFileSystem();
+                //bwFileTransfer.RunWorkerAsync();
             }
         }
         private void tbMediaUsername_Leave(object sender, EventArgs e)
@@ -1036,6 +1053,8 @@ namespace P2PVpn
         }
 
         #endregion Links
+
+        
 
         
     }
