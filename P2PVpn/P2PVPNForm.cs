@@ -43,7 +43,8 @@ namespace P2PVpn
             PopulateSettings();
             PopulateLaunchAppsGrid();
             PopulateControls();
-            bwFileTransfer.RunWorkerAsync();
+            if (!bwFileTransfer.IsBusy)
+                bwFileTransfer.RunWorkerAsync();
         }
 
         private void NetworkListManager_NetworkConnectivityChanged(Guid networkId, NETWORKLIST.NLM_CONNECTIVITY newConnectivity)
@@ -254,7 +255,11 @@ namespace P2PVpn
             foreach (var file in sourceDir)
             {
                 var filename = Path.GetFileName(file);
-                File.Copy(file, targetDir + @"\" + filename, true);
+                var targetFile = targetDir + @"\" + filename;
+                if (!File.Exists(targetFile))
+                {
+                    File.Copy(file, targetFile, true);
+                }
             }
 
         }
@@ -286,6 +291,7 @@ namespace P2PVpn
             lblMediaSource.Text = settings.MediaFileTransfer.SourceDirectory;
 
             lblMediaDestination.Text = settings.MediaFileTransfer.TargetDirectory;
+            lblExcludeFolder.Text = settings.ExcludedFolderFromMediaTransfer;
 
             bool isOffline = true;
 
@@ -428,7 +434,8 @@ namespace P2PVpn
                 lblMediaDestination.Text = settings.MediaFileTransfer.TargetDirectory;
                 //timerMediaServerOffline.Enabled = true;
                 //WatchFileSystem();
-                bwFileTransfer.RunWorkerAsync();
+                if (!bwFileTransfer.IsBusy)
+                    bwFileTransfer.RunWorkerAsync();
             }
         }
         private void btnMediaSource_Click(object sender, EventArgs e)
@@ -444,7 +451,8 @@ namespace P2PVpn
                 //PopulateMediaServerControls();
                 lblMediaSource.Text = settings.MediaFileTransfer.SourceDirectory;
                 //WatchFileSystem();
-                bwFileTransfer.RunWorkerAsync();
+                if (!bwFileTransfer.IsBusy)
+                    bwFileTransfer.RunWorkerAsync();
             }
         }
         private void btnExcludeFolder_Click(object sender, EventArgs e)

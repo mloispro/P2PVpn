@@ -115,6 +115,8 @@
             this.btnMediaNetworkShare = new System.Windows.Forms.Button();
             this.btnMediaFolderOffline = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.lblExcludeFolder = new System.Windows.Forms.Label();
+            this.btnExcludeFolder = new System.Windows.Forms.Button();
             this.lblMediaCopyProgress = new System.Windows.Forms.TextBox();
             this.lblMediaDestination = new System.Windows.Forms.Label();
             this.lblMediaSource = new System.Windows.Forms.Label();
@@ -132,8 +134,6 @@
             this.timerMediaServerOffline = new System.Windows.Forms.Timer(this.components);
             this.bwFileTransfer = new System.ComponentModel.BackgroundWorker();
             this.bwTorrentDownloadComplete = new System.ComponentModel.BackgroundWorker();
-            this.btnExcludeFolder = new System.Windows.Forms.Button();
-            this.lblExcludeFolder = new System.Windows.Forms.Label();
             this.statusStrip.SuspendLayout();
             this.tabVPNTraffic.SuspendLayout();
             this.tabVPNBook.SuspendLayout();
@@ -218,7 +218,7 @@
             this.tabVPNTraffic.Location = new System.Drawing.Point(4, 22);
             this.tabVPNTraffic.Name = "tabVPNTraffic";
             this.tabVPNTraffic.Padding = new System.Windows.Forms.Padding(3);
-            this.tabVPNTraffic.Size = new System.Drawing.Size(644, 292);
+            this.tabVPNTraffic.Size = new System.Drawing.Size(644, 353);
             this.tabVPNTraffic.TabIndex = 4;
             this.tabVPNTraffic.Text = "Log";
             this.tabVPNTraffic.UseVisualStyleBackColor = true;
@@ -234,7 +234,7 @@
             this.lbLog.Location = new System.Drawing.Point(3, 3);
             this.lbLog.Name = "lbLog";
             this.lbLog.ScrollAlwaysVisible = true;
-            this.lbLog.Size = new System.Drawing.Size(638, 286);
+            this.lbLog.Size = new System.Drawing.Size(638, 347);
             this.lbLog.TabIndex = 0;
             // 
             // tabVPNBook
@@ -1005,10 +1005,11 @@
             // lblMediaTimeRemaining
             // 
             this.lblMediaTimeRemaining.AutoSize = true;
-            this.lblMediaTimeRemaining.Location = new System.Drawing.Point(261, 52);
+            this.lblMediaTimeRemaining.Location = new System.Drawing.Point(257, 21);
             this.lblMediaTimeRemaining.Name = "lblMediaTimeRemaining";
-            this.lblMediaTimeRemaining.Size = new System.Drawing.Size(0, 13);
+            this.lblMediaTimeRemaining.Size = new System.Drawing.Size(37, 13);
             this.lblMediaTimeRemaining.TabIndex = 15;
+            this.lblMediaTimeRemaining.Text = "Offline";
             // 
             // cbMediaParentalTime
             // 
@@ -1088,6 +1089,25 @@
             this.groupBox1.TabIndex = 11;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Copy Files";
+            // 
+            // lblExcludeFolder
+            // 
+            this.lblExcludeFolder.AutoSize = true;
+            this.lblExcludeFolder.Location = new System.Drawing.Point(112, 82);
+            this.lblExcludeFolder.Name = "lblExcludeFolder";
+            this.lblExcludeFolder.Size = new System.Drawing.Size(43, 13);
+            this.lblExcludeFolder.TabIndex = 16;
+            this.lblExcludeFolder.Text = "Not Set";
+            // 
+            // btnExcludeFolder
+            // 
+            this.btnExcludeFolder.Location = new System.Drawing.Point(6, 77);
+            this.btnExcludeFolder.Name = "btnExcludeFolder";
+            this.btnExcludeFolder.Size = new System.Drawing.Size(100, 23);
+            this.btnExcludeFolder.TabIndex = 15;
+            this.btnExcludeFolder.Text = "Exclude Folder";
+            this.btnExcludeFolder.UseVisualStyleBackColor = true;
+            this.btnExcludeFolder.Click += new System.EventHandler(this.btnExcludeFolder_Click);
             // 
             // lblMediaCopyProgress
             // 
@@ -1214,25 +1234,6 @@
             // bwTorrentDownloadComplete
             // 
             this.bwTorrentDownloadComplete.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bwTorrentDownloadComplete_DoWork);
-            // 
-            // btnExcludeFolder
-            // 
-            this.btnExcludeFolder.Location = new System.Drawing.Point(6, 77);
-            this.btnExcludeFolder.Name = "btnExcludeFolder";
-            this.btnExcludeFolder.Size = new System.Drawing.Size(100, 23);
-            this.btnExcludeFolder.TabIndex = 15;
-            this.btnExcludeFolder.Text = "Exclude Folder";
-            this.btnExcludeFolder.UseVisualStyleBackColor = true;
-            this.btnExcludeFolder.Click += new System.EventHandler(this.btnExcludeFolder_Click);
-            // 
-            // lblExcludeFolder
-            // 
-            this.lblExcludeFolder.AutoSize = true;
-            this.lblExcludeFolder.Location = new System.Drawing.Point(112, 82);
-            this.lblExcludeFolder.Name = "lblExcludeFolder";
-            this.lblExcludeFolder.Size = new System.Drawing.Size(43, 13);
-            this.lblExcludeFolder.TabIndex = 16;
-            this.lblExcludeFolder.Text = "Not Set";
             // 
             // P2PVPNForm
             // 
