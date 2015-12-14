@@ -202,10 +202,7 @@ namespace P2PVpn.Utilities
 
             Task.Factory.StartNew(() =>
             {
-                while (!FileIO.IsFileClosed(file))
-                {
-                    Task.Delay(300).Wait();
-                }
+                FileIO.EnsureFileClosed(file);
 
                 //create bakup
                 if (File.Exists(file)) File.Copy(file, file + "_bak", true);

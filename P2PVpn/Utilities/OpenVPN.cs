@@ -53,6 +53,8 @@ namespace P2PVpn.Utilities
             {
                 File.Create(localCredsFile).Close();
             }
+            FileIO.EnsureFileClosed(localCredsFile);
+
             using (FileStream file = File.Open(localCredsFile, FileMode.OpenOrCreate,  FileAccess.ReadWrite))
             {
                 string contents = "";
@@ -78,6 +80,7 @@ namespace P2PVpn.Utilities
                     sw.Write(contents);
                     
                 }
+                FileIO.EnsureFileClosed(openVpnCredsFile);
                 File.Copy(localCredsFile, openVpnCredsFile, true);
             }
           
@@ -92,6 +95,10 @@ namespace P2PVpn.Utilities
             if (!File.Exists(localCredsFile))
             {
                 File.Create(localCredsFile).Close();
+            }
+            while (!FileIO.IsFileClosed(localCredsFile))
+            {
+                Task.Delay(300).Wait();
             }
             using (FileStream file = File.Open(localCredsFile, FileMode.OpenOrCreate, FileAccess.ReadWrite))
             {
@@ -172,6 +179,7 @@ namespace P2PVpn.Utilities
                     p2pVPNConfigFileText += _p2pVpnRouteSettings;
                 }
 
+                FileIO.EnsureFileClosed(configFile);
                 using (var cfile = File.OpenWrite(configFile))
                 {
                     using (var sr = new StreamWriter(cfile))

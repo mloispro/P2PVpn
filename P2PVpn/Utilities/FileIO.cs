@@ -288,7 +288,13 @@ namespace P2PVpn.Utilities
             return isDirectory;
         }
 
-
+        public static void EnsureFileClosed(string filename)
+        {
+            while (!FileIO.IsFileClosed(filename))
+            {
+                Task.Delay(300).Wait();
+            }
+        }
         public static bool IsFileClosed(string filename)
         {
             try
