@@ -68,6 +68,7 @@ namespace P2PVpn.Utilities
                 filter.FileNameIncludes.Add("*.gif");
                 filter.FileNameIncludes.Add("*.zip");
                 filter.FileNameIncludes.Add("*.rar");
+                filter.FileNameIncludes.Add("*.mp3");
 
                 // Explicitly detect changes on both replicas upfront, to avoid two change
                 // detection passes for the two-way synchronization

@@ -287,7 +287,11 @@ namespace P2PVpn.Utilities
             }
             return isDirectory;
         }
-
+        public static void FileClose(FileStream file)
+        {
+            file.Close();
+            EnsureFileClosed(file.Name);
+        }
         public static void EnsureFileClosed(string filename)
         {
             while (!FileIO.IsFileClosed(filename))

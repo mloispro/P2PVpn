@@ -156,7 +156,8 @@ namespace P2PVpn.Utilities
         private static int? _currentRetryAttempt;
         public static async void TryReconnect(int attempt = 0)
         {
-            await Task.Delay(15000).ContinueWith((t) => { _currentRetryAttempt = null; });
+            //reset current attempt in a little bit.
+            Task.Delay(15000).ContinueWith((t) => { _currentRetryAttempt = null; return; });
 
             if (_currentRetryAttempt != null && _currentRetryAttempt == attempt) return;
             _currentRetryAttempt = attempt;
@@ -180,7 +181,7 @@ namespace P2PVpn.Utilities
 
             if (!ControlHelpers.P2PVPNForm.Network.IsOpenVPNConnected())
             {
-                TryReconnect(attempt++);
+                TryReconnect(attempt+1);
             }
             _currentRetryAttempt = null;
         }

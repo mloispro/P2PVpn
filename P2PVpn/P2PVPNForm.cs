@@ -553,14 +553,24 @@ namespace P2PVpn
         #region Apps
         private void PopulateLaunchAppsGrid()
         {
-            dgOpenApps.AutoGenerateColumns = false;
+            //dgOpenApps.AutoGenerateColumns = false;
 
             List<Apps> data = Apps.Get();
 
             appsBindingSource.DataSource = data;
+            //dgApps.DataSource = data;
             dgOpenApps.DataSource = appsBindingSource;
 
-            dgOpenApps.AutoGenerateColumns = false;
+            //appsBindingSource.DataSource = data;
+            //appsBindingSource.ResetBindings(true);
+            ////dgOpenApps.DataBindings.bi
+            //dgOpenApps.DataSource = appsBindingSource;
+            //appsBindingSource.ResetBindings(true);
+
+            ////this.appsBindingSource.EndEdit();
+
+            //dgOpenApps.AutoGenerateColumns = false;
+
         }
         private void btnSaveApps_Click(object sender, EventArgs e)
         {
@@ -723,7 +733,7 @@ namespace P2PVpn
         private void cbOpenVPNConfig_SelectionChangeCommitted(object sender, EventArgs e)
         {
             Settings settings = Settings.Get();
-            var selected = ((KeyValuePair<string, string>)cbVPNBookOpenVPNConfig.SelectedItem).Key;
+            var selected = ((KeyValue)cbVPNBookOpenVPNConfig.SelectedItem).Key;
             settings.OpenVPNConfig = selected;
             Settings.Save(settings);
         }

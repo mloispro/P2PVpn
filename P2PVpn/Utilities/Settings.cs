@@ -107,6 +107,12 @@ namespace P2PVpn.Utilities
             var configFiles = Directory.GetFiles(configDir, "*.*", SearchOption.AllDirectories)
                  .Where(s => ext.Any(e => s.EndsWith(e)));
 
+            if (configFiles.Count() == 0)
+            {
+                var config = File.Create(configDir + @"\" + VPNGate.VpnGateConifg);
+                FileIO.FileClose(config);
+            }
+
             foreach (var file in configFiles)
             {
                 var fileName = Path.GetFileName(file);

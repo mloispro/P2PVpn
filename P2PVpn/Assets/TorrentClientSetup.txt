@@ -1,0 +1,1 @@
+1) turn off UPnP and NAT-PMP

@@ -677,13 +677,18 @@
             // 
             // dgOpenApps
             // 
-            this.dgOpenApps.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            //this.dgOpenApps.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            //this.dgOpenApps.Location = new System.Drawing.Point(12, 12);
+            //this.dgOpenApps.Name = "dgOpenApps";
+            //this.dgOpenApps.Size = new System.Drawing.Size(483, 219);
+            //this.dgOpenApps.TabIndex = 0;
+
+            this.dgOpenApps.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.dgOpenApps.AutoGenerateColumns = false;
+            //this.dgOpenApps.AutoGenerateColumns = false;
             this.dgOpenApps.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.dgOpenApps.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgOpenApps.DataSource = this.appsBindingSource;
             this.dgOpenApps.Location = new System.Drawing.Point(63, 3);
             this.dgOpenApps.Name = "dgOpenApps";
             this.dgOpenApps.RowHeadersVisible = false;

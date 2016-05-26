@@ -31,8 +31,17 @@ namespace P2PVpn.Models
             {
                 return _apps;
             }
+            
 
             _apps = Settings.GetJson<Apps>("apps.json");
+
+            if(_apps==null && _apps.Count == 0)
+            {
+                Apps chrome = new Apps() { Program = @"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe" };
+                _apps = new List<Apps>();
+                _apps.Add(chrome);
+                Save(_apps);
+            }
             
             return _apps;
         }
