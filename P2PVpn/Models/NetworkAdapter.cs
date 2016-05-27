@@ -34,9 +34,8 @@ namespace P2PVpn.Models
         public bool IsConnected { get; set; }
         public bool IsConnectedToInternet { get; set; }
         public string NetworkName { get; set; }
-        public string StartupPrimaryDNS { get; set; }
-        public string StartupSecondaryDNS { get; set; }
         public string GatewayIP { get; set; }
+        public bool IsDNSEnabled { get; set; }
 
         public static NetworkAdapter OpenVpnAdapter { get; set; }
     }

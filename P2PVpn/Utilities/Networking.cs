@@ -121,6 +121,7 @@ namespace P2PVpn.Utilities
 
         public void ResetNetworkInterfaces()
         {
+            
             Settings settings = Settings.Get();
             if (!settings.DontResetDNS || !settings.SplitRoute)
             {
@@ -132,18 +133,21 @@ namespace P2PVpn.Utilities
                 {
                     if (Networking.IsVPNAdapter(adapter)) continue;
 
+                    //reset dns to what it was before connecting to vpn
                     var settingsAdapter = settings.StartupNetworkAdapterDns.FirstOrDefault(x => adapter.Id == x.Id);
                     if (settingsAdapter != null)
                     {
                         if (!string.IsNullOrWhiteSpace(settingsAdapter.PrimaryDNS) &&
-                            NetworkAdapter.OpenVpnAdapter != null && NetworkAdapter.OpenVpnAdapter.PrimaryDns != adapter.PrimaryDns)
+                            NetworkAdapter.OpenVpnAdapter != null && 
+                            NetworkAdapter.OpenVpnAdapter.PrimaryDns != adapter.PrimaryDns)
                         {
                             primaryDns = string.Format("interface IPv4 set dnsserver \"{0}\" static {1} both", settingsAdapter.Name, settingsAdapter.PrimaryDNS);
                             ControlHelpers.StartProcess(@"netsh", primaryDns);
                             setDns = true;
                         }
                         if (!string.IsNullOrWhiteSpace(settingsAdapter.SecondaryDNS) &&
-                            NetworkAdapter.OpenVpnAdapter != null && NetworkAdapter.OpenVpnAdapter.SecondaryDns != adapter.SecondaryDns)
+                            NetworkAdapter.OpenVpnAdapter != null && 
+                            NetworkAdapter.OpenVpnAdapter.SecondaryDns != adapter.SecondaryDns)
                         {
                             secondaryDns = string.Format("interface ipv4 add dnsserver \"{0}\" address={1} index=2", settingsAdapter.Name, settingsAdapter.SecondaryDNS);
                             ControlHelpers.StartProcess(@"netsh", secondaryDns);
@@ -152,10 +156,7 @@ namespace P2PVpn.Utilities
                     }
                     else
                     {
-                        primaryDns = string.Format("interface IPv4 set dnsserver \"{0}\" dhcp", adapter.Name);
-                        secondaryDns = string.Format("interface ip set dns \"{0}\" dhcp", adapter.Name);
-                        ControlHelpers.StartProcess(@"netsh", primaryDns);
-                        ControlHelpers.StartProcess(@"netsh", secondaryDns);
+                        SetAutoDNS(false);
                     }
                     if (setDns)
                     {
@@ -167,6 +168,25 @@ namespace P2PVpn.Utilities
 
             }
             RemoveRoutes();
+        }
+        public void SetAutoDNS(bool registerAndFlush)
+        {
+            var adapters = GetActiveNetworkInterfaces();
+            //Settings settings = Settings.Get();
+            foreach (var adapter in adapters)
+            {
+                if (Networking.IsVPNAdapter(adapter)) continue;
+
+                string primaryDns = string.Format("interface IPv4 set dnsserver \"{0}\" dhcp", adapter.Name);
+                string secondaryDns = string.Format("interface ip set dns \"{0}\" dhcp", adapter.Name);
+                ControlHelpers.StartProcess(@"netsh", primaryDns);
+                ControlHelpers.StartProcess(@"netsh", secondaryDns);
+            }
+            if (registerAndFlush)
+            {
+                ControlHelpers.StartProcess(@"ipconfig.exe", @"/registerdns");
+                ControlHelpers.StartProcess(@"ipconfig.exe", @"/flushdns");
+            }
         }
         public void RemoveRoutes()
         {
@@ -249,30 +269,37 @@ namespace P2PVpn.Utilities
                 _log.Log("Set Chrome Tor Proxy");
             }
         }
-        private void SaveOriginalDnsSettings()
+        public void SaveOriginalDnsSettings()
         {
             Settings settings = Settings.Get();
-            if (settings.StartupNetworkAdapterDns != null && settings.StartupNetworkAdapterDns.Count > 0)
-            {
-                return;
-            }
+            //if (settings.StartupNetworkAdapterDns != null && settings.StartupNetworkAdapterDns.Count > 0)
+            //{
+            //    return;
+            //}
+            
             settings.StartupNetworkAdapterDns = new List<NetworkAdapterDns>();
             foreach (var adapter in ActiveNetworkAdapters)
             {
                 if (Networking.IsVPNAdapter(adapter)) continue;
 
-                adapter.StartupPrimaryDNS = adapter.PrimaryDns;
-                adapter.StartupSecondaryDNS = adapter.SecondaryDns;
-
-                settings.StartupNetworkAdapterDns.Add(new NetworkAdapterDns
+                var startupNetworkAdapterDns = new NetworkAdapterDns
                 {
                     Name = adapter.Name,
                     Id = adapter.Id,
-                    PrimaryDNS = adapter.PrimaryDns,
-                    SecondaryDNS = adapter.SecondaryDns
-                });
-
+                };
+                if (adapter.IsDNSEnabled)
+                {
+                    startupNetworkAdapterDns.PrimaryDNS = adapter.PrimaryDns;
+                    startupNetworkAdapterDns.SecondaryDNS = adapter.SecondaryDns;
+                }
+                else
+                {
+                    startupNetworkAdapterDns.PrimaryDNS = "";
+                    startupNetworkAdapterDns.SecondaryDNS = "";
+                }
+                settings.StartupNetworkAdapterDns.Add(startupNetworkAdapterDns);
             }
+
             Settings.Save(settings);
 
         }
@@ -357,20 +384,30 @@ namespace P2PVpn.Utilities
             var adapters = new List<NetworkAdapter>();
             foreach (NetworkInterface nic in activeNics)
             {
+
                 var adapter = new NetworkAdapter
                 {
                     Description = nic.Description,
                     Name = nic.Name,
                     Speed = nic.Speed / 1024,
                     WmiMacAddress = nic.GetPhysicalAddress().ToString(),
-                    PrimaryDns = nic.GetIPProperties().DnsAddresses[0].ToString(),
+                    //PrimaryDns = nic.GetIPProperties().DnsAddresses[0].ToString(),
                     BytesSent = nic.GetIPStatistics().BytesSent / 1024,
                     BytesReceived = nic.GetIPStatistics().BytesReceived / 1024,
                     Id = new Guid(nic.Id)
                 };
+
+                string dnsEnabledRegKey = string.Format(@"HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\Interfaces\{0}", nic.Id);
+                string nameServer = (string)Microsoft.Win32.Registry.GetValue(dnsEnabledRegKey, "NameServer", null);
+                adapter.IsDNSEnabled = !string.IsNullOrWhiteSpace(nameServer);
+
                 if (nic.GetIPProperties().GatewayAddresses != null && nic.GetIPProperties().GatewayAddresses.Count > 0)
                 {
                     adapter.GatewayIP = nic.GetIPProperties().GatewayAddresses.First().Address.ToString();
+                }
+                if (nic.GetIPProperties().DnsAddresses.Count > 0)
+                {
+                    adapter.PrimaryDns = nic.GetIPProperties().DnsAddresses[0].ToString();
                 }
                 if (nic.GetIPProperties().DnsAddresses.Count > 1)
                 {

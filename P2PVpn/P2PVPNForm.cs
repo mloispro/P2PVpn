@@ -28,6 +28,7 @@ namespace P2PVpn
         public P2PVPNForm()
         {
             InitializeComponent();
+
             Logging.Init(lbLog, statusStrip, lblStatusText);
             Network = new Networking(timerMediaServerOffline, lbLog);
             Network.NetworkListManager.NetworkConnectivityChanged += NetworkListManager_NetworkConnectivityChanged;
@@ -118,7 +119,7 @@ namespace P2PVpn
         private void btnConnect_Click(object sender, EventArgs e)
         {
             Connect();
-            
+
         }
         public void Connect()
         {
@@ -135,6 +136,7 @@ namespace P2PVpn
             else
             {
                 Logging.SetStatus("Connecting...", Logging.Colors.Yellow);
+                Network.SaveOriginalDnsSettings();
                 //not connected to vpn, so connect
                 ControlHelpers.StartProcess("taskkill", "/F /IM openvpn-gui.exe");
                 ControlHelpers.StartProcess("taskkill", "/F /IM openvpn.exe");
@@ -164,6 +166,10 @@ namespace P2PVpn
                     {
                         Network.SetRoutesAndDNS();
                     }
+                    else
+                    {
+                        Network.SetAutoDNS(false);
+                    }
 
                     Logging.SetStatus("OpenVPN Connected", Logging.Colors.Green);
 
@@ -184,12 +190,18 @@ namespace P2PVpn
             this.EnableForm();
 
             PopulateControls();
-           // Thread.Sleep(10000);
+            // Thread.Sleep(10000);
             Task.Delay(5000).Wait();
             //Thread.Sleep(20000);
             Networking.DisableDisconnect = false;
-            
+
         }
+
+        private void SaveOriginalDnsSettings()
+        {
+            throw new NotImplementedException();
+        }
+
         private void Disconnect()
         {
             Networking.DisableRetryConnect = true;
@@ -208,7 +220,7 @@ namespace P2PVpn
             Network.ClosePrograms(); //**dont add await here it causes hang
             Networking.DisableDisconnect = true;
             Network.EnableAllNeworkInterfaces();
-            
+
             Task.Delay(60000).ContinueWith((t) =>
             {
                 Networking.DisableRetryConnect = false;
@@ -216,11 +228,11 @@ namespace P2PVpn
 
             //Task.Run(() =>
             //{
-                
-               
+
+
             //});
             //delayReconnect.Start();
-            
+
             Logging.SetStatus("OpenVPN Disconnected", Logging.Colors.Red);
         }
 
@@ -244,7 +256,7 @@ namespace P2PVpn
             catch
             {
             }
-            
+
             //FileIO.ResetTransfers();
         }
         private void CopyOpenVPNAssets()
@@ -298,7 +310,7 @@ namespace P2PVpn
             try
             {
                 isOffline = Utilities.MediaServer.IsShareOffline(settings.MediaServer);
-                
+
             }
             catch (Exception ex)
             {
@@ -306,7 +318,7 @@ namespace P2PVpn
                 //settings.MediaServer.ShareName = "";
                 //Settings.Save(settings);
                 ControlHelpers.ShowMessageBox(ex.Message, ControlHelpers.MessageBoxType.Error);
-                
+
             }
             lblMediaNetworkShare.Text = settings.MediaServer.ShareName;
             if (!string.IsNullOrEmpty(settings.MediaServer.ShareName))
@@ -363,9 +375,10 @@ namespace P2PVpn
             {
                 //timerMediaServerOffline.Enabled = false;
                 //settings.MediaServer.ShareName = "";
-                //Settings.Save(settings);
+
+                settings.MediaServer.EnableParentalControlsEvery = 0;
+                Settings.Save(settings);
                 ControlHelpers.ShowMessageBox(ex.Message, ControlHelpers.MessageBoxType.Error);
-                
             }
 
             PopulateMediaServerControls();
@@ -381,7 +394,7 @@ namespace P2PVpn
                 FileIO.FinshedFileTransfer += (sender, info) =>
                 {
                     lblMediaCopyProgress.SetControlText("Finished Copying " + info.SourceFile);
-                   //ControlHelpers.s
+                    //ControlHelpers.s
                     Logging.Log("Finished Copying " + info.SourceFile);
                 };
 
@@ -400,7 +413,7 @@ namespace P2PVpn
                     //Logging.Log("File Transfer Percent: " + percentComplete.ToString());
                 };
 
-                
+
 
                 if (string.IsNullOrWhiteSpace(settings.MediaFileTransfer.SourceDirectory) ||
                 string.IsNullOrWhiteSpace(settings.MediaFileTransfer.TargetDirectory))
@@ -416,8 +429,8 @@ namespace P2PVpn
                 ControlHelpers.ShowMessageBox(ex.Message, ControlHelpers.MessageBoxType.Error);
                 return;
             }
-            
-            
+
+
         }
 
         private void btnMediaTarget_Click(object sender, EventArgs e)
@@ -519,8 +532,15 @@ namespace P2PVpn
         private void timerMediaServerOffline_Tick(object sender, EventArgs e)
         {
             if (!Networking.IsLocalNetworkConnected()) return;
-            
+
             Settings settings = Settings.Get();
+
+            if (string.IsNullOrWhiteSpace(settings.MediaFileTransfer.SourceDirectory) ||
+                string.IsNullOrWhiteSpace(settings.MediaFileTransfer.TargetDirectory))
+            {
+                return;
+            }
+
             try
             {
                 if (settings.MediaServer.EnableParentalControlsEvery > 0 && !Utilities.MediaServer.IsShareOffline(settings.MediaServer))
@@ -534,6 +554,7 @@ namespace P2PVpn
                     {
                         btnMediaFolderOffline_Click(null, null);
                         lblMediaTimeRemaining.Text = "";
+                        
                     }
                 }
                 else
@@ -859,7 +880,7 @@ namespace P2PVpn
             }
         }
         #region DNS Settings
-        private void cbResetOnDisconn_CheckedChanged(object sender, EventArgs e)
+        public void cbResetOnDisconn_CheckedChanged(object sender, EventArgs e)
         {
             Settings settings = Settings.Get();
             settings.DontResetDNS = cbDontResetOnDisconn.Checked;
