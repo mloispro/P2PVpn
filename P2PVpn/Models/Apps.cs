@@ -20,6 +20,7 @@ namespace P2PVpn.Models
         public static void Save(List<Apps> apps)
         {
             apps.RemoveAll(x => string.IsNullOrWhiteSpace(x.Program));
+           // apps.ForEach(x => x.Program = x.Program.Replace("\"", ""));
             Settings.SaveJson(apps, "apps.json");
 
             Logging.Log("Saved Apps To: " + Settings.UserSettingsDir);
@@ -29,9 +30,9 @@ namespace P2PVpn.Models
         {
             if (_apps != null && _apps.Count() > 0)
             {
+                //_apps.ForEach(x => x.Program = x.Program.Replace("\"", ""));
                 return _apps;
             }
-            
 
             _apps = Settings.GetJson<Apps>("apps.json");
 
@@ -42,7 +43,7 @@ namespace P2PVpn.Models
                 _apps.Add(chrome);
                 Save(_apps);
             }
-            
+           // _apps.ForEach(x => x.Program = x.Program.Replace("\"", ""));
             return _apps;
         }
 

@@ -70,6 +70,10 @@
   <PropertyGroup>
     <TargetZone>LocalIntranet</TargetZone>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>
+    </StartupObject>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="FileCopyLib">
       <HintPath>..\packages\FileCopyLib.1.1.0.0\lib\net45\FileCopyLib.dll</HintPath>
@@ -92,11 +96,11 @@
     </Reference>
     <Reference Include="Microsoft.Synchronization, Version=2.1.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>Assets\Sync Framework\Microsoft.Synchronization.dll</HintPath>
+      <HintPath>..\..\..\Program Files\Microsoft Sync Framework\2.1\Runtime\x64\Microsoft.Synchronization.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Synchronization.Files, Version=2.1.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>Assets\Sync Framework\Microsoft.Synchronization.Files.dll</HintPath>
+      <HintPath>..\..\..\Program Files\Microsoft Sync Framework\2.1\Runtime\x64\Microsoft.Synchronization.Files.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
